@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+#name : mocha-it
+# --
+it('$0', function (done) {
+
+});
