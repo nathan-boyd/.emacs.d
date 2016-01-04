@@ -67,11 +67,6 @@
 (smart-tabs-advice c-indent-line c-basic-offset)
 (smart-tabs-advice c-indent-region c-basic-offset)
 
-;; to "make it work" for js
-;; (setq-default indent-tabs-mode 1)
-;; (setq-default tab-width 4)
-;; (setq indent-line-function 'insert-tab)
-
 (provide 'setup-tabs)
 
 ;;; setup-tabs ends here

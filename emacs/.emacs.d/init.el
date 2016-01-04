@@ -1,4 +1,3 @@
-
 ;;; Package --- Summary Emacs Init File
 ;;; Commentary:
 ;;; Code:
@@ -35,21 +34,25 @@
 (unless (server-running-p)
   (server-start))
 
+;; let smart tabs handle vertical alignment
+(electric-indent-mode -1)
+
 ;; swap yes for y
 (fset 'yes-or-no-p 'y-or-n-p)
 
 ;; treat new buffers as text
 (setq major-mode 'text-mode)
 
-;; setup whitespace
+;; ;; setup whitespace
 (require 'whitespace)
 (global-whitespace-mode 1)
 (setq whitespace-style (quote (spaces tabs newline space-mark tab-mark newline-mark)))
 (setq whitespace-display-mappings
       '(
-        (space-mark 32 [183] [46]) ; 32 SPACE 「 」, 183 MIDDLE DOT 「·」, 46 FULL STOP 「.」
-        (newline-mark 10 [182 10]) ; 10 LINE FEED
-        (tab-mark 9 [9656 9] [92 9]) ; 9 TAB, 9655 WHITE RIGHT-POINTING TRIANGLE 「▷」
+        (space-mark 32 [183] [46])   ; 32 SPACE 「 」
+        (newline-mark 10 [182 10])   ; 10 LINE FEED
+        (tab-mark 9 [187 9] [92 9])  ; 9  TAB
+        ;; (tab-mark 9 [9656 9] [92 9]) ; 9 TAB, 9655 WHITE RIGHT-POINTING TRIANGLE 「▷」
         ))
 
 ; configure backups
@@ -76,55 +79,45 @@
         search-ring
         regexp-search-ring))
 
-; disable lock files
+;; disable lock files
 (setq create-lockfiles nil)
 
-; turn off warnings about ad-redefinition
+;; turn off warnings about ad-redefinition
 (setq ad-redefinition-action 'accept)
 
-; get rid of scratch buffer message
+;; get rid of scratch buffer message
 (setq initial-scratch-message "")
 
-; turn on syntax highliting everywhere
+;; turn on syntax highlight everywhere
 (global-font-lock-mode 1)
 
-; setup line numbers ;;
+;; setup line numbers ;;
 (global-linum-mode 1)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; setup preferred modes ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(add-to-list 'auto-mode-alist '("\\.cs$" . csharp-mode))
+;; highlight current line
+;; (global-hl-line-mode)
 
-;;;;;;;;;;;;;;;;;;;;
-;; setup packages ;;
-;;;;;;;;;;;;;;;;;;;;
-(load-library "~/.emacs.d/setup/setup-packages.el")
+;; show clock
+(display-time-mode 1)
 
-;;;;;;;;;;;;;;;;;;;;;;
-;; custom variables ;;
-;;;;;;;;;;;;;;;;;;;;;;
+;; setup unix utils (support for grep mostly) for windows
+(when (or (eq system-type 'windows-nt) (eq system-type 'msdos))
+  (setenv "PATH" (concat "D:\\apps\\unixUtils\\usr\\local\\wbin;" (getenv "PATH"))))
+
+;; set custom key bindings
+(global-set-key (kbd "C-x b")    'helm-buffers-list)
+(global-set-key (kbd "C-x C-b")  'helm-buffers-list)
+(global-set-key (kbd "C-x C-y")  'helm-show-kill-ring)
+(global-set-key (kbd "C-SPC")    'helm-flyspell-correct)
+
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ac-quick-help-delay 0.05)
- '(flycheck-display-errors-function (function flycheck-pos-tip-error-messages))
- '(flycheck-jscsrc "~./jscsrc")
- '(javascript-jshint "~./.jshintrc")
- '(magit-git-executable "C:/Program Files (x86)/Git/bin/git.exe"))
+ '(flycheck-jshintrc "%appdata%/Roaming/.jshintrc")
+ '(flycheck-jscsrc "%appdata%/Roaming/.jscsrc"))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; setup custom modules ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;setup packages
+(load-library "~/.emacs.d/setup/setup-packages.el")
 (load-library "~/.emacs.d/lib/my-modes.el")
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; setup sql ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;
 (load-library "~/.emacs.d/lib/setup-sql.el")
 
 (provide 'init)
 
-;;; init.el ends here
