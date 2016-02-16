@@ -44,7 +44,7 @@
 )
 
 (defun my-csharp-mode ()
-;;  (omnisharp-mode)
+  (omnisharp-mode)
   (company-mode)
   (flycheck-mode)
   (yas-minor-mode)

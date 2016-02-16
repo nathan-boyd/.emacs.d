@@ -6,11 +6,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;
 ;; install packages ;;
 ;;;;;;;;;;;;;;;;;;;;;;
-
-(setq package-archives '(("elpa" . "http://tromey.com/elpa/")
-                         ("gnu" . "http://elpa.gnu.org/packages/")
-                         ("marmalade" . "http://marmalade-repo.org/packages/")
-                         ("melpa" . "http://melpa.org/packages/")))
+(setq package-archives '(
+    ("melpa" . "http://melpa.org/packages/")
+    ("elpa" . "http://tromey.com/elpa/")
+    ("gnu" . "http://elpa.gnu.org/packages/")
+    ("marmalade" . "http://marmalade-repo.org/packages/")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; a list of packages to be installed ;;
@@ -29,11 +29,13 @@
                      bm
                      company
                      csharp-mode
+                     editorconfig
                      flycheck
                      flycheck-pos-tip
                      flyspell-lazy
                      golden-ratio
                      helm
+                     helm-flyspell
                      helm-c-yasnippet
                      helm-core
                      highlight-parentheses
@@ -55,8 +57,11 @@
                      smart-tabs-mode
                      solarized-theme
                      sublimity
+                     tern
                      tfs
                      undo-tree
+                     web-beautify
+                     web-mode
                      which-key
                      yasnippet
                      zenburn-theme
@@ -75,25 +80,79 @@
 (dolist (package package-list)
   (require 'package))
 
+;;;;;;;;;;;;;;;;
+;; setup helm ;;
+;;;;;;;;;;;;;;;;
+(require 'helm-config)
+(helm-adaptive-mode t)
+(helm-autoresize-mode t)
+(helm-push-mark-mode t)
+(global-set-key (kbd "M-x")        'undefined)
+(global-set-key (kbd "M-x")        'helm-M-x)
+(global-set-key (kbd "C-x r b")    'helm-filtered-bookmarks)
+(global-set-key (kbd "C-x C-f")    'helm-find-files)
+(global-set-key (kbd "C-x b")      'helm-mini)
+(global-set-key (kbd "C-x C-b")    'helm-mini)
+(global-set-key (kbd "M-y")        'helm-show-kill-ring)
+(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+(helm-mode 1)
+
 ;;;;;;;;;;;;;;;;;;;;
 ;; setup js2-mode ;;
 ;;;;;;;;;;;;;;;;;;;;
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+;(load-library "~/.emacs.d/setup/setup-js2-mode.el")
 
-;;;;;;;;;;;;;;;;;;;;
-;; setup flycheck ;;
-;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;
+;; setup tern  ;;
+;;;;;;;;;;;;;;;;;
+;(load-library "~/.emacs.d/setup/setup-tern.el")
+
+;;;;;;;;;;;;;;;;;;;;;
+;; setup flycheck  ;;
+;;;;;;;;;;;;;;;;;;;;;
+;(load-library "~/.emacs.d/setup/setup-flycheck.el")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; setup web-mode for jsx files ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; use web-mode for .jsx files
+(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
+
+(require 'flycheck)
+
+;; turn on flychecking globally
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
-(with-eval-after-load 'flycheck
-  (flycheck-pos-tip-mode))
+;; disable jshint since we prefer eslint checking
+(setq-default flycheck-disabled-checkers
+  (append flycheck-disabled-checkers
+    '(javascript-jshint)))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; override js2 error checking ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq-default js2-show-parse-errors nil)
-(setq-default js2-strict-missing-semi-warning nil)
-(setq-default js2-strict-trailing-comma-warning nil)
+;; use eslint with web-mode for jsx files
+(flycheck-add-mode 'javascript-eslint 'web-mode)
+
+;; customize flycheck temp file prefix
+;(setq-default flycheck-temp-prefix ".flycheck")
+
+;; disable json-jsonlist checking for json files
+(setq-default flycheck-disabled-checkers
+  (append flycheck-disabled-checkers
+    '(json-jsonlist)))
+
+(setq web-mode-content-types-alist
+  '(("jsx" . "\\.js[x]?\\'")))
+
+;; for better jsx syntax-highlighting in web-mode
+(defadvice web-mode-highlight-part (around tweak-jsx activate)
+  (if (equal web-mode-content-type "jsx")
+    (let ((web-mode-enable-part-face nil))
+      ad-do-it)
+    ad-do-it))
+
+;; setup web-beautify
+(eval-after-load 'sgml-mode
+      '(define-key html-mode-map (kbd "C-c b") 'web-beautify-html))
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; setup which-key ;;
@@ -139,23 +198,7 @@
 (add-to-list 'ac-modes 'sql-mode)
 (add-to-list 'ac-modes 'csharp-mode)
 (ac-set-trigger-key "TAB")
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; fix for linums in ac ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;
-(ac-linum-workaround)
-
-;;;;;;;;;;;;;;;;
-;; setup helm ;;
-;;;;;;;;;;;;;;;;
-(require 'helm-config)
-(helm-mode 1)
-(helm-adaptive-mode t)
-(helm-autoresize-mode t)
-(helm-push-mark-mode t)
-(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)   ; rebind tab to do persistent action
-(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)     ; make TAB work in terminal
-;;(define-key helm-map (kbd "C-z")  'helm-select-action)                ; list actions using C-z
+(ac-linum-workaround) ;; fix for linums in ac
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; configure ac-helm ;;
@@ -233,6 +276,12 @@
 (eval-after-load "flyspell"
   '(define-key flyspell-mode-map (kbd "C-;") 'helm-flyspell-correct))
 
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; setup editorconfig ;;
+;;;;;;;;;;;;;;;;;;;;;;;;
+(require 'editorconfig)
+(editorconfig-mode 1)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; configure golden-ratio ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -252,10 +301,6 @@
 ;; setup tabs ;;
 ;;;;;;;;;;;;;;;;
 (load "~/.emacs.d/setup/setup-tabs.el")
-
-(require 'sublimity)
-(require 'sublimity-scroll)
-(require 'sublimity-map)
 
 (provide 'setup-packages)
 

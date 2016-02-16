@@ -46,14 +46,18 @@
 ;; ;; setup whitespace
 (require 'whitespace)
 (global-whitespace-mode 1)
-(setq whitespace-style (quote (spaces tabs newline space-mark tab-mark newline-mark)))
+;(setq whitespace-style (quote (spaces tabs newline space-mark tab-mark newline-mark)))
 (setq whitespace-display-mappings
       '(
         (space-mark 32 [183] [46])   ; 32 SPACE 「 」
         (newline-mark 10 [182 10])   ; 10 LINE FEED
         (tab-mark 9 [187 9] [92 9])  ; 9  TAB
-        ;; (tab-mark 9 [9656 9] [92 9]) ; 9 TAB, 9655 WHITE RIGHT-POINTING TRIANGLE 「▷」
         ))
+
+; set whitespace-space background to match zenburn theme
+(custom-set-faces
+'(whitespace-space ((t (:bold t :foreground "dim gray" :background "#3F3F3F"))))
+)
 
 ; configure backups
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
@@ -94,30 +98,26 @@
 ;; setup line numbers ;;
 (global-linum-mode 1)
 
-;; highlight current line
-;; (global-hl-line-mode)
-
 ;; show clock
 (display-time-mode 1)
 
-;; setup unix utils (support for grep mostly) for windows
+;; setup UNIX utils (support for grep mostly) for windows
 (when (or (eq system-type 'windows-nt) (eq system-type 'msdos))
-  (setenv "PATH" (concat "D:\\apps\\unixUtils\\usr\\local\\wbin;" (getenv "PATH"))))
-
-;; set custom key bindings
-(global-set-key (kbd "C-x b")    'helm-buffers-list)
-(global-set-key (kbd "C-x C-b")  'helm-buffers-list)
-(global-set-key (kbd "C-x C-y")  'helm-show-kill-ring)
-(global-set-key (kbd "C-SPC")    'helm-flyspell-correct)
-
-(custom-set-variables
- '(flycheck-jshintrc "%appdata%/Roaming/.jshintrc")
- '(flycheck-jscsrc "%appdata%/Roaming/.jscsrc"))
+  (setenv "PATH" (concat "D:/apps/unixUtils/usr/local/wbin;" (getenv "PATH"))))
 
 ;;setup packages
 (load-library "~/.emacs.d/setup/setup-packages.el")
 (load-library "~/.emacs.d/lib/my-modes.el")
 (load-library "~/.emacs.d/lib/setup-sql.el")
 
+(custom-set-variables
+ '(flycheck-jshintrc "~.jshintrc")
+ '(flycheck-jscsrc   "~/.jscsrc")
+ '(flycheck-eslintrc "~/.eslintrc"))
+
+;; clear mini buffer
+(call-interactively (global-key-binding "\C-g"))
+
 (provide 'init)
 
+;;; init.el ends here
