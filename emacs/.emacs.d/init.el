@@ -45,7 +45,7 @@
 
 ;; ;; setup whitespace
 (require 'whitespace)
-;(global-whitespace-mode 1)
+(global-whitespace-mode 1)
 (setq whitespace-display-mappings
       '(
         (space-mark 32 [183] [46])   ; 32 SPACE 「 」
@@ -54,6 +54,10 @@
         ))
 
 (custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(helm-buffer-directory ((t (:foreground "slate gray"))))
  '(helm-buffer-size ((t (:foreground "slate gray"))))
  '(neo-banner-face ((t :inherit shadow)) t)
@@ -63,8 +67,10 @@
  '(neo-file-link-face ((t :inherit default)) t)
  '(neo-header-face ((t :inherit shadow)) t)
  '(neo-root-dir-face ((t :inherit link-visited :underline nil)) t)
+ '(whitespace-indentation ((t (:foreground "dim gray" :background "#3F3F3F"))))
+ '(whitespace-newline ((t (:bold t :foreground "dim gray" :background "#3F3F3F"))))
  '(whitespace-space ((t (:bold t :foreground "dim gray" :background "#3F3F3F"))))
-)
+ '(whitespace-tab ((t (:bold t :foreground "dim gray" :background "#3F3F3F")))))
 
 ; configure backups
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
@@ -124,7 +130,8 @@
  ;; If there is more than one, they won't work right.
  '(flycheck-eslintrc "~/.eslintrc")
  '(flycheck-jscsrc "~/.jscsrc")
- '(flycheck-jshintrc "~.jshintrc"))
+ '(flycheck-jshintrc "~.jshintrc")
+ '(whitespace-line-column 120))
 
 ;; clear mini buffer
 (call-interactively (global-key-binding "\C-g"))
