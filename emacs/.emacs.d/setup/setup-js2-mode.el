@@ -16,7 +16,6 @@
 ;; add minor modes for js files
 (add-hook 'js2-mode-hook 'flycheck-mode)
 (add-hook 'js2-mode-hook 'ac-js2-mode)
-(add-hook 'js2-mode-hook 'web-mode)
 
 ;; Let flycheck handle parse errors
 (setq-default js2-show-parse-errors nil)
@@ -30,3 +29,5 @@
 (add-hook 'js2-mode-hook #'js2-refactor-mode)
 
 (provide 'setup-js2-mode)
+
+;;; setup-js2-mode ends here

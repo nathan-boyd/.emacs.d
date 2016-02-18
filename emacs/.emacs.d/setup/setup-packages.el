@@ -30,6 +30,7 @@
                      company
                      csharp-mode
                      editorconfig
+                     feature-mode
                      flycheck
                      flycheck-pos-tip
                      flyspell-lazy
@@ -100,7 +101,7 @@
 ;;;;;;;;;;;;;;;;;;;;
 ;; setup js2-mode ;;
 ;;;;;;;;;;;;;;;;;;;;
-;(load-library "~/.emacs.d/setup/setup-js2-mode.el")
+(load-library "~/.emacs.d/setup/setup-js2-mode.el")
 
 ;;;;;;;;;;;;;;;;;
 ;; setup tern  ;;
@@ -110,38 +111,13 @@
 ;;;;;;;;;;;;;;;;;;;;;
 ;; setup flycheck  ;;
 ;;;;;;;;;;;;;;;;;;;;;
-;(load-library "~/.emacs.d/setup/setup-flycheck.el")
+(load-library "~/.emacs.d/setup/setup-flycheck.el")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; setup web-mode for jsx files ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; use web-mode for .jsx files
 (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
-
-(require 'flycheck)
-
-;; turn on flychecking globally
-(add-hook 'after-init-hook #'global-flycheck-mode)
-
-;; disable jshint since we prefer eslint checking
-(setq-default flycheck-disabled-checkers
-  (append flycheck-disabled-checkers
-    '(javascript-jshint)))
-
-;; use eslint with web-mode for jsx files
-(flycheck-add-mode 'javascript-eslint 'web-mode)
-
-;; customize flycheck temp file prefix
-;(setq-default flycheck-temp-prefix ".flycheck")
-
-;; disable json-jsonlist checking for json files
-(setq-default flycheck-disabled-checkers
-  (append flycheck-disabled-checkers
-    '(json-jsonlist)))
-
-(setq web-mode-content-types-alist
-  '(("jsx" . "\\.js[x]?\\'")))
+(setq web-mode-content-types-alist '(("jsx" . "*.js[x]?\\'")))
 
 ;; for better jsx syntax-highlighting in web-mode
 (defadvice web-mode-highlight-part (around tweak-jsx activate)
@@ -153,6 +129,22 @@
 ;; setup web-beautify
 (eval-after-load 'sgml-mode
       '(define-key html-mode-map (kbd "C-c b") 'web-beautify-html))
+
+;; setup smartparens
+(require 'smartparens-config)
+(smartparens-global-mode 1)
+(defun my-after-init-hook ()
+  (use-package smartparens-config
+    :ensure smartparens
+    :config
+    (progn
+      (show-smartparens-global-mode t)))
+  (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
+  (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode)
+)
+
+(add-hook 'after-init-hook 'my-after-init-hook)
+(sp-pair "<" ">" :wrap "C->")
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; setup which-key ;;
@@ -282,12 +274,24 @@
 (require 'editorconfig)
 (editorconfig-mode 1)
 
+(setq neo-theme 'ascii)
+(custom-set-faces
+ '(neo-banner-face ((t . (:inherit shadow))) t)
+ '(neo-header-face ((t . (:inherit shadow))) t)
+ '(neo-root-dir-face ((t . (:inherit link-visited :underline nil))) t)
+ '(neo-dir-link-face ((t . (:inherit dired-directory))) t)
+ '(neo-file-link-face ((t . (:inherit default))) t)
+ '(neo-button-face ((t . (:inherit dired-directory))) t)
+ '(neo-expand-btn-face ((t . (:inherit button))) t))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; configure golden-ratio ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'golden-ratio)
 (golden-ratio-mode 1)
 (setq golden-ratio-auto-scale t)
+(add-to-list 'golden-ratio-exclude-buffer-names " *NeoTree*")
+(global-set-key [f8] 'neotree-toggle)
 
 ;;;;;;;;;;;;;;;;;;;
 ;; configure tfs ;;

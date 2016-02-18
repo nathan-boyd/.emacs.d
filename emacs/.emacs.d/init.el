@@ -45,8 +45,7 @@
 
 ;; ;; setup whitespace
 (require 'whitespace)
-(global-whitespace-mode 1)
-;(setq whitespace-style (quote (spaces tabs newline space-mark tab-mark newline-mark)))
+;(global-whitespace-mode 1)
 (setq whitespace-display-mappings
       '(
         (space-mark 32 [183] [46])   ; 32 SPACE 「 」
@@ -54,9 +53,17 @@
         (tab-mark 9 [187 9] [92 9])  ; 9  TAB
         ))
 
-; set whitespace-space background to match zenburn theme
 (custom-set-faces
-'(whitespace-space ((t (:bold t :foreground "dim gray" :background "#3F3F3F"))))
+ '(helm-buffer-directory ((t (:foreground "slate gray"))))
+ '(helm-buffer-size ((t (:foreground "slate gray"))))
+ '(neo-banner-face ((t :inherit shadow)) t)
+ '(neo-button-face ((t :inherit dired-directory)) t)
+ '(neo-dir-link-face ((t :inherit dired-directory)) t)
+ '(neo-expand-btn-face ((t :inherit button)) t)
+ '(neo-file-link-face ((t :inherit default)) t)
+ '(neo-header-face ((t :inherit shadow)) t)
+ '(neo-root-dir-face ((t :inherit link-visited :underline nil)) t)
+ '(whitespace-space ((t (:bold t :foreground "dim gray" :background "#3F3F3F"))))
 )
 
 ; configure backups
@@ -111,9 +118,13 @@
 (load-library "~/.emacs.d/lib/setup-sql.el")
 
 (custom-set-variables
- '(flycheck-jshintrc "~.jshintrc")
- '(flycheck-jscsrc   "~/.jscsrc")
- '(flycheck-eslintrc "~/.eslintrc"))
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(flycheck-eslintrc "~/.eslintrc")
+ '(flycheck-jscsrc "~/.jscsrc")
+ '(flycheck-jshintrc "~.jshintrc"))
 
 ;; clear mini buffer
 (call-interactively (global-key-binding "\C-g"))
