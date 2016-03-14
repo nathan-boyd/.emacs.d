@@ -17,56 +17,57 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defvar package-list)
 (setq package-list '(
-                     ac-helm
-                     ac-js2
-                     ace-window
-                     aggressive-indent
-                     auto-compile
-                     auto-complete
-                     autopair
-                     beacon
-                     benchmark-init
-                     bm
-                     company
-                     csharp-mode
-                     editorconfig
-                     feature-mode
-                     flycheck
-                     flycheck-pos-tip
-                     flyspell-lazy
-                     golden-ratio
-                     helm
-                     helm-flyspell
-                     helm-c-yasnippet
-                     helm-core
-                     highlight-parentheses
-                     js2-mode
-                     js2-refactor
-                     json-mode
-                     json-reformat
-                     origami
-                     omnisharp
-                     packed
-                     pkg-info
-                     popup
-                     powerline
-                     restclient
-                     neotree
-                     saveplace
-                     smartparens
-                     smart-mode-line
-                     smart-tabs-mode
-                     solarized-theme
-                     sublimity
-                     tern
-                     tfs
-                     undo-tree
-                     web-beautify
-                     web-mode
-                     which-key
-                     yasnippet
-                     zenburn-theme
-                     ))
+             ac-helm
+             ac-js2
+             ace-window
+             aggressive-indent
+             auto-compile
+             auto-complete
+             autopair
+             beacon
+             benchmark-init
+             bm
+             company
+             csharp-mode
+             editorconfig
+             feature-mode
+             flycheck
+             flycheck-pos-tip
+             flyspell-lazy
+             golden-ratio
+             helm
+             helm-flyspell
+             helm-c-yasnippet
+             helm-core
+             highlight-parentheses
+             js2-mode
+             js2-refactor
+             json-mode
+             json-reformat
+;;           markdown-mode
+             neotree
+             origami
+             omnisharp
+             packed
+             pkg-info
+             popup
+             powerline
+             restclient
+             saveplace
+             smartparens
+             smart-mode-line
+             smart-tabs-mode
+             solarized-theme
+             sublimity
+             tern
+             tfs
+             undo-tree
+             web-beautify
+             web-mode
+             which-key
+             yasnippet
+             zenburn-theme
+             ))
 
 (require 'package)
 (package-initialize)
@@ -106,7 +107,7 @@
 ;;;;;;;;;;;;;;;;;
 ;; setup tern  ;;
 ;;;;;;;;;;;;;;;;;
-;(load-library "~/.emacs.d/setup/setup-tern.el")
+(load-library "~/.emacs.d/setup/setup-tern.el")
 
 ;;;;;;;;;;;;;;;;;;;;;
 ;; setup flycheck  ;;
@@ -116,6 +117,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; setup web-mode for jsx files ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(add-to-list 'auto-mode-alist '("\\.js$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
 (setq web-mode-content-types-alist '(("jsx" . "*.js[x]?\\'")))
 
@@ -132,7 +134,7 @@
 
 ;; setup smartparens
 (require 'smartparens-config)
-(smartparens-global-mode 1)
+;(smartparens-global-mode 1)
 (defun my-after-init-hook ()
   (use-package smartparens-config
     :ensure smartparens
@@ -202,10 +204,10 @@
 ;; add helm support for eshell ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (add-hook 'eshell-mode-hook
-          #'(lambda ()
-              (eshell-cmpl-initialize)
-              (define-key eshell-mode-map [remap pcomplete] 'helm-esh-pcomplete)
-              (define-key eshell-mode-map (kbd "M-h") 'helm-eshell-history)))
+      #'(lambda ()
+          (eshell-cmpl-initialize)
+          (define-key eshell-mode-map [remap pcomplete] 'helm-esh-pcomplete)
+          (define-key eshell-mode-map (kbd "M-h") 'helm-eshell-history)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; configure undo-tree ;;
@@ -263,6 +265,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 (add-to-list 'exec-path "D:/apps/hunspell/bin")
 (setq ispell-program-name "hunspell")
+;;(flyspell-all-modes)
 (add-hook 'text-mode-hook 'flyspell-mode)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 (eval-after-load "flyspell"
@@ -288,6 +291,12 @@
 (add-to-list 'golden-ratio-exclude-buffer-names " *NeoTree*")
 (global-set-key [f8] 'neotree-toggle)
 (setq neo-smart-open t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Configure markdown-mode ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
 ;;;;;;;;;;;;;;;;;;;
 ;; configure tfs ;;

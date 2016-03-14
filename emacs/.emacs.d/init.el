@@ -25,11 +25,16 @@
 ;; allow downcase-region command
 (put 'downcase-region 'disabled nil)
 
+;; set dired to auto refresh
+;;(add-hook 'dired-mode-hook 'auto-revert-mode)
+(global-auto-revert-mode t)
+
 ; run in server mode
 (require 'server)
 (when (and (>= emacs-major-version 23)
            (equal window-system 'w32))
 (defun server-ensure-safe-dir (dir) "Noop" t))
+(setq delete-by-moving-to-trash nil)
 
 (unless (server-running-p)
   (server-start))
@@ -52,25 +57,6 @@
         (newline-mark 10 [182 10])   ; 10 LINE FEED
         (tab-mark 9 [187 9] [92 9])  ; 9  TAB
         ))
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(helm-buffer-directory ((t (:foreground "slate gray"))))
- '(helm-buffer-size ((t (:foreground "slate gray"))))
- '(neo-banner-face ((t :inherit shadow)) t)
- '(neo-button-face ((t :inherit dired-directory)) t)
- '(neo-dir-link-face ((t :inherit dired-directory)) t)
- '(neo-expand-btn-face ((t :inherit button)) t)
- '(neo-file-link-face ((t :inherit default)) t)
- '(neo-header-face ((t :inherit shadow)) t)
- '(neo-root-dir-face ((t :inherit link-visited :underline nil)) t)
- '(whitespace-indentation ((t (:foreground "dim gray" :background "#3F3F3F"))))
- '(whitespace-newline ((t (:bold t :foreground "dim gray" :background "#3F3F3F"))))
- '(whitespace-space ((t (:bold t :foreground "dim gray" :background "#3F3F3F"))))
- '(whitespace-tab ((t (:bold t :foreground "dim gray" :background "#3F3F3F")))))
 
 ; configure backups
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
@@ -109,7 +95,7 @@
 (global-font-lock-mode 1)
 
 ;; setup line numbers ;;
-(global-linum-mode 1)
+;; (global-linum-mode 1)
 
 ;; show clock
 (display-time-mode 1)
@@ -123,6 +109,29 @@
 (load-library "~/.emacs.d/lib/my-modes.el")
 (load-library "~/.emacs.d/lib/setup-sql.el")
 
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(helm-buffer-directory ((t (:foreground "slate gray"))))
+ '(helm-buffer-size ((t (:foreground "slate gray"))))
+ '(neo-banner-face ((t :inherit shadow)))
+ '(neo-button-face ((t :inherit dired-directory)))
+ '(neo-dir-link-face ((t :inherit dired-directory)))
+ '(neo-expand-btn-face ((t nil)))
+ '(neo-file-link-face ((t :inherit default)))
+ '(neo-header-face ((t :inherit shadow)))
+ '(neo-root-dir-face ((t :inherit link-visited :underline nil)))
+ '(whitespace-empty ((t (:background "#4F4F4F"))))
+ '(whitespace-indentation ((t (:foreground "dim gray" :background "#3F3F3F"))))
+ '(whitespace-newline ((t (:bold t :foreground "dim gray" :background "#3F3F3F"))))
+ '(whitespace-space ((t (:bold t :foreground "dim gray" :background "#3F3F3F"))))
+ '(whitespace-space-after-tab ((t (:background "#4F4F4F" :foreground "#4F4F4F"))))
+ '(whitespace-space-before-tab ((t (:background "#4F4F4F" :foreground "#4F4F4F"))))
+ '(whitespace-tab ((t (:bold t :foreground "dim gray" :background "#3F3F3F"))))
+ '(whitespace-trailing ((t (:background "#4F4F4F" :foreground "#4F4F4F")))))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -131,7 +140,7 @@
  '(flycheck-eslintrc "~/.eslintrc")
  '(flycheck-jscsrc "~/.jscsrc")
  '(flycheck-jshintrc "~.jshintrc")
- '(whitespace-line-column 120))
+ '(whitespace-line-column 500))
 
 ;; clear mini buffer
 (call-interactively (global-key-binding "\C-g"))

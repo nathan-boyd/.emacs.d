@@ -3,7 +3,8 @@
 ;;;     setup js2-mode
 ;;; Code:
 
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+; (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-minor-mode))
 
 (setq-default js2-auto-indent-p nil)
 (setq-default js2-global-externs '("module" "require" "assert" "setTimeout" "setInterval" "console" "JSON"))
@@ -14,8 +15,15 @@
 (setq-default ac-js2-evaluate-calls t)
 
 ;; add minor modes for js files
-(add-hook 'js2-mode-hook 'flycheck-mode)
 (add-hook 'js2-mode-hook 'ac-js2-mode)
+(add-hook 'js2-mode-hook 'flycheck-mode)
+
+(add-hook 'js2-mode-hook 'js2-refactor-mode)
+(add-hook 'js2-mode-hook 'web-mode)
+
+;; Let flycheck handle parse errors
+(setq-default js2-show-parse-errors nil)
+(setq-default js2-strict-missing-semi-warning nil)
 
 ;; Let flycheck handle parse errors
 (setq-default js2-show-parse-errors nil)
