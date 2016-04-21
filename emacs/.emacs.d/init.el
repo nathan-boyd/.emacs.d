@@ -2,13 +2,21 @@
 ;;; Commentary:
 ;;; Code:
 
-;;;;;;;;;;;;;;;;;
-;; setup emacs ;;
-;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;
+;; setup encoding ;;
+;;;;;;;;;;;;;;;;;;;;
+(prefer-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+
+;; Treat clipboard input as UTF-8 string first; compound text next, etc.
+(setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; initial look and feel ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (mouse-wheel-mode t)
 (mouse-avoidance-mode 'banish)
 (setq inhibit-splash-screen t)
@@ -20,13 +28,15 @@
 (setq column-number-mode t)
 (add-hook 'after-init-hook 'toggle-frame-maximized)
 (add-hook 'after-init-hook 'toggle-frame-fullscreen)
+(set-face-attribute 'default nil
+                    :family "Consolas" :height 115)
 (w32-send-sys-command 61488)
 
 ;; allow downcase-region command
 (put 'downcase-region 'disabled nil)
 
 ;; set dired to auto refresh
-;;(add-hook 'dired-mode-hook 'auto-revert-mode)
+(add-hook 'dired-mode-hook 'auto-revert-mode)
 (global-auto-revert-mode t)
 
 ; run in server mode
@@ -48,7 +58,7 @@
 ;; treat new buffers as text
 (setq major-mode 'text-mode)
 
-;; ;; setup whitespace
+;; setup whitespace
 (require 'whitespace)
 (global-whitespace-mode 1)
 (setq whitespace-display-mappings
@@ -94,8 +104,11 @@
 ;; turn on syntax highlight everywhere
 (global-font-lock-mode 1)
 
-;; setup line numbers ;;
-;; (global-linum-mode 1)
+;; highlight current line
+(global-hl-line-mode 1)
+
+;; setup line numbers
+;; (global-linum-mode 1)  ;; line numbers causing slow cursor
 
 ;; show clock
 (display-time-mode 1)

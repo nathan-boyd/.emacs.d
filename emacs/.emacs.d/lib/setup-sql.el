@@ -1,12 +1,13 @@
-;;; package --- Summary Emacs Init File
-
-;;; Commentary: setup emacs
-
+;;; Package --- Summary Emacs Init File
+;;; Commentary:
 ;;; Code:
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; setup sql integration ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defvar comint-buffer-maximum-size)
+(defvar comint-scroll-show-maximum-output)
+(defvar comint-input-ring-size)
 (add-hook 'sql-interactive-mode-hook (function (lambda ()
     (toggle-truncate-lines t)
     (setq comint-output-filter-functions 'comint-truncate-buffer
@@ -20,7 +21,8 @@
 
 (defvar sql-connection-alist)
 (setq sql-connection-alist
-    '((appdb 
+    '(
+      (appdb 
             (sql-product 'ms)
             (sql-server "localhost")
             (sql-database "appdb")
@@ -32,12 +34,19 @@
             (sql-database "apilog")
             (sql-user "")
             (sql-password ""))
-	(configdb
+	(configdb_1
             (sql-product 'ms)
             (sql-server "localhost\\db1")
             (sql-database "configdb")
             (sql-user "")
-            (sql-password ""))))
+            (sql-password ""))
+	(configdb_2
+            (sql-product 'ms)
+            (sql-server "localhost\\db2")
+            (sql-database "configdb")
+            (sql-user "")
+            (sql-password ""))
+))
 
 (defvar sql-product)
 (defun nb-sql (connection)

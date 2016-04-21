@@ -9,7 +9,8 @@
 
 (setq-default flycheck-disabled-checkers
   (append flycheck-disabled-checkers
-    '(javascript-jshint)))
+    '(javascript-jshint)
+    '(javascript-jscs)))
 
 (with-eval-after-load 'flycheck
   (flycheck-pos-tip-mode))

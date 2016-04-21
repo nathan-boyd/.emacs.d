@@ -33,7 +33,8 @@
 
    ;; Use default-directory as last resource
    (t
-    (shell-command (concat "start explorer /e,\"" (replace-regexp-in-string "/" "\\\\" default-directory) "\"")))))
+    (shell-command (concat "start explorer /e,\"" (replace-regexp-in-string "/" "\\\\" default-directory) "\"")))
+))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; define duplicate-line function ;;
@@ -47,22 +48,12 @@
   (next-line 1)
   (yank)
 )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; create shorcut for duplicate line ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (global-set-key (kbd "M-d") 'duplicate-line)
 
-;;;;;;;;;;;;;;;;;;;
-;; setup backtab ;;
-;;;;;;;;;;;;;;;;;;;
-;; (global-set-key (kbd "<S-tab>") 'un-indent-by-removing-4-spaces)
-;; (defun un-indent-by-removing-4-spaces ()
-;;   "remove 4 spaces from beginning of of line"
-;;   (interactive)
-;;   (save-excursion
-;;     (save-match-data
-;;       (beginning-of-line)
-;;       ;; get rid of tabs at beginning of line
-;;       (when (looking-at "^\\s-+")
-;;         (untabify (match-beginning 0) (match-end 0)))
-;;       (when (looking-at "^    ")
-;;         (replace-match "")))))
-
 (provide 'my-modes)
+
+;;; my-modes.el ends here

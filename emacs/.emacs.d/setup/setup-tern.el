@@ -3,9 +3,9 @@
 ;;;     setup package
 ;;; Code:
 
-
 (add-to-list 'load-path "C:/Users/nboyd/AppData/Roaming/npm/node_modules/tern/emacs")
 (autoload 'tern-mode "tern.el" nil t)
+(add-hook 'js-mode-hook (lambda () (tern-mode t)))
 (add-hook 'js2-mode-hook (lambda () (tern-mode t)))
 (add-hook 'web-mode-hook (lambda () (tern-mode t)))
 (eval-after-load 'tern
