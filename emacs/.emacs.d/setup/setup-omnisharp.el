@@ -3,7 +3,7 @@
 ;;; Commentary: 
 ;;; Code:
 
-(setq omnisharp-server-executable-path "d:/gitHubRepos/omnisharp-server/OmniSharp/bin/Debug/omnisharp.exe")
+(setq omnisharp-server-executable-path "d:/git/omnisharp-server/OmniSharp/bin/Debug/omnisharp.exe")
 (setq omnisharp-curl-executable-path "c:/cygwin/bin/curl.exe")
 
 (with-eval-after-load 'omnisharp

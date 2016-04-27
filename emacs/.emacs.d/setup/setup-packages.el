@@ -39,11 +39,13 @@
              helm-flyspell
              helm-c-yasnippet
              helm-core
+             helm-projectile
              highlight-parentheses
              js2-mode
              js2-refactor
              json-mode
              json-reformat
+             magit
 ;;           markdown-mode
              neotree
              origami
@@ -52,6 +54,7 @@
              pkg-info
              popup
              powerline
+             projectile
              restclient
              saveplace
              smartparens
@@ -98,6 +101,13 @@
 (global-set-key (kbd "M-y")        'helm-show-kill-ring)
 (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
 (helm-mode 1)
+
+;;;;;;;;;;;;;;;;;;;;;;
+;; setup projectile ;;
+;;;;;;;;;;;;;;;;;;;;;;
+(projectile-global-mode)
+(setq projectile-enable-caching t)
+(helm-projectile-on)
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; setup js2-mode ;;

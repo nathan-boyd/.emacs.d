@@ -32,6 +32,13 @@
                     :family "Consolas" :height 115)
 (w32-send-sys-command 61488)
 
+;; change the behavior of editing selected text 
+(delete-selection-mode t)
+(transient-mark-mode t)
+
+;; use default clipboard
+(setq x-select-enable-clipboard t)
+
 ;; allow downcase-region command
 (put 'downcase-region 'disabled nil)
 
@@ -39,7 +46,7 @@
 (add-hook 'dired-mode-hook 'auto-revert-mode)
 (global-auto-revert-mode t)
 
-; run in server mode
+;; run in server mode
 (require 'server)
 (when (and (>= emacs-major-version 23)
            (equal window-system 'w32))
@@ -119,8 +126,8 @@
 
 ;;setup packages
 (load-library "~/.emacs.d/setup/setup-packages.el")
-(load-library "~/.emacs.d/lib/my-modes.el")
-(load-library "~/.emacs.d/lib/setup-sql.el")
+(load-library "~/.emacs.d/setup/my-modes.el")
+(load-library "~/.emacs.d/setup/setup-sql.el")
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
