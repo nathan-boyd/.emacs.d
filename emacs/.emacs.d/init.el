@@ -32,6 +32,9 @@
                     :family "Consolas" :height 115)
 (w32-send-sys-command 61488)
 
+;; use the windows trash
+(setq delete-by-moving-to-trash t)
+
 ;; change the behavior of editing selected text 
 (delete-selection-mode t)
 (transient-mark-mode t)

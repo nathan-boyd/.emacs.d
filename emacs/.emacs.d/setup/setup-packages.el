@@ -109,6 +109,13 @@
 (setq projectile-enable-caching t)
 (helm-projectile-on)
 
+;;;;;;;;;;;;;;;;;;;;;
+;; setup sublimity ;;
+;;;;;;;;;;;;;;;;;;;;;
+(require 'sublimity)
+(require 'sublimity-scroll)
+(require 'sublimity-map)
+
 ;;;;;;;;;;;;;;;;;;;;
 ;; setup js2-mode ;;
 ;;;;;;;;;;;;;;;;;;;;

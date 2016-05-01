@@ -9,5 +9,6 @@ emacs/.emacs.d/recentf
 emacs/.emacs.d/savehist
 emacs/.emacs.d/saved-places
 emacs/.emacs.d/server/*
+emacs/.emacs.d/bookmarks
 *.elc
 *.cache
