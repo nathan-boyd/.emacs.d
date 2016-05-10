@@ -15,17 +15,17 @@
 ;; define open in explorer function ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun open-in-explorer ()
-  (interactive)
+(interactive)
   (cond
    ;; In buffers with file name
    ((buffer-file-name)
     (shell-command (concat "start explorer /e,/select,\""
                            (replace-regexp-in-string "/" "\\\\" (buffer-file-name)) "\"")))
 
-   ;; In dired mode
+  ;; In dired mode
    ((eq major-mode 'dired-mode)
     (shell-command (concat "start explorer /e,\""
-                           (replace-regexp-in-string "/" "\\\\" (dired-current-directory)) "\"")))
+                       (replace-regexp-in-string "/" "\\\\" (dired-current-directory)) "\"")))
 
    ;; In eshell mode
    ((eq major-mode 'eshell-mode)
@@ -49,12 +49,20 @@
   (yank)
 )
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; create shorcut for duplicate line ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(global-set-key (kbd "M-d") 'duplicate-line)
+
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;; compile emacs lisp setup files ;;
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun byte-compile-init-dir ()
   "Byte-compile all your dotfiles."
   (interactive)
   (byte-recompile-directory user-emacs-directory 0))
 
-(defun remove-elc-on-save ()
+(defun remove-elc-on-save () 
   "If you're saving an elisp file, likely the .elc is no longer valid."
   (add-hook 'after-save-hook
             (lambda ()
@@ -64,12 +72,6 @@
             t))
 
 (add-hook 'emacs-lisp-mode-hook 'remove-elc-on-save)
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; create shorcut for duplicate line ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(global-set-key (kbd "M-d") 'duplicate-line)
 
 (provide 'my-modes)
 

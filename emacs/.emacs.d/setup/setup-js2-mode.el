@@ -3,8 +3,8 @@
 ;;;     setup js2-mode
 ;;; Code:
 
+;; setup js2 major mode
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-;(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-minor-mode))
 
 (setq-default js2-auto-indent-p nil)
 (setq-default js2-global-externs '("module" "require" "assert" "setTimeout" "setInterval" "console" "JSON"))

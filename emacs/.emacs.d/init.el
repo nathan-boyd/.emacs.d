@@ -13,10 +13,14 @@
 ;; Treat clipboard input as UTF-8 string first; compound text next, etc.
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 
+;; Turn off active processes exist notification
+(defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
+  "Prevent \"Active processes exist\" query when you quit Emacs."
+  (flet ((process-list ())) ad-do-it))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; initial look and feel ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (mouse-wheel-mode t)
 (mouse-avoidance-mode 'banish)
 (setq inhibit-splash-screen t)
@@ -32,10 +36,10 @@
                     :family "Consolas" :height 115)
 (w32-send-sys-command 61488)
 
-;; use the windows trash
+;; use windows trash
 (setq delete-by-moving-to-trash t)
 
-;; change the behavior of editing selected text 
+;; change the behavior of editing selected text
 (delete-selection-mode t)
 (transient-mark-mode t)
 
@@ -85,7 +89,6 @@
   kept-old-versions 5
   version-control t)
 (setq vc-make-backup-files t)
-
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
 
 ; setup save history
@@ -115,7 +118,7 @@
 (global-font-lock-mode 1)
 
 ;; highlight current line
-(global-hl-line-mode 1)
+;; (global-hl-line-mode 1)
 
 ;; setup line numbers
 ;; (global-linum-mode 1)  ;; line numbers causing slow cursor

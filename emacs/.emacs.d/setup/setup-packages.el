@@ -46,7 +46,7 @@
              json-mode
              json-reformat
              magit
-;;           markdown-mode
+;             markdown-mode
              neotree
              origami
              omnisharp
@@ -63,14 +63,15 @@
              solarized-theme
              sublimity
              tern
+             tern-auto-complete
              tfs
              undo-tree
              web-beautify
              web-mode
              which-key
              yasnippet
-             zenburn-theme
-             ))
+             zenburn-theme)
+)
 
 (require 'package)
 (package-initialize)
@@ -211,6 +212,11 @@
 (ac-set-trigger-key "TAB")
 (ac-linum-workaround) ;; fix for linums in ac
 
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;; setup company mode  ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;
+(add-hook 'after-init-hook 'global-company-mode)
+
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; configure ac-helm ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
@@ -321,7 +327,7 @@
 
 ;; this has to be run manually rather than in the package-list loop
 (require 'tfs)
-(setq tfs/tf-exe "D:/apps/VisualStudio/Common7/IDE/tf.exe")
+(setq tfs/tf-exe "D:/apps/visualStudio2013/Common7/IDE/tf.exe")
 
 ;;;;;;;;;;;;;;;;
 ;; setup tabs ;;
