@@ -8,10 +8,9 @@
 (add-hook 'js-mode-hook (lambda () (tern-mode t)))
 (add-hook 'js2-mode-hook (lambda () (tern-mode t)))
 (add-hook 'web-mode-hook (lambda () (tern-mode t)))
-(eval-after-load 'tern
-  '(progn
-     (require 'tern-auto-complete)
-     (tern-ac-setup)))
+
+(eval-after-load 'company
+    '(add-to-list 'company-backends 'company-tern))
 
 (provide 'setup-tern)
 

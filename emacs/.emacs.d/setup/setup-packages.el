@@ -17,8 +17,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defvar package-list)
 (setq package-list '(
-             ac-helm
-             ac-js2
              ace-window
              aggressive-indent
              auto-compile
@@ -28,6 +26,7 @@
              benchmark-init
              bm
              company
+             company-tern
              csharp-mode
              editorconfig
              feature-mode
@@ -59,11 +58,10 @@
              saveplace
              smartparens
              smart-mode-line
-             smart-tabs-mode
              solarized-theme
              sublimity
              tern
-             tern-auto-complete
+;;             tern-auto-complete
              tfs
              undo-tree
              web-beautify
@@ -139,6 +137,32 @@
 (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
 (setq web-mode-content-types-alist '(("jsx" . "*.js[x]?\\'")))
 
+;;; configure js-beautify
+(eval-after-load 'js2-mode
+  '(add-hook 'js2-mode-hook
+             (lambda ()
+               (setq web-beautify-args '("-f" "-" "--config" "D:/git/nb-tools/styles/.jsbeautifyrc"))
+               ;; add this back once function foo () style is added to js-beautify
+               ;;  (add-hook 'before-save-hook 'web-beautify-js-buffer t t)
+               )
+             )
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; configure auto-complete ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(require 'auto-complete-config)
+(ac-config-default)
+;; (global-auto-complete-mode t)
+;; (setq ac-delay 0.1)
+;; (setq ac-quick-help-delay 0.1)
+;; (setq ac-sources '(ac-source-semantic ac-source-yasnippet))
+;; (add-to-list 'ac-modes 'sql-mode)
+;; (add-to-list 'ac-modes 'csharp-mode)
+;; (ac-set-trigger-key "TAB")
+;; (ac-linum-workaround) ;; fix for linums in ac
+
+
 ;; for better jsx syntax-highlighting in web-mode
 (defadvice web-mode-highlight-part (around tweak-jsx activate)
   (if (equal web-mode-content-type "jsx")
@@ -146,13 +170,9 @@
       ad-do-it)
     ad-do-it))
 
-;; setup web-beautify
-(eval-after-load 'sgml-mode
-      '(define-key html-mode-map (kbd "C-c b") 'web-beautify-html))
-
 ;; setup smartparens
 (require 'smartparens-config)
-;(smartparens-global-mode 1)
+(smartparens-global-mode 1)
 (defun my-after-init-hook ()
   (use-package smartparens-config
     :ensure smartparens
@@ -192,30 +212,18 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (beacon-mode 1)
 
-;;;;;;;;;;;;;;;;;;;
-;; setup origami ;;
-;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; setup origami, code folding package ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (global-origami-mode)
 (global-set-key (kbd "C--") 'origami-toggle-node)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; configure auto-complete ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(require 'auto-complete-config)
-(ac-config-default)
-(global-auto-complete-mode t)
-(setq ac-delay 0.1)
-(setq ac-quick-help-delay 0.1)
-(setq ac-sources '(ac-source-semantic ac-source-yasnippet))
-(add-to-list 'ac-modes 'sql-mode)
-(add-to-list 'ac-modes 'csharp-mode)
-(ac-set-trigger-key "TAB")
-(ac-linum-workaround) ;; fix for linums in ac
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; setup company mode  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 (add-hook 'after-init-hook 'global-company-mode)
+(eval-after-load 'company
+  '(add-to-list 'company-backends 'company-tern))
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;; configure ac-helm ;;
@@ -245,9 +253,9 @@
 (setq recentf-max-menu-items 25)
 (global-set-key "\C-x\ \C-r" 'recentf-open-files)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; save the place in files ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;; save place in files ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'saveplace)
 (setq-default save-place t)
 (setq save-place-file "~/.emacs.d/saved-places")
@@ -255,7 +263,7 @@
 ;;;;;;;;;;;;;;;;;;;;;
 ;; setup powerline ;;
 ;;;;;;;;;;;;;;;;;;;;;
-(powerline-default-theme)
+;(powerline-default-theme)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; configure yasnippet ;;
@@ -324,15 +332,9 @@
 ;;;;;;;;;;;;;;;;;;;
 ;; configure tfs ;;
 ;;;;;;;;;;;;;;;;;;;
-
 ;; this has to be run manually rather than in the package-list loop
 (require 'tfs)
 (setq tfs/tf-exe "D:/apps/visualStudio2013/Common7/IDE/tf.exe")
-
-;;;;;;;;;;;;;;;;
-;; setup tabs ;;
-;;;;;;;;;;;;;;;;
-(load "~/.emacs.d/setup/setup-tabs.el")
 
 (provide 'setup-packages)
 

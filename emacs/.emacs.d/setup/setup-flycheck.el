@@ -10,15 +10,17 @@
 (setq-default flycheck-disabled-checkers
   (append flycheck-disabled-checkers
     '(javascript-jshint)
+    '(javascript-eslint)
+    '(javascript-gjslint)
     '(javascript-jscs)))
 
 (with-eval-after-load 'flycheck
   (flycheck-pos-tip-mode))
 
 (global-flycheck-mode)
-(flycheck-add-mode 'javascript-eslint 'js2-mode)
-(flycheck-add-mode 'javascript-eslint 'js-mode)
-(flycheck-add-mode 'javascript-eslint 'web-mode)
+(flycheck-add-mode 'javascript-standard 'js2-mode)
+(flycheck-add-mode 'javascript-standard 'js-mode)
+(flycheck-add-mode 'javascript-standard 'web-mode)
 
 (setq-default flycheck-temp-prefix ".flycheck")
 

@@ -16,7 +16,7 @@
 ;; Turn off active processes exist notification
 (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
   "Prevent \"Active processes exist\" query when you quit Emacs."
-  (flet ((process-list ())) ad-do-it))
+  (let ((process-list ())) ad-do-it))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; initial look and feel ;;
@@ -126,9 +126,9 @@
 ;; show clock
 (display-time-mode 1)
 
-;; setup UNIX utils (support for grep mostly) for windows
-(when (or (eq system-type 'windows-nt) (eq system-type 'msdos))
-  (setenv "PATH" (concat "D:/apps/unixUtils/usr/local/wbin;" (getenv "PATH"))))
+;; ;; put tools on path
+;; (setenv "PATH"
+;;   (concat "C:/cygwin/bin/" (getenv "PATH")))
 
 ;;setup packages
 (load-library "~/.emacs.d/setup/setup-packages.el")
