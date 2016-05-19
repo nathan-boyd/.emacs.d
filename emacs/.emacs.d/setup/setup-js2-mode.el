@@ -15,11 +15,9 @@
 (setq-default ac-js2-evaluate-calls t)
 
 ;; add minor modes for js files
-(add-hook 'js2-mode-hook 'ac-js2-mode)
+;;(add-hook 'js2-mode-hook 'ac-js2-mode)
 (add-hook 'js2-mode-hook 'flycheck-mode)
 (add-hook 'js2-mode-hook 'js2-refactor-mode)
-
-
 
 ;; Let flycheck handle parse errors
 (setq-default js2-show-parse-errors nil)
@@ -32,11 +30,21 @@
 (js2r-add-keybindings-with-prefix "C-r C-r")
 (add-hook 'js2-mode-hook #'js2-refactor-mode)
 
-(defun javascript-ac-hook ()
-  (company-mode 1)
-  (auto-complete-mode -1))
-(add-hook 'js2-mode-hook 'javascript-ac-hook)
+;; (defun javascript-ac-hook ()
+;;   (company-mode 1)
+;;   (auto-complete-mode -1))
+;; (add-hook 'js2-mode-hook 'javascript-ac-hook)
 
+;;; configure js-beautify
+(eval-after-load 'js2-mode
+  '(add-hook 'js2-mode-hook
+             (lambda ()
+               (setq web-beautify-args '("-f" "-" "--config" "D:/git/nb-tools/styles/.jsbeautifyrc"))
+               ;; add this back once function foo () style is added to js-beautify
+               ;;  (add-hook 'before-save-hook 'web-beautify-js-buffer t t)
+               )
+             )
+  )
 
 (provide 'setup-js2-mode)
 

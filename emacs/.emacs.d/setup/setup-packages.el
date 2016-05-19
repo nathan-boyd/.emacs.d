@@ -20,7 +20,6 @@
              ace-window
              aggressive-indent
              auto-compile
-             auto-complete
              autopair
              beacon
              benchmark-init
@@ -45,7 +44,6 @@
              json-mode
              json-reformat
              magit
-;             markdown-mode
              neotree
              origami
              omnisharp
@@ -61,7 +59,6 @@
              solarized-theme
              sublimity
              tern
-;;             tern-auto-complete
              tfs
              undo-tree
              web-beautify
@@ -77,6 +74,7 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
+;; install packages that aren't already installed
 (dolist (package package-list)
   (unless (package-installed-p package)
     (package-install package)))
@@ -130,39 +128,6 @@
 ;;;;;;;;;;;;;;;;;;;;;
 (load-library "~/.emacs.d/setup/setup-flycheck.el")
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; setup web-mode for jsx files ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; (add-to-list 'auto-mode-alist '("\\.js$" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
-(setq web-mode-content-types-alist '(("jsx" . "*.js[x]?\\'")))
-
-;;; configure js-beautify
-(eval-after-load 'js2-mode
-  '(add-hook 'js2-mode-hook
-             (lambda ()
-               (setq web-beautify-args '("-f" "-" "--config" "D:/git/nb-tools/styles/.jsbeautifyrc"))
-               ;; add this back once function foo () style is added to js-beautify
-               ;;  (add-hook 'before-save-hook 'web-beautify-js-buffer t t)
-               )
-             )
-  )
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; configure auto-complete ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(require 'auto-complete-config)
-(ac-config-default)
-;; (global-auto-complete-mode t)
-;; (setq ac-delay 0.1)
-;; (setq ac-quick-help-delay 0.1)
-;; (setq ac-sources '(ac-source-semantic ac-source-yasnippet))
-;; (add-to-list 'ac-modes 'sql-mode)
-;; (add-to-list 'ac-modes 'csharp-mode)
-;; (ac-set-trigger-key "TAB")
-;; (ac-linum-workaround) ;; fix for linums in ac
-
-
 ;; for better jsx syntax-highlighting in web-mode
 (defadvice web-mode-highlight-part (around tweak-jsx activate)
   (if (equal web-mode-content-type "jsx")
@@ -180,14 +145,13 @@
     (progn
       (show-smartparens-global-mode t)))
   (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
-  (add-hook 'markdown-mode-hook 'turn-on-smartparens-strict-mode)
 )
 
 (add-hook 'after-init-hook 'my-after-init-hook)
 (sp-pair "<" ">" :wrap "C->")
 
 ;;;;;;;;;;;;;;;;;;;;;
-;; setup which-key ;;
+;; setup which-key ;;x
 ;;;;;;;;;;;;;;;;;;;;;
 (which-key-mode)
 (which-key-setup-side-window-right)
@@ -222,14 +186,6 @@
 ;; setup company mode  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 (add-hook 'after-init-hook 'global-company-mode)
-(eval-after-load 'company
-  '(add-to-list 'company-backends 'company-tern))
-
-;;;;;;;;;;;;;;;;;;;;;;;
-;; configure ac-helm ;;
-;;;;;;;;;;;;;;;;;;;;;;;
-(global-set-key (kbd "C-.") 'ac-complete-with-helm)
-(define-key ac-complete-mode-map (kbd "C-.") 'ac-complete-with-helm)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; add helm support for eshell ;;
@@ -296,7 +252,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 (add-to-list 'exec-path "D:/apps/hunspell/bin")
 (setq ispell-program-name "hunspell")
-;;(flyspell-all-modes)
 (add-hook 'text-mode-hook 'flyspell-mode)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 (eval-after-load "flyspell"
