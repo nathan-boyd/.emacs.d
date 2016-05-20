@@ -31,6 +31,14 @@
   (setq omnisharp-company-strip-trailing-brackets nil)
   (setq gc-cons-threshold 20000000))
 
+(defun company-complete-selection-insert-key(company-key)
+  (company-complete-selection)
+  (insert company-key))
+
+(defun company-complete-selection-insert-key-and-complete(company-key)
+  (company-complete-selection-insert-key company-key)
+  (company-complete))
+
 (with-eval-after-load 'company
   (define-key company-active-map (kbd ".") (lambda() (interactive) (company-complete-selection-insert-key-and-complete '".")))
   (define-key company-active-map (kbd "]") (lambda() (interactive) (company-complete-selection-insert-key-and-complete '"]")))
@@ -39,14 +47,6 @@
   (define-key company-active-map (kbd "<SPC>") nil)
   (define-key company-active-map (kbd ";") (lambda() (interactive) (company-complete-selection-insert-key '";")))
   (define-key company-active-map (kbd ">") (lambda() (interactive) (company-complete-selection-insert-key '">"))))
-
-(defun company-complete-selection-insert-key(company-key)
-  (company-complete-selection)
-  (insert company-key))
-
-(defun company-complete-selection-insert-key-and-complete(company-key)
-  (company-complete-selection-insert-key company-key)
-  (company-complete))
 
 (defun my-csharp-mode ()
   (omnisharp-mode)

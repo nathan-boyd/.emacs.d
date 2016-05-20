@@ -26,6 +26,8 @@
              company
              company-tern
              csharp-mode
+             edbi
+             edbi-minor-mode
              editorconfig
              feature-mode
              flycheck
@@ -34,7 +36,6 @@
              golden-ratio
              helm
              helm-flyspell
-             helm-c-yasnippet
              helm-core
              helm-projectile
              highlight-parentheses
@@ -42,7 +43,6 @@
              js2-refactor
              json-mode
              json-reformat
-             magit
              neotree
              origami
              omnisharp
@@ -64,8 +64,7 @@
              web-mode
              which-key
              yasnippet
-             zenburn-theme)
-)
+             zenburn-theme))
 
 (require 'package)
 (package-initialize)
@@ -247,14 +246,17 @@
 ;;;;;;;;;;;;;;;;;;;;;;
 ;; setup ace-window ;;
 ;;;;;;;;;;;;;;;;;;;;;;
-(global-set-key (kbd "M-p") 'ace-window)
+(global-set-key (kbd "M-RET") 'ace-window)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; setup spell checking ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 (add-to-list 'exec-path "D:/apps/hunspell/bin")
 (setq ispell-program-name "hunspell")
-(add-hook 'text-mode-hook 'flyspell-mode)
+(add-hook 'text-mode-hook 'flyspell-mode)(eval-after-load 'company
+  '(progn
+     (define-key company-mode-map (kbd "C-:") 'helm-company)
+     (define-key company-active-map (kbd "C-:") 'helm-company)))
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 (eval-after-load "flyspell"
   '(define-key flyspell-mode-map (kbd "C-;") 'helm-flyspell-correct))
@@ -296,7 +298,7 @@
   (add-to-list 'company-backends 'company-tern)
   (add-to-list 'company-backends 'company-omnisharp)
   (setq company-tern-meta-as-single-line t)                                    ; trim too long function signatures to the frame width.
-  (setq company-tooltip-limit 20)                                              ; bigger popup window
+  (setq company-tooltip-limit 15)                                              ; bigger popup window
   (setq company-tooltip-align-annotations 't)                                  ; align annotations to the right tooltip border
   (setq company-idle-delay .3)                                                 ; decrease delay before autocompletion popup shows
   (setq company-begin-commands '(self-insert-command))                         ; start autocompletion only after typing
@@ -305,6 +307,11 @@
   (define-key company-active-map (kbd "\C-d") 'company-show-doc-buffer)
   (define-key company-active-map (kbd "M-.") 'company-show-location)
   (global-set-key (kbd "C-<return>") 'company-complete))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; configure edbi-minor-mode ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(add-hook 'sql-mode-hook 'edbi-minor-mode)
 
 (provide 'setup-packages)
 

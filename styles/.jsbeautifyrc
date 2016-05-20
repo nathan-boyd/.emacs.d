@@ -6,7 +6,6 @@
     ,"preserve_newlines": true
     ,"comma_first": true
     ,"var_line_reindented": true
-
     ,"space_after_anon_function": true
     ,"space_after_function": true
     ,"brace_style": "collapse"
@@ -22,4 +21,5 @@
     ,"end_with_newline": true
     ,"eol": "\n"
     ,"jslint_happy_align_switch_case": true
+    ,"good_stuff": true
 }
