@@ -99,19 +99,9 @@
 (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
 (helm-mode 1)
 
-;;;;;;;;;;;;;;;;;;;;;;
-;; setup projectile ;;
-;;;;;;;;;;;;;;;;;;;;;;
-(projectile-global-mode)
-(setq projectile-enable-caching t)
-(helm-projectile-on)
-
-;;;;;;;;;;;;;;;;;;;;;
-;; setup sublimity ;;
-;;;;;;;;;;;;;;;;;;;;;
-(require 'sublimity)
-(require 'sublimity-scroll)
-(require 'sublimity-map)
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; non-trivial setups ;;
+;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; setup js2-mode ;;
@@ -128,17 +118,39 @@
 ;;;;;;;;;;;;;;;;;;;;;
 (load-library "~/.emacs.d/setup/setup-flycheck.el")
 
-;; for better jsx syntax-highlighting in web-mode
+;;;;;;;;;;;;;;;;;;;;
+;; trivial setups ;;
+;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;
+;; setup projectile ;;
+;;;;;;;;;;;;;;;;;;;;;;
+(projectile-global-mode)
+(setq projectile-enable-caching t)
+(helm-projectile-on)
+
+;;;;;;;;;;;;;;;;;;;;;
+;; setup sublimity ;;
+;;;;;;;;;;;;;;;;;;;;;
+(require 'sublimity)
+(require 'sublimity-scroll)
+(require 'sublimity-map)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; configure syntax highlighting for jsx in web-mode ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defadvice web-mode-highlight-part (around tweak-jsx activate)
   (if (equal web-mode-content-type "jsx")
     (let ((web-mode-enable-part-face nil))
       ad-do-it)
     ad-do-it))
 
-;; setup smartparens
+;;;;;;;;;;;;;;;;;;;;;;;
+;; setup smartparens ;;
+;;;;;;;;;;;;;;;;;;;;;;;
 (require 'smartparens-config)
 (smartparens-global-mode 1)
-(defun my-after-init-hook ()
+(defun smartParens-after-init-hook ()
   (use-package smartparens-config
     :ensure smartparens
     :config
@@ -147,7 +159,7 @@
   (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
 )
 
-(add-hook 'after-init-hook 'my-after-init-hook)
+(add-hook 'after-init-hook 'smartParens-after-init-hook)
 (sp-pair "<" ">" :wrap "C->")
 
 ;;;;;;;;;;;;;;;;;;;;;
@@ -181,11 +193,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (global-origami-mode)
 (global-set-key (kbd "C--") 'origami-toggle-node)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;
-;; setup company mode  ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;
-(add-hook 'after-init-hook 'global-company-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; add helm support for eshell ;;
@@ -290,6 +297,24 @@
 ;; this has to be run manually rather than in the package-list loop
 (require 'tfs)
 (setq tfs/tf-exe "D:/apps/visualStudio2013/Common7/IDE/tf.exe")
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;; setup company mode  ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;; (add-hook 'after-init-hook 'global-company-mode)
+
+;;(add-hook 'after-init-hook 'global-company-mode)
+;;(add-to-list 'company-backends 'company-tern)
+
+
+
+;; (with-eval-after-load 'company
+;;   (define-key company-active-map (kbd "M-n") nil)
+;;   (define-key company-active-map (kbd "M-p") nil)
+;;   (define-key company-active-map (kbd "C-n") #'company-select-next)
+;;   (define-key company-active-map (kbd "C-p") #'company-select-previous))
+
 
 (provide 'setup-packages)
 

@@ -18,7 +18,7 @@
   (flycheck-pos-tip-mode))
 
 (global-flycheck-mode)
-(flycheck-add-mode 'javascript-standard 'js2-mode)
+;; (flycheck-add-mode 'javascript-standard 'js2-mode) 
 (flycheck-add-mode 'javascript-standard 'js-mode)
 (flycheck-add-mode 'javascript-standard 'web-mode)
 

@@ -29,8 +29,7 @@
   (define-key omnisharp-mode-map (kbd "<M-RET>") 'omnisharp-run-code-action-refactoring)
   (define-key omnisharp-mode-map (kbd "<C-.>") 'omnisharp-run-code-action-refactoring)
   (setq omnisharp-company-strip-trailing-brackets nil)
-  (setq gc-cons-threshold 20000000)
-)
+  (setq gc-cons-threshold 20000000))
 
 (with-eval-after-load 'company
   (add-to-list 'company-backends 'company-omnisharp)
@@ -40,8 +39,7 @@
   (define-key company-active-map (kbd ")") (lambda() (interactive) (company-complete-selection-insert-key '")")))
   (define-key company-active-map (kbd "<SPC>") nil)
   (define-key company-active-map (kbd ";") (lambda() (interactive) (company-complete-selection-insert-key '";")))
-  (define-key company-active-map (kbd ">") (lambda() (interactive) (company-complete-selection-insert-key '">")))
-)
+  (define-key company-active-map (kbd ">") (lambda() (interactive) (company-complete-selection-insert-key '">"))))
 
 (defun my-csharp-mode ()
   (omnisharp-mode)
@@ -61,7 +59,6 @@
           (cons `("Type" . ,mode) (omnisharp--get-common-params)))))
     (let ((test-command
            (cdr (assoc 'TestCommand test-response)))
-
           (test-directory
            (cdr (assoc 'Directory test-response))))
       (cd test-directory)
