@@ -20,7 +20,6 @@
              ace-window
              aggressive-indent
              auto-compile
-             autopair
              beacon
              benchmark-init
              bm
@@ -152,12 +151,11 @@
 (smartparens-global-mode 1)
 (defun smartParens-after-init-hook ()
   (use-package smartparens-config
-    :ensure smartparens
-    :config
-    (progn
-      (show-smartparens-global-mode t)))
-  (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode)
-)
+               :ensure smartparens
+               :config
+               (progn
+                 (show-smartparens-global-mode t)))
+  (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode))
 
 (add-hook 'after-init-hook 'smartParens-after-init-hook)
 (sp-pair "<" ">" :wrap "C->")
@@ -167,11 +165,6 @@
 ;;;;;;;;;;;;;;;;;;;;;
 (which-key-mode)
 (which-key-setup-side-window-right)
-
-;;;;;;;;;;;;;;
-;; autopair ;;
-;;;;;;;;;;;;;;
-(autopair-global-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; setup look and feel ;;
@@ -236,7 +229,9 @@
 (yas-global-mode 1)
 (setq yas-indent-line (quote none))
 
-;; configure helm-c-yasnippet
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ ;; configure helm-c-yasnippet ;;
+ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq helm-yas-space-match-any-greedy t)
 (global-set-key (kbd "C-c y") 'helm-yas-complete)
 
@@ -285,12 +280,6 @@
 (global-set-key [f8] 'neotree-toggle)
 (setq neo-smart-open t)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Configure markdown-mode ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
-
 ;;;;;;;;;;;;;;;;;;;
 ;; configure tfs ;;
 ;;;;;;;;;;;;;;;;;;;
@@ -298,23 +287,24 @@
 (require 'tfs)
 (setq tfs/tf-exe "D:/apps/visualStudio2013/Common7/IDE/tf.exe")
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; setup company mode  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;
-;; (add-hook 'after-init-hook 'global-company-mode)
+(global-company-mode)
 
-;;(add-hook 'after-init-hook 'global-company-mode)
-;;(add-to-list 'company-backends 'company-tern)
-
-
-
-;; (with-eval-after-load 'company
-;;   (define-key company-active-map (kbd "M-n") nil)
-;;   (define-key company-active-map (kbd "M-p") nil)
-;;   (define-key company-active-map (kbd "C-n") #'company-select-next)
-;;   (define-key company-active-map (kbd "C-p") #'company-select-previous))
-
+(with-eval-after-load 'company
+  (add-to-list 'company-backends 'company-tern)
+  (add-to-list 'company-backends 'company-omnisharp)
+  (setq company-tern-meta-as-single-line t)                                    ; trim too long function signatures to the frame width.
+  (setq company-tooltip-limit 20)                                              ; bigger popup window
+  (setq company-tooltip-align-annotations 't)                                  ; align annotations to the right tooltip border
+  (setq company-idle-delay .3)                                                 ; decrease delay before autocompletion popup shows
+  (setq company-begin-commands '(self-insert-command))                         ; start autocompletion only after typing
+  (define-key company-active-map (kbd "\C-n") 'company-select-next)
+  (define-key company-active-map (kbd "\C-p") 'company-select-previous)
+  (define-key company-active-map (kbd "\C-d") 'company-show-doc-buffer)
+  (define-key company-active-map (kbd "M-.") 'company-show-location)
+  (global-set-key (kbd "C-<return>") 'company-complete))
 
 (provide 'setup-packages)
 

@@ -32,24 +32,10 @@
     'js2-mode-hook
     (lambda ()
       (setq web-beautify-args '("-f" "-" "--config" "D:/git/nb-tools/styles/.jsbeautifyrc"))
-      ;; add this back once function foo () style is added to js-beautify
-      ;;  (add-hook 'before-save-hook 'web-beautify-js-buffer t t)
+      ;;  (add-hook 'before-save-hook 'web-beautify-js-buffer t t) ; add this back once function foo () style is added to js-beautify
       )))
 
-(add-hook
- 'js-mode-hook
- '(lambda ()
-    (company-mode)
-    (setq company-tern-meta-as-single-line t)                                    ; trim too long function signatures to the frame width.
-    (setq company-tooltip-limit 20)                                              ; bigger popup window
-    (setq company-tooltip-align-annotations 't)                                  ; align annotations to the right tooltip border
-    (setq company-idle-delay .3)                                                 ; decrease delay before autocompletion popup shows
-    (setq company-begin-commands '(self-insert-command))                         ; start autocompletion only after typing
-    (define-key company-active-map (kbd "\C-n") 'company-select-next)
-    (define-key company-active-map (kbd "\C-p") 'company-select-previous)
-    (define-key company-active-map (kbd "\C-d") 'company-show-doc-buffer)
-    (define-key company-active-map (kbd "M-.") 'company-show-location)
-    (global-set-key (kbd "C-<return>") 'company-complete)))
+;(add-hook 'js-mode-hook '(lambda () (company-mode)))
 
 (provide 'setup-js2-mode)
 
