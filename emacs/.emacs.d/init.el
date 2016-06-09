@@ -16,7 +16,7 @@
 ;; Turn off active processes exist notification
 (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
   "Prevent \"Active processes exist\" query when you quit Emacs."
-  (let ((process-list ())) ad-do-it))
+  (let ((process-list ())) ad-do-it))'
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; initial look and feel ;;
@@ -166,6 +166,7 @@
  '(flycheck-eslintrc "~/.eslintrc")
  '(flycheck-jscsrc "~/.jscsrc")
  '(flycheck-jshintrc "~.jshintrc")
+ '(helm-buffer-max-length 80)
  '(whitespace-line-column 500))
 
 ;; clear mini buffer
