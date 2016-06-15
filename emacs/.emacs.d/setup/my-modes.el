@@ -73,6 +73,23 @@
 
 (add-hook 'emacs-lisp-mode-hook 'remove-elc-on-save)
 
+(defun comment-batch-seperators ()
+  "comment out GO, for edbi editing"
+  (interactive)
+  (beginning-of-buffer)
+  (while (re-search-forward "\nGO" nil t)
+    (replace-match "\n-- GO"))
+)
+
+(defun uncomment-batch-seperators ()
+  "un-comment GO, for edbi editing"
+  (interactive)
+  (beginning-of-buffer)
+  (while (re-search-forward "\n-- GO" nil t)
+    (replace-match "\nGO"))
+)
+
+
 (provide 'my-modes)
 
 ;;; my-modes.el ends here
