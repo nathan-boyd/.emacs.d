@@ -24,6 +24,7 @@
              benchmark-init
              bm
              company
+             company-edbi
              company-tern
              csharp-mode
              edbi
@@ -43,6 +44,7 @@
              js2-refactor
              json-mode
              json-reformat
+             magit
              neotree
              origami
              omnisharp
@@ -79,6 +81,13 @@
 
 (dolist (package package-list)
   (require 'package))
+
+(require 'ansi-color)
+(defun colorize-compilation-buffer ()
+  (toggle-read-only)
+  (ansi-color-apply-on-region (point-min) (point-max))
+  (toggle-read-only))
+(add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
 
 ;;;;;;;;;;;;;;;;
 ;; setup helm ;;
@@ -296,6 +305,7 @@
 
 (with-eval-after-load 'company
   (add-to-list 'company-backends 'company-tern)
+  (add-to-list 'company-backends 'company-edbi)
   (add-to-list 'company-backends 'company-omnisharp)
   (setq company-tern-meta-as-single-line t)                                    ; trim too long function signatures to the frame width.
   (setq company-tooltip-limit 15)                                              ; bigger popup window

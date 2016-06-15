@@ -8,7 +8,7 @@
 (prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
+;;(set-key-coding-system 'utf-8)
 
 ;; Treat clipboard input as UTF-8 string first; compound text next, etc.
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
@@ -134,6 +134,13 @@
 (load-library "~/.emacs.d/setup/setup-packages.el")
 (load-library "~/.emacs.d/setup/my-modes.el")
 (load-library "~/.emacs.d/setup/setup-sql.el")
+
+(global-set-key (kbd "RET") 'newline-and-indent)
+(global-set-key (kbd "C-;") 'comment-or-uncomment-region)
+(global-set-key (kbd "C-+") 'text-scale-increase)
+(global-set-key (kbd "C--") 'text-scale-decrease)
+(global-set-key (kbd "C-c C-k") 'compile)
+(global-set-key (kbd "C-x g") 'magit-status)
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
