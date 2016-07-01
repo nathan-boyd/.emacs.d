@@ -125,18 +125,12 @@
 ;; show clock
 (display-time-mode 1)
 
-;; ;; put tools on path
-;; (setenv "PATH"
-;;   (concat "C:/cygwin/bin/" (getenv "PATH")))
-;; (add-to-list 'exec-path "C:/cygwin/bin/")
-
 (setq find-program "\"C:/cygwin/bin/find.exe\"")
 (setq grep-program "\"C:/cygwin/bin/grep.exe\"")
 
 ;;setup packages
 (load-library "~/.emacs.d/setup/setup-packages.el")
 (load-library "~/.emacs.d/setup/my-modes.el")
-;; (load-library "~/.emacs.d/setup/setup-sql.el")
 
 (global-set-key (kbd "RET") 'newline-and-indent)
 (global-set-key (kbd "C-;") 'comment-or-uncomment-region)
