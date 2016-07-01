@@ -296,7 +296,7 @@
 ;;;;;;;;;;;;;;;;;;;
 ;; this has to be run manually rather than in the package-list loop
 (require 'tfs)
-(setq tfs/tf-exe "D:/apps/visualStudio2013/Common7/IDE/tf.exe")
+(setq tfs/tf-exe "C:/Program Files (x86)/Microsoft Visual Studio 12.0/Common7/IDE/tf.exe")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; setup company mode  ;;

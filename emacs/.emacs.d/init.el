@@ -13,10 +13,12 @@
 ;; Treat clipboard input as UTF-8 string first; compound text next, etc.
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 
+;; use default clipboard
+(setq x-select-enable-clipboard t)
+
 ;; Turn off active processes exist notification
-(defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
-  "Prevent \"Active processes exist\" query when you quit Emacs."
-  (let ((process-list ())) ad-do-it))'
+(add-hook 'comint-exec-hook 
+      (lambda () (set-process-query-on-exit-flag (get-buffer-process (current-buffer)) nil)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; initial look and feel ;;
@@ -42,9 +44,6 @@
 ;; change the behavior of editing selected text
 (delete-selection-mode t)
 (transient-mark-mode t)
-
-;; use default clipboard
-(setq x-select-enable-clipboard t)
 
 ;; allow downcase-region command
 (put 'downcase-region 'disabled nil)
@@ -129,11 +128,15 @@
 ;; ;; put tools on path
 ;; (setenv "PATH"
 ;;   (concat "C:/cygwin/bin/" (getenv "PATH")))
+;; (add-to-list 'exec-path "C:/cygwin/bin/")
+
+(setq find-program "\"C:/cygwin/bin/find.exe\"")
+(setq grep-program "\"C:/cygwin/bin/grep.exe\"")
 
 ;;setup packages
 (load-library "~/.emacs.d/setup/setup-packages.el")
 (load-library "~/.emacs.d/setup/my-modes.el")
-(load-library "~/.emacs.d/setup/setup-sql.el")
+;; (load-library "~/.emacs.d/setup/setup-sql.el")
 
 (global-set-key (kbd "RET") 'newline-and-indent)
 (global-set-key (kbd "C-;") 'comment-or-uncomment-region)
