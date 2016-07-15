@@ -118,9 +118,11 @@
 
 ;; highlight current line
 ;; (global-hl-line-mode 1)
+;; unused, because it makes cursor lag
 
 ;; setup line numbers
 ;; (global-linum-mode 1)  ;; line numbers causing slow cursor
+;; unused, because it makes cursor lag
 
 ;; show clock
 (display-time-mode 1)
@@ -179,3 +181,4 @@
 (provide 'init)
 
 ;;; init.el ends here
+(put 'upcase-region 'disabled nil)

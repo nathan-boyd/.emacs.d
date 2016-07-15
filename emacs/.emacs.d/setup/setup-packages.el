@@ -82,6 +82,8 @@
 (dolist (package package-list)
   (require 'package))
 
+(benchmark-init/activate)
+
 (require 'ansi-color)
 (defun colorize-compilation-buffer ()
   (toggle-read-only)
@@ -128,6 +130,7 @@
 ;;;;;;;;;;;;;;;;;;;;
 ;; trivial setups ;;
 ;;;;;;;;;;;;;;;;;;;;
+(global-aggressive-indent-mode 1)
 
 ;;;;;;;;;;;;;;;;;;;;;;
 ;; setup projectile ;;
@@ -213,6 +216,7 @@
 ;; configure recentf ;;
 ;;;;;;;;;;;;;;;;;;;;;;;
 (require 'recentf)
+(setq recentf-auto-cleanup 'never)
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)
 (global-set-key "\C-x\ \C-r" 'recentf-open-files)
@@ -227,7 +231,7 @@
 ;;;;;;;;;;;;;;;;;;;;;
 ;; setup powerline ;;
 ;;;;;;;;;;;;;;;;;;;;;
-;(powerline-default-theme)
+(powerline-default-theme)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; configure yasnippet ;;
