@@ -1,0 +1,62 @@
+# -*- mode: snippet -*-
+#name : upsert-sproc
+# --
+SET ANSI_NULLS ON;
+SET QUOTED_IDENTIFIER ON;
+
+IF NOT EXISTS (
+    SELECT * FROM sys.objects
+    WHERE object_id = OBJECT_ID('dbo.$0$1')
+    AND type='P'
+)
+BEGIN
+    EXEC (N'CREATE PROCEDURE dbo.$1 AS RETURN 0;');
+END;
+
+ALTER PROCEDURE [dbo].$1
+    @MemberID BIGINT
+    ,@EnterpriseID BIGINT
+    ,@ApplicationID UNIQUEIDENTIFIER
+    ,@IsActive BIT
+AS
+    SET NOCOUNT ON;
+    SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
+    IF EXISTS(
+            SELECT *
+            FROM $2
+            WHERE [MemberID] = @MemberID)
+        BEGIN
+            UPDATE [dbo].[$2]
+            SET [ModifiedDateUTC] = GETUTCDATE()
+            WHERE 
+        END;
+    ELSE
+        BEGIN
+            INSERT INTO [dbo].[$2]
+                ([$3]
+                ,[$4]
+                ,[$5]
+                ,[$6])
+            VALUES
+                (@$3
+                ,@$4
+                ,@$5
+                ,@$6)
+            GO
+        END;
+
+    IF @@ROWCOUNT = 0
+        BEGIN
+            RETURN -1;
+        END
+    ELSE
+        BEGIN
+            RETURN 1;
+        END
+
+/*####################################################################
+$$ Author:      Nathan Boyd
+$$ Purpose:     
+$$ Modified     
+######################################################################*/

@@ -38,6 +38,9 @@
                     :family "Consolas" :height 115)
 (w32-send-sys-command 61488)
 
+;; unset backspace kill behavior
+(global-set-key [backspace] 'delete-backward-char)
+
 ;; use windows trash
 (setq delete-by-moving-to-trash t)
 
@@ -155,8 +158,10 @@
  '(neo-file-link-face ((t :inherit default)))
  '(neo-header-face ((t :inherit shadow)))
  '(neo-root-dir-face ((t :inherit link-visited :underline nil)))
+ '(trailing-whitespace ((t (:background "#4F4F4F"))))
  '(whitespace-empty ((t (:background "#4F4F4F"))))
  '(whitespace-indentation ((t (:foreground "dim gray" :background "#3F3F3F"))))
+ '(whitespace-line ((t nil)))
  '(whitespace-newline ((t (:bold t :foreground "dim gray" :background "#3F3F3F"))))
  '(whitespace-space ((t (:bold t :foreground "dim gray" :background "#3F3F3F"))))
  '(whitespace-space-after-tab ((t (:background "#4F4F4F" :foreground "#4F4F4F"))))
@@ -172,8 +177,9 @@
  '(flycheck-eslintrc "~/.eslintrc")
  '(flycheck-jscsrc "~/.jscsrc")
  '(flycheck-jshintrc "~.jshintrc")
+ '(global-whitespace-mode t)
  '(helm-buffer-max-length 80)
- '(whitespace-line-column 500))
+ '(whitespace-line-column 500000))
 
 ;; clear mini buffer
 (call-interactively (global-key-binding "\C-g"))

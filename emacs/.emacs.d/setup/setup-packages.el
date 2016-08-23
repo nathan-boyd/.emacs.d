@@ -130,7 +130,8 @@
 ;;;;;;;;;;;;;;;;;;;;
 ;; trivial setups ;;
 ;;;;;;;;;;;;;;;;;;;;
-(global-aggressive-indent-mode 1)
+; (global-aggressive-indent-mode 1)
+; (add-to-list 'aggressive-indent-excluded-modes 'sql-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;
 ;; setup projectile ;;
@@ -190,7 +191,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; setup cursor highlighting ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(beacon-mode 1)
+;; (beacon-mode 1)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; setup origami, code folding package ;;
@@ -232,6 +233,9 @@
 ;; setup powerline ;;
 ;;;;;;;;;;;;;;;;;;;;;
 (powerline-default-theme)
+(setq powerline-arrow-shape 'curve)
+(setq powerline-default-separator-dir '(right . left))
+(sml/setup)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; configure yasnippet ;;
