@@ -64,7 +64,8 @@
              undo-tree
              web-beautify
              web-mode
-             which-key
+             ;; which-key
+             yaml-mode
              yasnippet
              zenburn-theme))
 
@@ -175,8 +176,8 @@
 ;;;;;;;;;;;;;;;;;;;;;
 ;; setup which-key ;;x
 ;;;;;;;;;;;;;;;;;;;;;
-(which-key-mode)
-(which-key-setup-side-window-right)
+;; (which-key-mode)
+;; (which-key-setup-side-window-right)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; setup look and feel ;;
@@ -206,6 +207,7 @@
       #'(lambda ()
           (eshell-cmpl-initialize)
           (define-key eshell-mode-map [remap pcomplete] 'helm-esh-pcomplete)
+          (define-key eshell-mode-map (kbd "M-RET") 'ace-window)
           (define-key eshell-mode-map (kbd "M-h") 'helm-eshell-history)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -232,6 +234,24 @@
 ;;;;;;;;;;;;;;;;;;;;;
 ;; setup powerline ;;
 ;;;;;;;;;;;;;;;;;;;;;
+
+;; add these as regex
+;; (setq rm-blacklist
+;;       (format "^ \\(%s\\)$"
+;;         (mapconcat #'identity
+;;                    '("FlyC.*"
+;;                      "Projectile.*"
+;;                      "Golden"
+;;                      "Fly"
+;;                      "hl-p"
+;;                      "SP"
+;;                      "WS"
+;;                      "Helm"
+;;                      "yas"
+;;                      "company"
+;;                      "Undo-Tree")
+;;                    "\\|")))
+
 (powerline-default-theme)
 (setq powerline-arrow-shape 'curve)
 (setq powerline-default-separator-dir '(right . left))
