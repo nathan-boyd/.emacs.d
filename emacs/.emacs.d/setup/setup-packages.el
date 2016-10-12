@@ -46,7 +46,6 @@
              json-reformat
              magit
              neotree
-             origami
              omnisharp
              packed
              pkg-info
@@ -151,6 +150,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; configure syntax highlighting for jsx in web-mode ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+
 (defadvice web-mode-highlight-part (around tweak-jsx activate)
   (if (equal web-mode-content-type "jsx")
     (let ((web-mode-enable-part-face nil))
@@ -188,17 +189,6 @@
 ;; configure omnisharp csharp integration ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (load-library "~/.emacs.d/setup/setup-omnisharp.el")
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; setup cursor highlighting ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; (beacon-mode 1)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; setup origami, code folding package ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(global-origami-mode)
-(global-set-key (kbd "C--") 'origami-toggle-node)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; add helm support for eshell ;;
@@ -290,14 +280,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 (add-to-list 'exec-path "D:/apps/hunspell/bin")
 (setq ispell-program-name "hunspell")
-(add-hook 'text-mode-hook 'flyspell-mode)(eval-after-load 'company
-  '(progn
-     (define-key company-mode-map (kbd "C-:") 'helm-company)
-     (define-key company-active-map (kbd "C-:") 'helm-company)))
+(add-hook 'text-mode-hook 'flyspell-mode)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
-(eval-after-load "flyspell"
-  '(define-key flyspell-mode-map (kbd "C-;") 'helm-flyspell-correct))
-
+(add-hook 'markdown-mode-hook 'flyspell-mode)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; setup editorconfig ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;
