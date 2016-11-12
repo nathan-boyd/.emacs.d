@@ -45,6 +45,8 @@
              json-mode
              json-reformat
              magit
+	     markdown-mode
+             markdown-preview-mode
              neotree
              omnisharp
              packed
@@ -53,6 +55,7 @@
              powerline
              projectile
              restclient
+             robe
              saveplace
              smartparens
              smart-mode-line
@@ -108,9 +111,12 @@
 (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
 (helm-mode 1)
 
-;;;;;;;;;;;;;;;;;;;;;;;;
-;; non-trivial setups ;;
-;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;
+;; setup robe mode ;;
+;;;;;;;;;;;;;;;;;;;;;
+(add-hook 'ruby-mode-hook 'robe-mode)
+(add-hook 'robe-mode-hook 'ac-robe-setup)
+
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; setup js2-mode ;;
@@ -330,6 +336,9 @@
   (define-key company-active-map (kbd "\C-d") 'company-show-doc-buffer)
   (define-key company-active-map (kbd "M-.") 'company-show-location)
   (global-set-key (kbd "C-<return>") 'company-complete))
+
+(eval-after-load 'company
+  '(push 'company-robe company-backends))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; configure edbi-minor-mode ;;

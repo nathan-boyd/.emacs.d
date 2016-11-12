@@ -6,16 +6,11 @@
 ;; setup encoding ;;
 ;;;;;;;;;;;;;;;;;;;;
 
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
 (package-initialize)
 
 (prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
-;;(set-key-coding-system 'utf-8)
 
 ;; Treat clipboard input as UTF-8 string first; compound text next, etc.
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
@@ -182,10 +177,12 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(flycheck-eslintrc "~/.eslintrc")
+ '(flycheck-javascript-standard-executable "C:/Program Files/nodejs/standard.cmd")
  '(flycheck-jscsrc "~/.jscsrc")
  '(flycheck-jshintrc "~.jshintrc")
  '(global-whitespace-mode t)
  '(helm-buffer-max-length 80)
+ '(js-indent-level 2)
  '(whitespace-line-column 500000))
 
 ;; clear mini buffer

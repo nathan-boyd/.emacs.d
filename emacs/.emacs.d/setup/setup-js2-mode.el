@@ -32,10 +32,9 @@
     'js2-mode-hook
     (lambda ()
       (setq web-beautify-args '("-f" "-" "--config" "D:/git/nb-tools/styles/.jsbeautifyrc"))
-;;      (add-hook 'before-save-hook 'web-beautify-js-buffer t t)
 )))
 
-;(add-hook 'js-mode-hook '(lambda () (company-mode)))
+(add-hook 'js-mode-hook '(lambda () (company-mode)))
 
 (provide 'setup-js2-mode)
 
