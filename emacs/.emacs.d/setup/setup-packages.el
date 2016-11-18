@@ -45,7 +45,7 @@
              json-mode
              json-reformat
              magit
-	     markdown-mode
+             markdown-mode
              markdown-preview-mode
              neotree
              omnisharp
@@ -59,14 +59,12 @@
              saveplace
              smartparens
              smart-mode-line
-             solarized-theme
              sublimity
              tern
              tfs
              undo-tree
              web-beautify
              web-mode
-             ;; which-key
              yaml-mode
              yasnippet
              zenburn-theme))
@@ -117,7 +115,6 @@
 (add-hook 'ruby-mode-hook 'robe-mode)
 (add-hook 'robe-mode-hook 'ac-robe-setup)
 
-
 ;;;;;;;;;;;;;;;;;;;;
 ;; setup js2-mode ;;
 ;;;;;;;;;;;;;;;;;;;;
@@ -132,12 +129,6 @@
 ;; setup flycheck  ;;
 ;;;;;;;;;;;;;;;;;;;;;
 (load-library "~/.emacs.d/setup/setup-flycheck.el")
-
-;;;;;;;;;;;;;;;;;;;;
-;; trivial setups ;;
-;;;;;;;;;;;;;;;;;;;;
-; (global-aggressive-indent-mode 1)
-; (add-to-list 'aggressive-indent-excluded-modes 'sql-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;
 ;; setup projectile ;;
@@ -180,12 +171,6 @@
 (add-hook 'after-init-hook 'smartParens-after-init-hook)
 (sp-pair "<" ">" :wrap "C->")
 
-;;;;;;;;;;;;;;;;;;;;;
-;; setup which-key ;;x
-;;;;;;;;;;;;;;;;;;;;;
-;; (which-key-mode)
-;; (which-key-setup-side-window-right)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; setup look and feel ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -196,15 +181,23 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (load-library "~/.emacs.d/setup/setup-omnisharp.el")
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; add helm support for eshell ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(add-hook 'eshell-mode-hook
+;;;;;;;;;;;;;;;;;;;;
+;; eshell updates ;;
+;;;;;;;;;;;;;;;;;;;;
+(add-hook 'shell-mode-hook
       #'(lambda ()
           (eshell-cmpl-initialize)
           (define-key eshell-mode-map [remap pcomplete] 'helm-esh-pcomplete)
           (define-key eshell-mode-map (kbd "M-RET") 'ace-window)
           (define-key eshell-mode-map (kbd "M-h") 'helm-eshell-history)))
+
+;;;;;;;;;;;;;;;;;;;
+;; shell updates ;;
+;;;;;;;;;;;;;;;;;;;
+(add-hook 'shell-mode-hook
+      #'(lambda ()
+          (define-key shell-mode-map (kbd "M-RET") 'ace-window)))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; configure undo-tree ;;
@@ -230,27 +223,14 @@
 ;;;;;;;;;;;;;;;;;;;;;
 ;; setup powerline ;;
 ;;;;;;;;;;;;;;;;;;;;;
-
-;; add these as regex
-;; (setq rm-blacklist
-;;       (format "^ \\(%s\\)$"
-;;         (mapconcat #'identity
-;;                    '("FlyC.*"
-;;                      "Projectile.*"
-;;                      "Golden"
-;;                      "Fly"
-;;                      "hl-p"
-;;                      "SP"
-;;                      "WS"
-;;                      "Helm"
-;;                      "yas"
-;;                      "company"
-;;                      "Undo-Tree")
-;;                    "\\|")))
-
 (powerline-default-theme)
+(require 'smart-mode-line)
 (setq powerline-arrow-shape 'curve)
 (setq powerline-default-separator-dir '(right . left))
+(setq sml/mode-width 0)
+(setq sml/name-width 20)
+(rich-minority-mode 1)
+(setf rm-blacklist "")
 (sml/setup)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;

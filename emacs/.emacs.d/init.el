@@ -22,6 +22,9 @@
 (add-hook 'comint-exec-hook 
       (lambda () (set-process-query-on-exit-flag (get-buffer-process (current-buffer)) nil)))
 
+; interpret and use ansi color codes in shell output windows
+(ansi-color-for-comint-mode-on)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; initial look and feel ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -183,7 +186,14 @@
  '(global-whitespace-mode t)
  '(helm-buffer-max-length 80)
  '(js-indent-level 2)
- '(whitespace-line-column 500000))
+ '(whitespace-line-column 500000)
+ '(comint-scroll-to-bottom-on-input t)  ; always insert at the bottom
+ '(comint-scroll-to-bottom-on-output t) ; always add output at the bottom
+ '(comint-scroll-show-maximum-output t) ; scroll to show max possible output
+ '(comint-completion-autolist t)        ; show completion list when ambiguous
+ '(comint-input-ignoredups t)           ; no duplicates in command history
+ '(comint-completion-addsuffix t)       ; insert space/slash after file completion
+ )
 
 ;; clear mini buffer
 (call-interactively (global-key-binding "\C-g"))
