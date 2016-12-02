@@ -40,8 +40,7 @@
 (add-hook 'after-init-hook 'toggle-frame-maximized)
 (add-hook 'after-init-hook 'toggle-frame-fullscreen)
 (set-face-attribute 'default nil
-                    :family "Consolas" :height 115)
-(w32-send-sys-command 61488)
+                    :family "Inconsolata" :height 115)
 
 ;; unset backspace kill behavior
 (global-set-key [backspace] 'delete-backward-char)
