@@ -144,7 +144,9 @@
 ;;;;;;;;;;;;;;;;;;;
 (add-hook 'shell-mode-hook
       #'(lambda ()
-          (global-set-key (kbd "M-RET") 'ace-window)))
+          (define-key shell-mode-map [remap pcomplete] 'helm-esh-pcomplete)
+          (define-key shell-mode-map (kbd "M-RET") 'ace-window)
+          (define-key shell-mode-map (kbd "M-h") 'helm-eshell-history)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; configure undo-tree ;;

@@ -1,4 +1,3 @@
-
 ;;; Commentary:
 ;;; Code:
 
@@ -21,7 +20,7 @@
 (set-terminal-coding-system 'utf-8)
 
 ;; Turn off active processes exist notification
-(add-hook 'comint-exec-hook 
+(add-hook 'comint-exec-hook
       (lambda () (set-process-query-on-exit-flag (get-buffer-process (current-buffer)) nil)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -77,6 +76,10 @@
   (newline-mark 10 [182 10])   ; 10 LINE FEED
   (tab-mark 9 [187 9] [92 9])  ; 9  TAB
 ))
+
+(add-hook 'before-save-hook 'whitespace-cleanup)
+
+(setq explicit-shell-file-name "/bin/bash")
 
 ; configure backups
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
