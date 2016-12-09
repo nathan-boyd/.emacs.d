@@ -1,29 +1,28 @@
-;;; Package --- Summary Emacs Init File
+
 ;;; Commentary:
 ;;; Code:
+
+;; add to path
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
+(setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
+    (setq exec-path (append exec-path '("/usr/local/bin")))
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; setup encoding ;;
 ;;;;;;;;;;;;;;;;;;;;
-
-(package-initialize)
-
 (prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
 
-;; Treat clipboard input as UTF-8 string first; compound text next, etc.
-(setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
-
-;; use default clipboard
-(setq x-select-enable-clipboard t)
-
 ;; Turn off active processes exist notification
 (add-hook 'comint-exec-hook 
       (lambda () (set-process-query-on-exit-flag (get-buffer-process (current-buffer)) nil)))
-
-; interpret and use ansi color codes in shell output windows
-(ansi-color-for-comint-mode-on)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; initial look and feel ;;
@@ -37,16 +36,8 @@
 (scroll-bar-mode -1)
 (set-default 'cursor-type 'bar)
 (setq column-number-mode t)
-(add-hook 'after-init-hook 'toggle-frame-maximized)
-(add-hook 'after-init-hook 'toggle-frame-fullscreen)
-(set-face-attribute 'default nil
-                    :family "Inconsolata" :height 115)
-
-;; unset backspace kill behavior
-(global-set-key [backspace] 'delete-backward-char)
-
-;; use windows trash
-(setq delete-by-moving-to-trash t)
+(set-face-attribute 'default nil :family "Inconsolata" :height 140)
+(add-hook 'window-setup-hook 'toggle-frame-fullscreen t)
 
 ;; change the behavior of editing selected text
 (delete-selection-mode t)
@@ -81,12 +72,11 @@
 ;; setup whitespace
 (require 'whitespace)
 (global-whitespace-mode 1)
-(setq whitespace-display-mappings
-      '(
-        (space-mark 32 [183] [46])   ; 32 SPACE 「 」
-        (newline-mark 10 [182 10])   ; 10 LINE FEED
-        (tab-mark 9 [187 9] [92 9])  ; 9  TAB
-        ))
+(setq whitespace-display-mappings '(
+  (space-mark 32 [183] [46])   ; 32 SPACE 「 」
+  (newline-mark 10 [182 10])   ; 10 LINE FEED
+  (tab-mark 9 [187 9] [92 9])  ; 9  TAB
+))
 
 ; configure backups
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
@@ -125,17 +115,12 @@
 
 ;; highlight current line
 ;; (global-hl-line-mode 1)
-;; unused, because it makes cursor lag
 
 ;; setup line numbers
 ;; (global-linum-mode 1)  ;; line numbers causing slow cursor
-;; unused, because it makes cursor lag
 
 ;; show clock
 (display-time-mode 1)
-
-(setq find-program "\"C:/cygwin/bin/find.exe\"")
-(setq grep-program "\"C:/cygwin/bin/grep.exe\"")
 
 ;;setup packages
 (load-library "~/.emacs.d/setup/setup-packages.el")

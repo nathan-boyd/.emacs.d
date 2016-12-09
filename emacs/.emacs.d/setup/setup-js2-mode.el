@@ -11,7 +11,6 @@
 (setq-default js2-enter-indents-newline nil)
 (setq-default js2-highlight-level 3)
 (setq-default js2-basic-offset 2)
-(setq-default ac-js2-evaluate-calls t)
 
 ; add minor modes for js files
 (add-hook 'js2-mode-hook 'flycheck-mode)
@@ -21,20 +20,6 @@
 (setq-default js2-show-parse-errors nil)
 (setq-default js2-strict-missing-semi-warning nil)
 (setq-default js2-strict-trailing-comma-warning t)
-
-; setup js2refactor ;;
-(js2r-add-keybindings-with-prefix "C-r C-r")
-(add-hook 'js2-mode-hook #'js2-refactor-mode)
-
-; configure js-beautify
-(eval-after-load 'js2-mode
-  '(add-hook
-    'js2-mode-hook
-    (lambda ()
-      (setq web-beautify-args '("-f" "-" "--config" "D:/git/nb-tools/styles/.jsbeautifyrc"))
-)))
-
-(add-hook 'js-mode-hook '(lambda () (company-mode)))
 
 (provide 'setup-js2-mode)
 
