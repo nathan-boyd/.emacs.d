@@ -1,3 +1,5 @@
+*.DS_Store
+emacs/.emacs.d/places
 emacs/.emacs.d/.edbi-ds-history
 emacs/.emacs.d/ac-comphist.dat
 emacs/.emacs.d/auto-save-list/*
@@ -13,4 +15,3 @@ emacs/.emacs.d/server/*
 emacs/.emacs.d/bookmarks
 *.elc
 *.cache
-

@@ -1,7 +1,12 @@
+;;; Package --- Summary Emacs Init File
 ;;; Commentary:
 ;;; Code:
 
-;; add to path
+(package-initialize)
+
+;;;;;;;;;;;;;;;;;;;;
+;; setup encoding ;;
+;;;;;;;;;;;;;;;;;;;;
 
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
@@ -9,12 +14,6 @@
 ;; You may delete these explanatory comments.
 (package-initialize)
 
-(setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
-    (setq exec-path (append exec-path '("/usr/local/bin")))
-
-;;;;;;;;;;;;;;;;;;;;
-;; setup encoding ;;
-;;;;;;;;;;;;;;;;;;;;
 (prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
@@ -42,8 +41,9 @@
 (delete-selection-mode t)
 (transient-mark-mode t)
 
-;; allow downcase-region command
+;; allow uppercase and lowercase
 (put 'downcase-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
 
 ;; set dired to auto refresh
 (add-hook 'dired-mode-hook 'auto-revert-mode)
@@ -52,7 +52,7 @@
 ;; run in server mode
 (require 'server)
 (when (and (>= emacs-major-version 23)
-           (equal window-system 'w32))
+	   (equal window-system 'w32))
 (defun server-ensure-safe-dir (dir) "Noop" t))
 (setq delete-by-moving-to-trash nil)
 
@@ -95,14 +95,14 @@
 (eval-when-compile (defvar savehist-save-minibuffer-history))
 (eval-when-compile (defvar savehist-additional-variables))
 (setq savehist-file "~/.emacs.d/savehist")
-(savehist-mode 1)
 (setq history-length t)
 (setq history-delete-duplicates t)
 (setq savehist-save-minibuffer-history 1)
 (setq savehist-additional-variables
       '(kill-ring
-        search-ring
-        regexp-search-ring))
+	search-ring
+	regexp-search-ring))
+(savehist-mode 1)
 
 ;; disable lock files
 (setq create-lockfiles nil)
@@ -116,12 +116,6 @@
 ;; turn on syntax highlight everywhere
 (global-font-lock-mode 1)
 
-;; highlight current line
-;; (global-hl-line-mode 1)
-
-;; setup line numbers
-;; (global-linum-mode 1)  ;; line numbers causing slow cursor
-
 ;; show clock
 (display-time-mode 1)
 
@@ -134,7 +128,6 @@
 (global-set-key (kbd "C-+") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "C-c C-k") 'compile)
-(global-set-key (kbd "C-x g") 'magit-status)
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -166,21 +159,15 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(flycheck-eslintrc "~/.eslintrc")
- '(flycheck-javascript-standard-executable "C:/Program Files/nodejs/standard.cmd")
- '(flycheck-jscsrc "~/.jscsrc")
- '(flycheck-jshintrc "~.jshintrc")
+ '(comint-completion-addsuffix t)
+ '(comint-completion-autolist t)
+ '(comint-input-ignoredups t)
+ '(comint-scroll-show-maximum-output t)
+ '(comint-scroll-to-bottom-on-input t)
+ '(comint-scroll-to-bottom-on-output t)
  '(global-whitespace-mode t)
- '(helm-buffer-max-length 80)
  '(js-indent-level 2)
- '(whitespace-line-column 500000)
- '(comint-scroll-to-bottom-on-input t)  ; always insert at the bottom
- '(comint-scroll-to-bottom-on-output t) ; always add output at the bottom
- '(comint-scroll-show-maximum-output t) ; scroll to show max possible output
- '(comint-completion-autolist t)        ; show completion list when ambiguous
- '(comint-input-ignoredups t)           ; no duplicates in command history
- '(comint-completion-addsuffix t)       ; insert space/slash after file completion
- )
+ '(whitespace-line-column 500000))
 
 ;; clear mini buffer
 (call-interactively (global-key-binding "\C-g"))
@@ -188,4 +175,3 @@
 (provide 'init)
 
 ;;; init.el ends here
-(put 'upcase-region 'disabled nil)

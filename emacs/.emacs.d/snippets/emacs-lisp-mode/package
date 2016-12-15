@@ -1,0 +1,10 @@
+(use-package $0
+  :commands (isearch-moccur isearch-all)
+  :bind (("M-s O" . moccur)
+         :map isearch-mode-map
+         ("M-o" . isearch-moccur))
+  :diminish $0
+  :init
+  (setq isearch-lazy-highlight t)
+  :config
+  (use-package moccur-edit))

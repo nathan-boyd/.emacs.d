@@ -6,58 +6,20 @@
 ;;;;;;;;;;;;;;;;;;;;;;
 ;; install packages ;;
 ;;;;;;;;;;;;;;;;;;;;;;
-(setq package-archives '(
-    ("melpa" . "http://melpa.org/packages/")
-    ("elpa" . "http://tromey.com/elpa/")
-    ("gnu" . "http://elpa.gnu.org/packages/")
-    ("marmalade" . "http://marmalade-repo.org/packages/")))
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; a list of packages to be installed ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; install these packages manually ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defvar package-list)
-(setq package-list '(
-             ace-window
-             ac-js2
-             aggressive-indent
-             auto-compile
-             beacon
-             benchmark-init
-             bm
-             company
-             company-tern
-             csharp-mode
-             feature-mode
-             flycheck
-             flycheck-pos-tip
-             flyspell-lazy
-             golden-ratio
-             helm
-             helm-core
-             helm-flyspell
-             helm-ls-git
-             helm-projectile
-             highlight-parentheses
-             js2-mode
-             js2-refactor
-             json-mode
-             json-reformat
-             magit
-             markdown-mode
-             markdown-preview-mode
-             neotree
-             omnisharp
-             packed
-             pkg-info
-             popup
-             powerline
-             saveplace
-             smartparens
-             smart-mode-line
-             undo-tree
-             yaml-mode
-             yasnippet
-             zenburn-theme))
+(setq package-list '(feature-mode
+                     packed
+                     pkg-info
+                     use-package
+                     yasnippet
+                     zenburn-theme))
 
 (require 'package)
 (package-initialize)
@@ -65,7 +27,6 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
-;; install packages that aren't already installed
 (dolist (package package-list)
   (unless (package-installed-p package)
     (package-install package)))
@@ -73,191 +34,264 @@
 (dolist (package package-list)
   (require 'package))
 
-;;;;;;;;;;;;;;;;;;;;;;;
-;; setup beacon mode ;;
-;;;;;;;;;;;;;;;;;;;;;;;
-(beacon-mode 1)
-
-;;;;;;;;;;;;;;;;
-;; setup helm ;;
-;;;;;;;;;;;;;;;;
-(global-unset-key (kbd "C-x c"))
-
-(require 'helm-config)
-
-(helm-adaptive-mode t)
-(helm-autoresize-mode t)
-(helm-push-mark-mode t)
-(global-set-key (kbd "M-x")        'undefined)
-(global-set-key (kbd "M-x")        'helm-M-x)
-(global-set-key (kbd "C-x r b")    'helm-filtered-bookmarks)
-(global-set-key (kbd "C-x C-f")    'helm-find-files)
-(global-set-key (kbd "C-x b")      'helm-mini)
-(global-set-key (kbd "C-x C-b")    'helm-mini)
-(global-set-key (kbd "M-y")        'helm-show-kill-ring)
-(global-set-key (kbd "C-<f6>")     'helm-ls-git-ls)
-(global-set-key (kbd "C-x C-d")    'helm-browse-project)
-(global-set-key (kbd "C-c h") 'helm-command-prefix)
-
-(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
-(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)   ; make TAB work in terminal
-(define-key helm-map (kbd "C-z")  'helm-select-action)              ; list actions using C-z
-
-(when (executable-find "curl")
-  (setq helm-google-suggest-use-curl-p t))
-
-(helm-mode 1)
-
-;;;;;;;;;;;;;;;;;;;;
-;; setup js2-mode ;;
-;;;;;;;;;;;;;;;;;;;;
-(load-library "~/.emacs.d/setup/setup-js2-mode.el")
-
-;;;;;;;;;;;;;;;;;;;;
-;; setup flycheck ;;
-;;;;;;;;;;;;;;;;;;;;
-(load-library "~/.emacs.d/setup/setup-flycheck.el")
-
-;;;;;;;;;;;;;;;;;;;;;;;
-;; setup smartparens ;;
-;;;;;;;;;;;;;;;;;;;;;;;
-(require 'smartparens-config)
-(smartparens-global-mode 1)
-(defun smartParens-after-init-hook ()
-  (use-package smartparens-config
-               :ensure smartparens
-               :config
-               (progn
-                 (show-smartparens-global-mode t)))
-  (add-hook 'prog-mode-hook 'turn-on-smartparens-strict-mode))
-
-(add-hook 'after-init-hook 'smartParens-after-init-hook)
-(sp-pair "<" ">" :wrap "C->")
-
-;;;;;;;;;;;;;;;;;;;;;;;;;
-;; setup look and feel ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;
+;; apply theme ;;
+;;;;;;;;;;;;;;;;;
 (load-theme 'zenburn t)
 
-;;;;;;;;;;;;;;;;;;;
-;; shell updates ;;
-;;;;;;;;;;;;;;;;;;;
-(add-hook 'shell-mode-hook
-      #'(lambda ()
-          (define-key shell-mode-map [remap pcomplete] 'helm-esh-pcomplete)
-          (define-key shell-mode-map (kbd "M-RET") 'ace-window)
-          (define-key shell-mode-map (kbd "M-h") 'helm-eshell-history)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; install and configure with use-package ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;;;;;;;;;;;;;;;;;;;;;;;;
-;; configure undo-tree ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;
-(global-undo-tree-mode)
+(use-package auto-compile
+  :ensure t
+  :init
+  (setq load-prefer-newer t)
+  (auto-compile-on-load-mode)
+  (auto-compile-on-save-mode))
 
-;;;;;;;;;;;;;;;;;;;;;;;
-;; configure recentf ;;
-;;;;;;;;;;;;;;;;;;;;;;;
-(require 'recentf)
-(setq recentf-auto-cleanup 'never)
-(recentf-mode 1)
-(setq recentf-max-menu-items 25)
-(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (exec-path-from-shell-initialize))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;
-;; save place in files ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;
-(require 'saveplace)
-(setq-default save-place t)
-(setq save-place-file "~/.emacs.d/saved-places")
+(use-package yaml-mode
+  :ensure t
+  :diminish yamp-mode)
 
-;;;;;;;;;;;;;;;;;;;;;
-;; setup powerline ;;
-;;;;;;;;;;;;;;;;;;;;;
-(powerline-default-theme)
-(require 'smart-mode-line)
-(setq sml/mode-width 0)
-(setq sml/name-width 20)
-(rich-minority-mode 1)
-(setf rm-blacklist "")
-(sml/setup)
+(use-package ace-window
+  :ensure t
+  :config
+  (global-set-key (kbd "M-p") 'ace-window))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;
-;; configure yasnippet ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq yas-snippet-dirs '("~/.emacs.d/snippets"))
-(yas-global-mode 1)
-(setq yas-indent-line (quote none))
+(use-package origami
+  :ensure t
+  :diminish origami
+  :config (global-origami-mode 1))
 
- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
- ;; configure helm-c-yasnippet ;;
- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq helm-yas-space-match-any-greedy t)
-(global-set-key (kbd "C-c y") 'helm-yas-complete)
+(use-package beacon
+  :ensure t
+  :diminish beacon
+  :config (beacon-mode 1))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; setup highlight-parentheses ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define-globalized-minor-mode global-highlight-parentheses-mode
-  highlight-parentheses-mode
-  (lambda ()
-    (highlight-parentheses-mode t)))
-(global-highlight-parentheses-mode t)
+(use-package helm-flyspell
+  :ensure t)
 
-;;;;;;;;;;;;;;;;;;;;;;
-;; setup ace-window ;;
-;;;;;;;;;;;;;;;;;;;;;;
+(use-package helm
+  :ensure t
+  :init
+  (setq helm-buffer-max-length 80)
+  (helm-adaptive-mode t)
+  (helm-autoresize-mode t)
+  (helm-push-mark-mode t)
+  :diminish helm-mode
+  :bind (("M-x" . undefined)
+         ("M-x" . helm-M-x)
+         ("M-y" . helm-show-kill-ring)
+         ("C-x C-f" . helm-find-files)
+         ("C-x b" . helm-mini)
+         ("C-x C-b" . helm-mini)
+         ("C-x C-d" . helm-browse-project)
+         ("C-c h" . helm-command-prefix)
+         ("C-i" . helm-execute-persistent-action)
+         ("C-;" . helm-flyspell-correct)
+         ("C-z" . helm-select-action))
+  :config
+  (helm-mode 1)
+  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
+  (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)   ; make TAB work in terminal
+  (define-key helm-map (kbd "C-z")  'helm-select-action)              ; list actions using C-z
+  (add-hook 'shell-mode-hook
+            (lambda ()
+              (define-key shell-mode-map [remap pcomplete] 'helm-esh-pcomplete)
+              (define-key shell-mode-map (kbd "M-h") 'helm-eshell-history))))
+
+;; (use-package aggressive-indent
+;;   :ensure t
+;;   :diminish aggressive-indent
+;;   :config
+;;   (global-aggressive-indent-mode 1))
+
+(use-package js2-mode
+  :ensure t
+  :diminish js2-mode
+  :init
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+  (setq-default indent-tabs-mode nil)
+  (setq-default js2-idle-timer-delay 0.1)
+  (setq-default js2-indent-on-enter-key nil)
+  (setq-default js2-enter-indents-newline nil)
+  (setq-default js2-highlight-level 3)
+  (setq-default js2-basic-offset 2)
+  (setq-default js2-show-parse-errors nil)
+  (setq-default js2-strict-missing-semi-warning nil)
+  (setq-default js2-strict-trailing-comma-warning t)
+  :config
+  (add-hook 'js2-mode-hook 'flycheck-mode)
+  (add-hook 'js2-mode-hook 'js2-refactor-mode))
+
+(use-package js2-refactor
+  :ensure t
+  :diminish js2-refactor
+  :config
+  (add-hook 'js2-mode-hook #'js2-refactor-mode))
+
+(use-package json-mode
+  :ensure t
+  :diminish json-mode)
+
+(use-package json-reformat
+  :ensure t)
+
+(use-package tern
+  :ensure t
+  :diminish tern-mode
+  :init
+  (add-hook 'js-mode-hook (lambda () (tern-mode t)))
+  (add-hook 'js2-mode-hook (lambda () (tern-mode t))))
+
+(use-package flycheck
+  :ensure t
+  :diminish flycheck-mode
+  :init
+  (setq-default flycheck-disabled-checkers
+                (append flycheck-disabled-checkers
+                        '(javascript-jshint)
+                        '(javascript-eslint)
+                        '(javascript-gjslint)
+                        '(javascript-jscs)))
+  (flycheck-add-mode 'javascript-standard 'js2-mode)
+  (flycheck-add-mode 'javascript-standard 'js-mode)
+  (flycheck-add-mode 'javascript-standard 'web-mode)
+  (setq-default flycheck-temp-prefix ".flycheck")
+  :config
+  (global-flycheck-mode))
+
+(use-package smartparens
+  :ensure t
+  :diminish smartparens-mode
+  :init
+  (require 'smartparens-config)
+  (add-hook 'prog-mode-hook 'smartparens-mode)
+  :config
+  (sp-pair "<" ">" :wrap "C->")
+  (smartparens-global-mode 1))
+
+(use-package origami
+  :ensure t
+  :diminish
+  origami-mode
+  :config
+  (global-origami-mode))
+
+(use-package undo-tree
+  :ensure t
+  :diminish
+  undo-tree-mode
+  :config
+  (global-undo-tree-mode))
+
+(use-package recentf
+  :ensure t
+  :init
+  (setq recentf-auto-cleanup 'never)
+  (setq recentf-max-menu-items 25)
+  :diminish recentf-mode
+  :bind (("C-x \C-r" . recentf-open-files))
+  :config (recentf-mode 1))
+
+(use-package save-place
+  :diminish save-place-mode
+  :config
+  (save-place-mode))
+
+(use-package smart-mode-line
+  :ensure t
+  :diminish smart-mode-line
+  :init
+  (require 'smart-mode-line)
+  (setq sml/mode-width 0)
+  (setq sml/name-width 20)
+  (rich-minority-mode 1)
+  (setf rm-blacklist "")
+  :config
+  (powerline-default-theme)
+  (sml/setup))
+
+(use-package yasnippet
+  :ensure t
+  :diminish yas-minor-mode
+  :init
+  (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
+  (setq yas-indent-line (quote none))
+  :config
+  (yas-global-mode 1))
+
+(use-package highlight-parentheses
+  :ensure t
+  :diminish highlight-parentheses-mode
+  :config (global-highlight-parentheses-mode t))
+
 (global-set-key (kbd "M-RET") 'ace-window)
+(use-package ace-window
+  :ensure t
+  :config
+  (add-hook 'shell-mode-hook
+            #'(lambda ()
+                (define-key shell-mode-map (kbd "M-RET") 'ace-window))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; setup spell checking ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq ispell-program-name "aspell")
-(add-to-list 'exec-path "/usr/local/bin")
+(use-package flyspell
+  :ensure t
+  :diminish flyspell-mode
+  :init
+  (setq ispell-program-name "aspell")
+  :config
+  (flyspell-mode-1)
+  (flyspell-prog-mode))
 
-(dolist (hook '(text-mode-hook))
-  (add-hook hook (lambda () (flyspell-mode 1))))
+(use-package neotree
+  :ensure t
+  :diminish neotree
+  :init
+  (setq neo-theme 'nerd))
 
-(dolist (mode '(prog-mode-hook))
-  (add-hook mode
-            '(lambda ()
-               (flyspell-prog-mode))))
+(use-package golden-ratio
+  :ensure t
+  :init
+  (setq golden-ratio-auto-scale t)
+  :diminish
+  golden-ratio-mode
+  :config
+  (add-to-list 'golden-ratio-extra-commands 'ace-window)
+  (golden-ratio-mode 1))
 
-(eval-after-load "flyspell"
-  '(progn
-     (define-key flyspell-mouse-map [down-mouse-3] #'flyspell-correct-word)
-     (define-key flyspell-mouse-map [mouse-3] #'undefined)))
-
-;;;;;;;;;;;;;;;;;;;
-;; setup neotree ;;
-;;;;;;;;;;;;;;;;;;;
-(setq neo-theme 'nerd)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; configure golden-ratio ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(require 'golden-ratio)
-(golden-ratio-mode 1)
-(setq golden-ratio-auto-scale t)
-(add-to-list 'golden-ratio-exclude-buffer-names " *NeoTree*")
-(global-set-key [f8] 'neotree-toggle)
-(setq neo-smart-open t)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;
-;; setup company mode  ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;
-(global-company-mode)
-(with-eval-after-load 'company
+(use-package company
+  :ensure t
+  :diminish company-mode
+  :init
   (add-to-list 'company-backends 'company-tern)
   (add-to-list 'company-backends 'company-omnisharp)
-  (setq company-tern-meta-as-single-line t)                                    ; trim too long function signatures to the frame width.
-  (setq company-tooltip-limit 15)                                              ; bigger popup window
-  (setq company-tooltip-align-annotations 't)                                  ; align annotations to the right tooltip border
-  (setq company-idle-delay .3)                                                 ; decrease delay before autocompletion popup shows
-  (setq company-begin-commands '(self-insert-command))                         ; start autocompletion only after typing
-  (define-key company-active-map (kbd "\C-n") 'company-select-next)
-  (define-key company-active-map (kbd "\C-p") 'company-select-previous)
-  (define-key company-active-map (kbd "\C-d") 'company-show-doc-buffer)
-  (define-key company-active-map (kbd "M-.") 'company-show-location)
-  (global-set-key (kbd "C-<return>") 'company-complete))
+  (setq company-tern-meta-as-single-line t)            ; trim too long function signatures to the frame width.
+  (setq company-tooltip-limit 15)                      ; bigger popup window
+  (setq company-tooltip-align-annotations 't)          ; align annotations to the right tooltip border
+  (setq company-idle-delay .3)                         ; decrease delay before autocompletion popup shows
+  (setq company-begin-commands '(self-insert-command)) ; start autocompletion only after typing
+  :bind
+  (("C-<return>" . company-complete)
+   :map company-active-map
+   ("C-n" . company-select-next)
+   ("C-p" . company-select-previous)
+   ("C-d" . company-show-doc-buffer)
+   ("M-." . company-show-location))
+  :config
+  (global-company-mode))
+
+(use-package which-key
+  :ensure t
+  :diminish which-key-mode
+  :config
+  (which-key-setup-minibuffer)
+  (which-key-mode))
 
 (provide 'setup-packages)
 
