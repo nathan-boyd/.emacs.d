@@ -18,8 +18,7 @@
                      packed
                      pkg-info
                      use-package
-                     yasnippet
-                     zenburn-theme))
+                     yasnippet))
 
 (require 'package)
 (package-initialize)
@@ -37,12 +36,12 @@
 ;;;;;;;;;;;;;;;;;
 ;; apply theme ;;
 ;;;;;;;;;;;;;;;;;
-(load-theme 'zenburn t)
+(use-package zenburn-theme
+  :ensure t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; install and configure with use-package ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (use-package auto-compile
   :ensure t
   :init
@@ -77,6 +76,11 @@
 (use-package helm-flyspell
   :ensure t)
 
+(use-package hlinum
+  :ensure t
+  :diminish hlinum
+  :config (hlinum-activate))
+
 (use-package helm
   :ensure t
   :init
@@ -106,11 +110,16 @@
               (define-key shell-mode-map [remap pcomplete] 'helm-esh-pcomplete)
               (define-key shell-mode-map (kbd "M-h") 'helm-eshell-history))))
 
-;; (use-package aggressive-indent
+;; (use-package helm-themes
 ;;   :ensure t
-;;   :diminish aggressive-indent
-;;   :config
-;;   (global-aggressive-indent-mode 1))
+;;   :diminish helm-themes)
+
+(use-package aggressive-indent
+  :ensure t
+  :diminish aggressive-indent
+  :config
+  ;; (global-aggressive-indent-mode 1)
+  )
 
 (use-package js2-mode
   :ensure t
@@ -127,14 +136,14 @@
   (setq-default js2-strict-missing-semi-warning nil)
   (setq-default js2-strict-trailing-comma-warning t)
   :config
-  (add-hook 'js2-mode-hook 'flycheck-mode)
-  (add-hook 'js2-mode-hook 'js2-refactor-mode))
+  (add-hook 'js2-mode-hook 'flycheck-mode))
 
-(use-package js2-refactor
-  :ensure t
-  :diminish js2-refactor
-  :config
-  (add-hook 'js2-mode-hook #'js2-refactor-mode))
+;; (use-package js2-refactor
+;;   :ensure t
+;;   :diminish js2-refactor
+;;   :config
+;;   (js2r-add-keybindings-with-prefix "C-c C-r")
+;;   (add-hook 'js2-mode-hook 'js2-refactor-mode))
 
 (use-package json-mode
   :ensure t
@@ -264,6 +273,12 @@
   :config
   (add-to-list 'golden-ratio-extra-commands 'ace-window)
   (golden-ratio-mode 1))
+
+(use-package omnisharp
+  :ensure t
+  :diminish omnisharp-mode
+  :config
+  (add-hook 'csharp-mode-hook 'omnisharp-mode))
 
 (use-package company
   :ensure t

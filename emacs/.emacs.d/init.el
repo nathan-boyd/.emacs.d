@@ -52,14 +52,14 @@
 ;; run in server mode
 (require 'server)
 (when (and (>= emacs-major-version 23)
-	   (equal window-system 'w32))
+           (equal window-system 'w32))
 (defun server-ensure-safe-dir (dir) "Noop" t))
 (setq delete-by-moving-to-trash nil)
 
 (unless (server-running-p)
   (server-start))
 
-;; let smart tabs handle vertical alignment
+;; let other packages handle vertical alignment
 (electric-indent-mode -1)
 
 ;; swap yes for y
@@ -72,12 +72,12 @@
 (require 'whitespace)
 (global-whitespace-mode 1)
 (setq whitespace-display-mappings '(
-  (space-mark 32 [183] [46])   ; 32 SPACE 「 」
-  (newline-mark 10 [182 10])   ; 10 LINE FEED
-  (tab-mark 9 [187 9] [92 9])  ; 9  TAB
-))
+                                    (space-mark 32 [183] [46])   ; 32 SPACE 「 」
+                                    (newline-mark 10 [182 10])   ; 10 LINE FEED
+                                    (tab-mark 9 [187 9] [92 9])  ; 9  TAB
+                                    ))
 
-(add-hook 'before-save-hook 'whitespace-cleanup)
+;; (add-hook 'before-save-hook 'whitespace-cleanup)
 
 (setq explicit-shell-file-name "/bin/bash")
 
@@ -100,8 +100,8 @@
 (setq savehist-save-minibuffer-history 1)
 (setq savehist-additional-variables
       '(kill-ring
-	search-ring
-	regexp-search-ring))
+        search-ring
+        regexp-search-ring))
 (savehist-mode 1)
 
 ;; disable lock files
@@ -134,8 +134,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(helm-buffer-directory ((t (:foreground "slate gray"))))
- '(helm-buffer-size ((t (:foreground "slate gray"))))
  '(neo-banner-face ((t :inherit shadow)))
  '(neo-button-face ((t :inherit dired-directory)))
  '(neo-dir-link-face ((t :inherit dired-directory)))
@@ -143,16 +141,23 @@
  '(neo-file-link-face ((t :inherit default)))
  '(neo-header-face ((t :inherit shadow)))
  '(neo-root-dir-face ((t :inherit link-visited :underline nil)))
- '(trailing-whitespace ((t (:background "#4F4F4F"))))
- '(whitespace-empty ((t (:background "#4F4F4F"))))
- '(whitespace-indentation ((t (:foreground "dim gray" :background "#3F3F3F"))))
  '(whitespace-line ((t nil)))
- '(whitespace-newline ((t (:bold t :foreground "dim gray" :background "#3F3F3F"))))
- '(whitespace-space ((t (:bold t :foreground "dim gray" :background "#3F3F3F"))))
- '(whitespace-space-after-tab ((t (:background "#4F4F4F" :foreground "#4F4F4F"))))
- '(whitespace-space-before-tab ((t (:background "#4F4F4F" :foreground "#4F4F4F"))))
- '(whitespace-tab ((t (:bold t :foreground "dim gray" :background "#3F3F3F"))))
- '(whitespace-trailing ((t (:background "#4F4F4F" :foreground "#4F4F4F")))))
+ '(trailing-whitespace         ((t (:foreground "dim gray" :background "zenburn-bg+1"))))
+ '(whitespace-empty            ((t (:foreground "dim gray" :background "zenburn-bg+1"))))
+ '(whitespace-space-after-tab  ((t (:background "dim gray" :foreground "zenburn-bg+1"))))
+ '(whitespace-space-before-tab ((t (:background "dim gray" :foreground "zenburn-bg+1"))))
+ '(whitespace-trailing         ((t (:foreground "dim gray" :background "zenburn-bg+1" ))))
+ '(whitespace-indentation      ((t (:foreground "dim gray" :Background "#3F3F3F"))))
+ '(whitespace-newline          ((t (:foreground "dim gray" :background "#3F3F3F"))))
+ '(whitespace-space            ((t (:foreground "dim gray" :background "#3F3F3F"))))
+ '(whitespace-tab              ((t (:foreground "dim gray" :background "#3F3F3F"))))
+ '(helm-buffer-directory       ((t (:foreground "slate gray"))))
+ '(helm-buffer-size            ((t (:foreground "slate gray"))))
+ )
+
+;; the whitespace colors in custom set faces map to the following
+;; zenburn-bg+1 = "#4F4F4F"
+;; dim gray = "#696969"
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -165,9 +170,9 @@
  '(comint-scroll-show-maximum-output t)
  '(comint-scroll-to-bottom-on-input t)
  '(comint-scroll-to-bottom-on-output t)
- '(global-whitespace-mode t)
  '(js-indent-level 2)
- '(whitespace-line-column 500000))
+ '(whitespace-line-column 500000)
+ )
 
 ;; clear mini buffer
 (call-interactively (global-key-binding "\C-g"))
