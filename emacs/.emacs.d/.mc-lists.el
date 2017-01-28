@@ -4,6 +4,7 @@
 (setq mc/cmds-to-run-for-all
       '(
         helm-M-x
+        helm-show-kill-ring
         ))
 
 (setq mc/cmds-to-run-once

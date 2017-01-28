@@ -4,6 +4,7 @@ emacs/.emacs.d/.edbi-ds-history
 emacs/.emacs.d/ac-comphist.dat
 emacs/.emacs.d/auto-save-list/*
 emacs/.emacs.d/backups/*
+emacs/.emacs.d/%backup%*
 emacs/.emacs.d/eshell/*
 emacs/.emacs.d/elpa/*
 emacs/.emacs.d/helm-adaptive-history

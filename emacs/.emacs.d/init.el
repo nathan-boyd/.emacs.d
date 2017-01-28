@@ -2,6 +2,17 @@
 ;;; Commentary:
 ;;; Code:
 
+; set PATH, because we don't load .bashrc
+(setenv
+ "PATH" (concat
+   "$HOME/bin:"
+   "/bin:"
+   "/usr/bin:"
+   "/sbin:"
+   "/usr/sbin:"
+   "/usr/local/bin:"
+   "/usr/local/sbin"))
+
 (package-initialize)
 
 ;;;;;;;;;;;;;;;;;;;;
@@ -36,6 +47,7 @@
 (setq column-number-mode t)
 (set-face-attribute 'default nil :family "Inconsolata" :height 140)
 (add-hook 'window-setup-hook 'toggle-frame-fullscreen t)
+(global-linum-mode t)
 
 ;; change the behavior of editing selected text
 (delete-selection-mode t)
@@ -134,19 +146,19 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(neo-banner-face ((t :inherit shadow)))
- '(neo-button-face ((t :inherit dired-directory)))
- '(neo-dir-link-face ((t :inherit dired-directory)))
- '(neo-expand-btn-face ((t nil)))
- '(neo-file-link-face ((t :inherit default)))
- '(neo-header-face ((t :inherit shadow)))
- '(neo-root-dir-face ((t :inherit link-visited :underline nil)))
- '(whitespace-line ((t nil)))
+ '(neo-banner-face             ((t :inherit shadow)))
+ '(neo-button-face             ((t :inherit dired-directory)))
+ '(neo-dir-link-face           ((t :inherit dired-directory)))
+ '(neo-expand-btn-face         ((t nil)))
+ '(neo-file-link-face          ((t :inherit default)))
+ '(neo-header-face             ((t :inherit shadow)))
+ '(neo-root-dir-face           ((t :inherit link-visited :underline nil)))
+ '(whitespace-line             ((t nil)))
  '(trailing-whitespace         ((t (:foreground "dim gray" :background "zenburn-bg+1"))))
  '(whitespace-empty            ((t (:foreground "dim gray" :background "zenburn-bg+1"))))
  '(whitespace-space-after-tab  ((t (:background "dim gray" :foreground "zenburn-bg+1"))))
  '(whitespace-space-before-tab ((t (:background "dim gray" :foreground "zenburn-bg+1"))))
- '(whitespace-trailing         ((t (:foreground "dim gray" :background "zenburn-bg+1" ))))
+ '(whitespace-trailing         ((t (:foreground "dim gray" :background "zenburn-bg+1"))))
  '(whitespace-indentation      ((t (:foreground "dim gray" :Background "#3F3F3F"))))
  '(whitespace-newline          ((t (:foreground "dim gray" :background "#3F3F3F"))))
  '(whitespace-space            ((t (:foreground "dim gray" :background "#3F3F3F"))))
