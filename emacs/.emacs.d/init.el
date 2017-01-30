@@ -2,36 +2,22 @@
 ;;; Commentary:
 ;;; Code:
 
-; set PATH, because we don't load .bashrc
-(setenv
- "PATH" (concat
-   "$HOME/bin:"
-   "/bin:"
-   "/usr/bin:"
-   "/sbin:"
-   "/usr/sbin:"
-   "/usr/local/bin:"
-   "/usr/local/sbin"))
-
 (package-initialize)
 
 ;;;;;;;;;;;;;;;;;;;;
 ;; setup encoding ;;
 ;;;;;;;;;;;;;;;;;;;;
 
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-(package-initialize)
-
 (prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
 
 ;; Turn off active processes exist notification
-(add-hook 'comint-exec-hook
-      (lambda () (set-process-query-on-exit-flag (get-buffer-process (current-buffer)) nil)))
+(require 'cl-lib)
+(defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
+  "Prevent annoying \"Active processes exist\" query when you quit Emacs."
+  (cl-letf (((symbol-function #'process-list) (lambda ())))
+    ad-do-it))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; initial look and feel ;;
@@ -46,7 +32,9 @@
 (set-default 'cursor-type 'bar)
 (setq column-number-mode t)
 (set-face-attribute 'default nil :family "Inconsolata" :height 140)
+(setq mac-allow-anti-aliasing t)
 (add-hook 'window-setup-hook 'toggle-frame-fullscreen t)
+(setq linum-format "%d")
 (global-linum-mode t)
 
 ;; change the behavior of editing selected text
@@ -84,10 +72,10 @@
 (require 'whitespace)
 (global-whitespace-mode 1)
 (setq whitespace-display-mappings '(
-                                    (space-mark 32 [183] [46])   ; 32 SPACE 「 」
-                                    (newline-mark 10 [182 10])   ; 10 LINE FEED
-                                    (tab-mark 9 [187 9] [92 9])  ; 9  TAB
-                                    ))
+  (space-mark 32 [183] [46])   ; 32 SPACE 「 」
+  (newline-mark 10 [182 10])   ; 10 LINE FEED
+  (tab-mark 9 [187 9] [92 9])  ; 9  TAB
+))
 
 ;; (add-hook 'before-save-hook 'whitespace-cleanup)
 
@@ -154,11 +142,11 @@
  '(neo-header-face             ((t :inherit shadow)))
  '(neo-root-dir-face           ((t :inherit link-visited :underline nil)))
  '(whitespace-line             ((t nil)))
- '(trailing-whitespace         ((t (:foreground "dim gray" :background "zenburn-bg+1"))))
- '(whitespace-empty            ((t (:foreground "dim gray" :background "zenburn-bg+1"))))
- '(whitespace-space-after-tab  ((t (:background "dim gray" :foreground "zenburn-bg+1"))))
- '(whitespace-space-before-tab ((t (:background "dim gray" :foreground "zenburn-bg+1"))))
- '(whitespace-trailing         ((t (:foreground "dim gray" :background "zenburn-bg+1"))))
+ '(trailing-whitespace         ((t (:foreground "dim gray" :background "#4F4F4F"))))
+ '(whitespace-empty            ((t (:foreground "dim gray" :background "#4F4F4F"))))
+ '(whitespace-space-after-tab  ((t (:background "dim gray" :foreground "#4F4F4F"))))
+ '(whitespace-space-before-tab ((t (:background "dim gray" :foreground "#4F4F4F"))))
+ '(whitespace-trailing         ((t (:foreground "dim gray" :background "#4F4F4F"))))
  '(whitespace-indentation      ((t (:foreground "dim gray" :Background "#3F3F3F"))))
  '(whitespace-newline          ((t (:foreground "dim gray" :background "#3F3F3F"))))
  '(whitespace-space            ((t (:foreground "dim gray" :background "#3F3F3F"))))

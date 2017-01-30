@@ -57,124 +57,130 @@
 
 (use-package ace-window
   :ensure t
-  :init
-    (setq aw-scope 'frame)
-    (global-set-key (kbd "M-RET") 'ace-window)
-    (add-hook 'shell-mode-hook
-      #'(lambda ()
-        (define-key shell-mode-map (kbd "M-RET") 'ace-window))))
+  :bind
+    (("M-RET" . ace-window)
+  :map shell-mode-map
+    ("M-RET" . ace-window))
+  :config
+    (setq aw-scope 'frame))
 
-;; (use-package beacon
-;;   :ensure t
-;;   :diminish beacon
-;;   :config (beacon-mode 1))
+(use-package company-tern
+  :ensure t)
 
 (use-package company
   :ensure t
   :diminish company-mode
-  :init
-  (add-to-list 'company-backends 'company-tern)
-  (add-to-list 'company-backends 'company-omnisharp)
-  (setq company-tern-meta-as-single-line t)            ; trim too long function signatures to the frame width.
-  (setq company-tooltip-limit 15)                      ; bigger popup window
-  (setq company-tooltip-align-annotations 't)          ; align annotations to the right tooltip border
-  (setq company-idle-delay .3)                         ; decrease delay before autocompletion popup shows
-  (setq company-begin-commands '(self-insert-command)) ; start autocompletion only after typing
-  :bind
-  (("C-<return>" . company-complete)
-   :map company-active-map
-   ("C-n" . company-select-next)
-   ("C-p" . company-select-previous)
-   ("C-d" . company-show-doc-buffer)
-   ("M-." . company-show-location))
   :config
-  (global-company-mode))
+    (setq company-tooltip-limit 15)                      ; bigger popup window
+    (setq company-tooltip-align-annotations 't)          ; align annotations to the right tooltip border
+    (setq company-idle-delay .3)                         ; decrease delay before autocompletion popup shows
+    (setq company-begin-commands '(self-insert-command)) ; start autocompletion only after typing
+    (add-to-list 'company-backends 'company-tern)
+    (add-to-list 'company-backends 'company-omnisharp)
+    (global-company-mode 1)
+  :bind
+    (("C-<return>" . company-complete)
+  :map company-active-map
+    ("C-n" . company-select-next)
+    ("C-p" . company-select-previous)
+    ("C-d" . company-show-doc-buffer)
+    ("M-." . company-show-location)))
 
 (use-package exec-path-from-shell
   :ensure t
   :config
-  (exec-path-from-shell-initialize))
+    (exec-path-from-shell-initialize))
 
 (use-package flycheck
   :ensure t
   :diminish flycheck-mode
-  :init
-  (setq-default flycheck-disabled-checkers
-                (append flycheck-disabled-checkers
-                        '(javascript-jshint)
-                        '(javascript-eslint)
-                        '(javascript-gjslint)
-                        '(javascript-jscs)))
-  (flycheck-add-mode 'javascript-standard 'js2-mode)
-  (flycheck-add-mode 'javascript-standard 'js-mode)
-  (flycheck-add-mode 'javascript-standard 'web-mode)
-  (setq-default flycheck-temp-prefix ".flycheck")
   :config
-  (global-flycheck-mode))
+  (flycheck-add-mode 'javascript-standard 'js2-mode)
+    (flycheck-add-mode 'javascript-standard 'js-mode)
+    (flycheck-add-mode 'javascript-standard 'web-mode)
+    (setq-default flycheck-temp-prefix ".flycheck")
+    (global-flycheck-mode)
+    (setq-default flycheck-disabled-checkers
+      (append flycheck-disabled-checkers
+        '(javascript-jshint)
+        '(javascript-eslint)
+        '(javascript-gjslint)
+        '(javascript-jscs)))
+    (global-flycheck-mode))
 
 (use-package flyspell
   :ensure t
   :diminish flyspell-mode
-  :init
-  (setq ispell-program-name "aspell")
   :config
-  (flyspell-mode-1)
-  (flyspell-prog-mode))
+    (setq ispell-program-name "aspell")
+    (flyspell-mode 1)
+    (flyspell-prog-mode))
 
 (use-package golden-ratio
   :ensure t
-  :init
+  :config
     (golden-ratio-mode 1)
     (add-to-list 'golden-ratio-extra-commands 'ace-window))
+
+(use-package helm
+  :ensure t
+  :diminish helm-mode
+  :init
+    (helm-mode 1)
+  :bind
+    (("M-x" . undefined)
+     ("M-x" . helm-M-x)
+     ("M-y" . helm-show-kill-ring)
+     ("C-x C-f" . helm-find-files)
+     ("C-h b" . helm-descbinds)
+     ("C-x b" . helm-mini)
+     ("C-x C-b" . helm-mini)
+     ("C-x C-d" . helm-browse-project)
+     ("C-c h" . helm-command-prefix)
+     ("C-i" . helm-execute-persistent-action)
+     ("C-;" . helm-flyspell-correct)
+     ("C-z" . helm-select-action)
+  :map helm-map
+     ("<tab>" . helm-execute-persistent-action)
+     ("C-i" . helm-execute-persistent-action)
+     ("C-z" .  helm-select-action))
+  :config
+    (setq helm-buffer-max-length 80)
+    (helm-adaptive-mode t)
+    (helm-autoresize-mode t)
+    (helm-push-mark-mode t))
+
 
 (use-package helm-flyspell
   :ensure t)
 
-(use-package helm-dash
+(use-package helm-swoop
   :ensure t
+  :bind
+    (("C-s" . helm-swoop)
+     ("M-i" . helm-swoop)
+     ("M-s s" . helm-swoop)
+     ("M-s M-s" . helm-swoop)
+     ("C-c M-i" . helm-multi-swoop)
+     ("C-x M-i" . helm-multi-swoop-all)
+  :map isearch-mode-map
+     ("M-i" . helm-swoop-from-isearch)
+  :map helm-swoop-map
+     ("M-i" . helm-multi-swoop-all-from-helm-swoop))
   :config
-  (setq helm-dash-browser-func 'eww)
-  (setq helm-dash-docsets-path (format "%s/.emacs.d/docsets" (getenv "HOME")))
-  (setq dash-common-docsets '("Emacs Lisp" "NodeJS" "NET_Framework")))
-
-(use-package helm
-  :ensure t
-  :init
-  (setq helm-buffer-max-length 80)
-  (helm-adaptive-mode t)
-  (helm-autoresize-mode t)
-  (helm-push-mark-mode t)
-  :diminish helm-mode
-  :bind (("M-x" . undefined)
-         ("M-x" . helm-M-x)
-         ("M-y" . helm-show-kill-ring)
-         ("C-x C-f" . helm-find-files)
-         ("C-x b" . helm-mini)
-         ("C-x C-b" . helm-mini)
-         ("C-x C-d" . helm-browse-project)
-         ("C-c h" . helm-command-prefix)
-         ("C-i" . helm-execute-persistent-action)
-         ("C-;" . helm-flyspell-correct)
-         ("C-z" . helm-select-action))
-  :config
-  (helm-mode 1)
-  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
-  (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)   ; make TAB work in terminal
-  (define-key helm-map (kbd "C-z")  'helm-select-action)              ; list actions using C-z
-  (add-hook 'shell-mode-hook
-            (lambda ()
-              (define-key shell-mode-map [remap pcomplete] 'helm-esh-pcomplete)
-              (define-key shell-mode-map (kbd "M-h") 'helm-eshell-history))))
+    (setq helm-swoop-split-with-multiple-windows nil)
+    (setq helm-swoop-split-direction 'split-window-vertically))
 
 (use-package hlinum
   :ensure t
   :diminish hlinum
-  :config (hlinum-activate))
+  :config
+    (hlinum-activate))
 
 (use-package js2-mode
   :ensure t
   :diminish js2-mode
-  :init
+  :config
   (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
   (setq-default indent-tabs-mode nil)
   (setq-default js2-idle-timer-delay 0.1)
@@ -185,15 +191,7 @@
   (setq-default js2-show-parse-errors nil)
   (setq-default js2-strict-missing-semi-warning nil)
   (setq-default js2-strict-trailing-comma-warning t)
-  :config
   (add-hook 'js2-mode-hook 'flycheck-mode))
-
-;; (use-package js2-refactor
-;;   :ensure t
-;;   :diminish js2-refactor
-;;   :config
-;;   (js2r-add-keybindings-with-prefix "C-c C-r")
-;;   (add-hook 'js2-mode-hook 'js2-refactor-mode))
 
 (use-package json-mode
   :ensure t
@@ -205,48 +203,58 @@
 (use-package neotree
   :ensure t
   :diminish neotree
-  :init
-  (setq neo-theme 'nerd))
+  :config
+    (setq neo-theme 'nerd))
 
 (use-package origami
   :ensure t
   :diminish origami
-  :config (global-origami-mode 1))
+  :config
+    (global-origami-mode 1))
 
 (use-package omnisharp
   :ensure t
   :diminish omnisharp-mode
-  :init
-  (setq omnisharp-server-executable-path "/Users/nboyd/git/omnisharp-server/OmniSharp/bin/Debug/OmniSharp.exe")
-  (add-hook 'csharp-mode-hook 'omnisharp-mode))
+  :config
+    (setq omnisharp-server-executable-path "/Users/nboyd/git/omnisharp-server/OmniSharp/bin/Debug/OmniSharp.exe")
+    (add-hook 'csharp-mode-hook 'omnisharp-mode))
+
+(use-package rainbow-delimiters
+  :ensure t
+  :diminish rainbow-delimiters
+  :config
+    (add-hook 'prog-mode-hook (lambda()
+                      (rainbow-delimiters-mode t))))
 
 (use-package recentf
   :ensure t
-  :init
-  (setq recentf-auto-cleanup 'never)
-  (setq recentf-max-menu-items 25)
   :diminish recentf-mode
-  :bind (("C-x \C-r" . recentf-open-files))
-  :config (recentf-mode 1))
+  :bind
+    (("C-x \C-r" . recentf-open-files))
+  :config
+    (setq recentf-auto-cleanup 'never)
+    (setq recentf-max-menu-items 25)
+    (recentf-mode 1))
 
-;; (use-package save-place
-;;   :ensure t
-;;   :diminish save-place-mode
-;;   :config
-;;   (save-place-mode))
+;; save last position in file
+(setq save-place-file "~/.emacs.d/saveplace")
+(setq-default save-place t)
+(require 'saveplace)
+(if (fboundp #'save-place-mode)
+  (save-place-mode +1)
+  (setq-default save-place t))
 
 (use-package smart-mode-line
   :ensure t
   :diminish smart-mode-line
-  :init
-  (require 'smart-mode-line)
-  (setq sml/mode-width 0)
-  (setq sml/name-width 20)
-  (rich-minority-mode 1)
-  (setf rm-blacklist "")
   :config
-  (powerline-default-theme)
-  (sml/setup))
+    (setq sml/no-confirm-load-theme t)
+    (setq sml/theme 'respectful)
+    (setq powerline-arrow-shape 'curve)
+    (setq powerline-default-separator-dir '(right . left))
+    (rich-minority-mode 1)
+    (setf rm-blacklist "")
+    (sml/setup))
 
 (use-package smartparens
   :ensure t
@@ -260,10 +268,10 @@
 
 (use-package tern
   :ensure t
-  :diminish tern-mode
-  :init
-  (add-hook 'js-mode-hook (lambda () (tern-mode t)))
-  (add-hook 'js2-mode-hook (lambda () (tern-mode t))))
+  :diminish t
+  :config
+    (add-hook 'javascript-hook 'tern-mode)
+    (add-hook 'js2-mode-hook 'tern-mode))
 
 (use-package undo-tree
   :ensure t
