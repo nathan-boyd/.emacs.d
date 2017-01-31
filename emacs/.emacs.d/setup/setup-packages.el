@@ -31,6 +31,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; install and configure with use-package ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (use-package auto-compile
   :ensure t
   :init
@@ -40,30 +41,33 @@
 
 (use-package aggressive-indent
   :ensure t
-  :diminish aggressive-indent
-  :config
+  :diminish
+    aggressive-indent
+  ;; :config
   ;; (global-aggressive-indent-mode 1)
   )
 
 (use-package ace-window
   :ensure t
   :bind
-  (("M-RET" . ace-window)
-   :map shell-mode-map
-   ("M-RET" . ace-window))
+    (("M-RET" . ace-window)
+  :map shell-mode-map
+    ("M-RET" . ace-window))
   :config
-  (setq aw-scope 'frame))
+    (setq aw-scope 'frame))
 
 (use-package beacon
   :ensure t
   :demand t
   :diminish beacon-mode
-  :bind* (("M-m g z" . beacon-blink))
+  :bind*
+    (("M-m g z" . beacon-blink))
   :config
-  (beacon-mode 1))
+    (beacon-mode 1))
 
 (use-package company
   :ensure t
+  :diminish (company-mode . "ς")
   :commands (company-mode
              company-complete
              company-complete-common
@@ -72,32 +76,31 @@
              company-tern
              company-web-html)
   :init
-  (setq company-minimum-prefix-length 2
-        company-require-match 0
-        company-selection-wrap-around t
-        company-dabbrev-downcase nil
-        company-tooltip-limit 20                      ; bigger popup window
-        company-tooltip-align-annotations 't          ; align annotations to the right tooltip border
-        company-idle-delay .4                         ; decrease delay before autocompletion popup shows
-        company-begin-commands '(self-insert-command)) ; start autocompletion only after typing
-  (eval-after-load 'company
-    '(add-to-list 'company-backends '(company-files
-                                      company-capf
-                                      company-omnisharp)))
-  :bind (("M-t"   . company-complete)
-         ("C-c f" . company-files)
-         ("C-c a" . company-dabbrev)
-         ("C-c d" . company-ispell)
+    (setq company-minimum-prefix-length 2
+          company-require-match 0
+          company-selection-wrap-around t
+          company-dabbrev-downcase nil
+          company-tooltip-limit 20                      ; bigger popup window
+          company-tooltip-align-annotations 't          ; align annotations to the right tooltip border
+          company-idle-delay .4                         ; decrease delay before autocompletion popup shows
+          company-begin-commands '(self-insert-command)) ; start autocompletion only after typing
+    (eval-after-load 'company
+      '(add-to-list 'company-backends '(company-files
+                                        company-capf)))
+  :bind (("C-<return>" . company-complete)
+         ("C-c f"      . company-files)
+         ("C-c a"      . company-dabbrev)
+         ("C-c d"      . company-ispell)
          :map company-active-map
-         ("C-n"    . company-select-next)
-         ("C-p"    . company-select-previous)
-         ([return] . company-complete-selection)
-         ("C-w"    . backward-kill-word)
-         ("C-c"    . company-abort)
-         ("C-c"    . company-search-abort))
-  :diminish (company-mode . "ς")
+         ("C-n"        . company-select-next)
+         ("C-p"        . company-select-previous)
+         ([return]     . company-complete-selection)
+         ("C-w"        . backward-kill-word)
+         ("C-c"        . company-abort)
+         ("C-c"        . company-search-abort))
   :config
   (global-company-mode)
+
   (use-package company-tern
     :ensure t
     :bind (("C-c t" . company-tern))
@@ -105,14 +108,15 @@
     (setq company-tern-property-marker "")
     (setq company-tern-meta-as-single-line t)
     :config
-    (add-to-list 'company-backends 'company-tern))
-  ;; HTML completion
+    (add-to-list 'company-backends 'company-tern)
+    (add-to-list 'company-backends 'company-omnisharp)) ;; this is weird
+
   (use-package company-web
     :ensure t
     :bind (("C-c w" . company-web-html))
     :config
     (add-to-list 'company-backends 'company-web-html))
-  ;; LaTeX autocompletion
+
   )
 
 ;; (use-package company
@@ -155,13 +159,14 @@
   (diff-hl-margin-mode)
   (diff-hl-dired-mode))
 
-;; (which-key-add-key-based-replacements
-;;   "] h" "next git hunk"
-;;   "[ h" "previous git hunk"
-;;   "g h" "goto git hunk"
-;;   "g H" "revert git hunk"
-;;   "i h" "select git hunk"
-;;   "a h" "select a git hunk")
+(with-eval-after-load "which-key"
+  (which-key-add-key-based-replacements
+  "] h" "next git hunk"
+  "[ h" "previous git hunk"
+  "g h" "goto git hunk"
+  "g H" "revert git hunk"
+  "i h" "select git hunk"
+  "a h" "select a git hunk"))
 
 (use-package exec-path-from-shell
   :ensure t
@@ -185,10 +190,11 @@
   :config
   (global-flycheck-mode))
 
-;; (which-key-add-key-based-replacements
-;;   "] l"   "next error"
-;;   "[ l"   "previous error"
-;;   "SPC l" "list errors")
+(with-eval-after-load "which-key"
+(which-key-add-key-based-replacements
+  "] l"   "next error"
+  "[ l"   "previous error"
+  "SPC l" "list errors"))
 
 ;; (use-package flycheck
 ;;   :ensure t
@@ -222,44 +228,45 @@
   :bind* (("M-m g l" . git-timemachine-toggle)
           ("M-m g L" . git-timemachine-switch-branch)))
 
-;; (which-key-add-key-based-replacements
-;;   "g l" "git time machine"
-;;   "g L" "time machine switch branch")
+(with-eval-after-load "which-key"
+(which-key-add-key-based-replacements
+  "g l" "git time machine"
+  "g L" "time machine switch branch"))
 
 (use-package golden-ratio
   :ensure t
   :diminish golden-ratio
   :config
-  (golden-ratio-mode 1)
-  (add-to-list 'golden-ratio-extra-commands 'ace-window))
+    (golden-ratio-mode 1)
+    (add-to-list 'golden-ratio-extra-commands 'ace-window))
 
 (use-package helm
   :ensure t
   :diminish helm-mode
   :init
-  (helm-mode 1)
+    (helm-mode 1)
   :bind
-  (("M-x" . undefined)
-   ("M-x" . helm-M-x)
-   ("M-y" . helm-show-kill-ring)
-   ("C-x C-f" . helm-find-files)
-   ("C-h b" . helm-descbinds)
-   ("C-x b" . helm-mini)
-   ("C-x C-b" . helm-mini)
-   ("C-x C-d" . helm-browse-project)
-   ("C-c h" . helm-command-prefix)
-   ("C-i" . helm-execute-persistent-action)
-   ("C-;" . helm-flyspell-correct)
-   ("C-z" . helm-select-action)
-   :map helm-map
-   ("<tab>" . helm-execute-persistent-action)
-   ("C-i" . helm-execute-persistent-action)
-   ("C-z" .  helm-select-action))
+    (("M-x"     . undefined)
+     ("M-x"     . helm-M-x)
+     ("M-y"     . helm-show-kill-ring)
+     ("C-x C-f" . helm-find-files)
+     ("C-h b"   . helm-descbinds)
+     ("C-x b"   . helm-mini)
+     ("C-x C-b" . helm-mini)
+     ("C-x C-d" . helm-browse-project)
+     ("C-c h"   . helm-command-prefix)
+     ("C-i"     . helm-execute-persistent-action)
+     ("C-;"     . helm-flyspell-correct)
+     ("C-z"     . helm-select-action)
+  :map helm-map
+    ("<tab>"    . helm-execute-persistent-action)
+    ("C-i"      . helm-execute-persistent-action)
+    ("C-z"      .  helm-select-action))
   :config
-  (setq helm-buffer-max-length 80)
-  (helm-adaptive-mode t)
-  (helm-autoresize-mode t)
-  (helm-push-mark-mode t))
+    (setq helm-buffer-max-length 80)
+    (helm-adaptive-mode t)
+    (helm-autoresize-mode t)
+    (helm-push-mark-mode t))
 
 (use-package helm-flyspell
   :ensure t)
@@ -267,19 +274,19 @@
 (use-package helm-swoop
   :ensure t
   :bind
-  (("C-s" . helm-swoop)
-   ("M-i" . helm-swoop)
-   ("M-s s" . helm-swoop)
+  (("C-s"     . helm-swoop)
+   ("M-i"     . helm-swoop)
+   ("M-s s"   . helm-swoop)
    ("M-s M-s" . helm-swoop)
    ("C-c M-i" . helm-multi-swoop)
    ("C-x M-i" . helm-multi-swoop-all)
    :map isearch-mode-map
-   ("M-i" . helm-swoop-from-isearch)
+   ("M-i"     . helm-swoop-from-isearch)
    :map helm-swoop-map
-   ("M-i" . helm-multi-swoop-all-from-helm-swoop))
+   ("M-i"     . helm-multi-swoop-all-from-helm-swoop))
   :config
-  (setq helm-swoop-split-with-multiple-windows nil)
-  (setq helm-swoop-split-direction 'split-window-vertically)
+    (setq helm-swoop-split-with-multiple-windows nil)
+    (setq helm-swoop-split-direction 'split-window-vertically)
   ;; Fuzzy matching for everything
   (setq helm-M-x-fuzzy-match t
         helm-recentf-fuzzy-match t
@@ -338,8 +345,6 @@
       (sk/flyspell-goto-previous-error 1)
       (helm-flyspell-correct))))
 
-
-
 (use-package hlinum
   :ensure t
   :diminish hlinum
@@ -373,12 +378,12 @@
   :ensure t
   :commands (jsons-print-path))
 
-;; (use-package multiple-cursors
-;;   :ensure t
-;;   :bind* (("M-m ." . mc/edit-lines)
-;;           ("M-m >" . mc/mark-next-like-this)
-;;           ("M-m ," . mc/skip-to-next-like-this)
-;;           ("M-m <" . mc/mark-previous-like-this)))
+(use-package multiple-cursors
+  :ensure t
+  :bind* (("M-m ." . mc/edit-lines)
+          ("M-m >" . mc/mark-next-like-this)
+          ("M-m ," . mc/skip-to-next-like-this)
+          ("M-m <" . mc/mark-previous-like-this)))
 
 (use-package magit
   :ensure t
@@ -390,12 +395,6 @@
   :diminish neotree
   :config
   (setq neo-theme 'nerd))
-
-;; (use-package origami
-;;   :ensure t
-;;   :diminish origami
-;;   :config
-;;     (global-origami-mode 1))
 
 (use-package origami
   :ensure t
@@ -418,7 +417,7 @@
   (setq projectile-file-exists-remote-cache-expire (* 10 60))
   :diminish projectile-mode
   :config
-  (projectile-global-mode))
+  (projectile-mode))
 
 (use-package rainbow-delimiters
   :ensure t
@@ -431,11 +430,11 @@
   :ensure t
   :diminish recentf-mode
   :bind
-  (("C-x \C-r" . recentf-open-files))
+    (("C-x \C-r" . recentf-open-files))
   :config
-  (setq recentf-auto-cleanup 'never)
-  (setq recentf-max-menu-items 25)
-  (recentf-mode 1))
+    (setq recentf-auto-cleanup 'never)
+    (setq recentf-max-menu-items 25)
+    (recentf-mode 1))
 
 (use-package restart-emacs
   :ensure t
@@ -468,15 +467,6 @@
   (spaceline-spacemacs-theme)
   (spaceline-helm-mode))
 
-;; (use-package spaceline-config
-;;   :ensure spaceline
-;;   :config
-;;     ;; (setq powerline-default-separator 'arrow-fade)
-;;       (setq ns-use-srgb-colorspace nil) ;; fix colors
-;;       (spaceline-spacemacs-theme)
-;;       (spaceline-helm-mode)
-;; )
-
 (use-package smartparens
   :ensure t
   :diminish smartparens-mode
@@ -495,13 +485,6 @@
   (progn
     (add-hook 'js-mode-hook '(lambda () (tern-mode t)))))
 
-;; (use-package tern
-;;   :ensure t
-;;   :diminish t
-;;   :config
-;;     (add-hook 'javascript-hook 'tern-mode)
-;;     (add-hook 'js2-mode-hook 'tern-mode))
-
 (use-package undo-tree
   :ensure t
   :diminish
@@ -515,13 +498,6 @@
   :diminish volatile-highlights-mode
   :config
   (volatile-highlights-mode t))
-
-;; (use-package which-key
-;;   :ensure t
-;;   :diminish which-key-mode
-;;   :config
-;;   (which-key-setup-minibuffer)
-;;   (which-key-mode))
 
 (use-package web-mode
   :ensure t
@@ -548,9 +524,10 @@
   :init
   (setq yagist-encrypt-risky-config t))
 
-;; (which-key-add-key-based-replacements
-;;   "g p" "gist public"
-;;   "g P" "gist private")
+(with-eval-after-load "which-key"
+  (which-key-add-key-based-replacements
+    "g p" "gist public"
+    "g P" "gist private"))
 
 (use-package yaml-mode
   :ensure t

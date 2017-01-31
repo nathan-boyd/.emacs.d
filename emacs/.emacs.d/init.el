@@ -121,7 +121,7 @@
 
 ;;setup packages
 (load-library "~/.emacs.d/setup/setup-packages.el")
-;; (load-library "~/.emacs.d/setup/my-modes.el")
+(load-library "~/.emacs.d/setup/my-modes.el")
 
 (global-set-key (kbd "RET") 'newline-and-indent)
 (global-set-key (kbd "C-;") 'comment-or-uncomment-region)
@@ -153,11 +153,8 @@
  '(whitespace-tab              ((t (:foreground "dim gray" :background "#3F3F3F"))))
  '(helm-buffer-directory       ((t (:foreground "slate gray"))))
  '(helm-buffer-size            ((t (:foreground "slate gray"))))
- )
-
-;; the whitespace colors in custom set faces map to the following
-;; zenburn-bg+1 = "#4F4F4F"
-;; dim gray = "#696969"
+ '(spaceline-highlight-face    ((t (:foreground "#94BFF3"))))
+)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
