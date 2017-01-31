@@ -5,7 +5,7 @@
 ;;;;;;;;;;;;;;;;;
 ;; clear shell ;;
 ;;;;;;;;;;;;;;;;;
-(defun clear-shell ()
+(defun my/clear-shell ()
   (interactive)
   (let ((comint-buffer-maximum-size 0))
     (comint-truncate-buffer)))
@@ -13,7 +13,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; define duplicate-line function ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(defun duplicate-line()
+(defun my/duplicate-line()
   (interactive)
   (move-beginning-of-line 1)
   (kill-line)
@@ -26,7 +26,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; create shorcut for duplicate line ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(global-set-key (kbd "M-d") 'duplicate-line)
+(global-set-key (kbd "M-d") 'my/duplicate-line)
 
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; compile emacs lisp setup files ;;
@@ -63,15 +63,177 @@
     (replace-match "\nGO"))
   )
 
-(defun copy-file-name-to-clipboard ()
-  "Copy the current buffer file name to the clipboard."
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; functions to align text by character ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun my/align-whitespace (start end)
+  "Align columns by whitespace"
+  (interactive "r")
+  (align-regexp start end
+                "\\(\\s-*\\)\\s-" 1 0 t))
+
+(defun my/align-ampersand (start end)
+  "Align columns by ampersand"
+  (interactive "r")
+  (align-regexp start end
+                "\\(\\s-*\\)&" 1 1 t))
+
+(defun my/align-quote-space (start end)
+  "Align columns by quote and space"
+  (interactive "r")
+  (align-regexp start end
+                "\\(\\s-*\\).*\\s-\"" 1 0 t))
+
+(defun my/align-equals (start end)
+  "Align columns by equals sign"
+  (interactive "r")
+  (align-regexp start end
+                "\\(\\s-*\\)=" 1 0 t))
+
+(defun my/align-comma (start end)
+  "Align columns by comma"
+  (interactive "r")
+  (align-regexp start end
+                "\\(\\s-*\\)," 1 1 t))
+
+(defun my/align-dot (start end)
+  "Align columns by dot"
+  (interactive "r")
+  (align-regexp start end
+                "\\(\\s-*\\)\\\." 1 1 t))
+
+(defun my/align-colon (start end)
+  "Align columns by equals sign"
+  (interactive "r")
+  (align-regexp start end
+                "\\(\\s-*\\):" 1 0 t))
+
+(bind-keys*
+  ("M-m g A SPC" .    my/align-whitespace)
+  ("M-m g A &"   .    my/align-ampersand)
+  ("M-m g A ,"   .    my/align-comma)
+  ("M-m g A \""  .    my/align-quote-space)
+  ("M-m g A      ." . my/align-dot)
+  ("M-m g A ="   .    my/align-equals)
+  ("M-m g A :"   .    my/align-colon)
+  ("M-m g A A"   .    align-regexp))
+
+(which-key-add-key-based-replacements
+  "M-m g A" "align prefix")
+
+(which-key-add-key-based-replacements
+  "g A"     "align prefix"
+  "g A SPC" "align based on spaces"
+  "g A &"   "align based on &"
+  "g A ,"   "align based on ,"
+  "g A \""  "align based on \""
+  "g A ."   "align based on ."
+  "g A ="   "align based on ="
+  "g A :"   "align based on :"
+  "g A A"   "align based on regex")
+
+;;;;;;;;;;;;;;;;;
+;; insert date ;;
+;;;;;;;;;;;;;;;;;
+
+(defun my/insert-date (prefix)
+  "Insert the current date. With prefix-argument, write out the day and month name."
+  (interactive "P")
+  (let ((format (cond
+                 ((not prefix) "%Y-%m-%d")
+                 ((equal prefix '(4)) "%A, %d %B %Y")
+                 ((equal prefix '(16)) "%Y-%m-%d %H:%M:%S"))))
+    (insert (format-time-string format))))
+
+(bind-keys*
+  ("M-m g D" . my/insert-date))
+
+(which-key-add-key-based-replacements
+  "g D"   "insert date")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; rename file and buffer ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun my/rename-current-buffer-file ()
+  "Renames current buffer and file it is visiting."
   (interactive)
-  (let ((filename (if (equal major-mode 'dired-mode)
-		      default-directory
-		    (buffer-file-name))))
-    (when filename
-      (kill-new filename)
-      (message "Copied buffer file name '%s' to the clipboard." filename))))
+  (let ((name (buffer-name))
+        (filename (buffer-file-name)))
+    (if (not (and filename (file-exists-p filename)))
+        (error "Buffer '%s' is not visiting a file!" name)
+      (let ((new-name (read-file-name "New name: " filename)))
+        (if (get-buffer new-name)
+            (error "A buffer named '%s' already exists!" new-name)
+          (rename-file filename new-name 1)
+          (rename-buffer new-name)
+          (set-visited-file-name new-name)
+          (set-buffer-modified-p nil)
+          (message "File '%s' successfully renamed to '%s'"
+                   name (file-name-nondirectory new-name)))))))
+
+(bind-keys*
+  ("M-m g R" . my/rename-current-buffer-file))
+
+(which-key-add-key-based-replacements
+  "g R" "rename buffer and file")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; delete current buffer and file ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun my/delete-current-buffer-file ()
+  "Removes file connected to current buffer and kills buffer."
+  (interactive)
+  (let ((filename (buffer-file-name))
+        (buffer (current-buffer))
+        (name (buffer-name)))
+    (if (not (and filename (file-exists-p filename)))
+        (ido-kill-buffer)
+      (when (yes-or-no-p "Are you sure you want to remove this file? ")
+        (delete-file filename)
+        (kill-buffer buffer)
+        (message "File '%s' successfully removed" filename)))))
+
+(bind-keys*
+  ("M-m g K" . my/delete-current-buffer-file))
+
+(which-key-add-key-based-replacements
+  "g K" "delete buffer and file")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; copy current file name to buffer ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun my/copy-current-file-path ()
+  "Add current file path to kill ring. Limits the filename to project root if possible."
+  (interactive)
+  (kill-new buffer-file-name))
+
+(bind-keys*
+  ("M-m g y" . my/copy-current-file-path))
+
+(which-key-add-key-based-replacements
+  "g y" "copy current file path")
+
+
+;;;;;;;;;;;;;;;
+;; copy line ;;
+;;;;;;;;;;;;;;;
+
+(defun my/copy-to-end-of-line ()
+  (interactive)
+  (kill-ring-save (point)
+                  (line-end-position))
+  (message "Copied to end of line"))
+
+(bind-keys*
+  ("M-m Y" . my/copy-to-end-of-line))
+
+(which-key-add-key-based-replacements
+  "Y" "copy till end of line")
 
 (provide 'my-modes)
 
