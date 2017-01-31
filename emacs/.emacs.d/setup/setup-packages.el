@@ -244,17 +244,24 @@
   (save-place-mode +1)
   (setq-default save-place t))
 
-(use-package smart-mode-line
-  :ensure t
-  :diminish smart-mode-line
+;; (use-package powerline
+;;   :ensure t
+;;   :config
+;;     (setq ns-use-srgb-colorspace nil)
+;;     (powerline-default-theme))
+
+
+;; TODO add in :after identifiers where it makes sense
+
+
+(use-package spaceline-config
+  :ensure spaceline
   :config
-    (setq sml/no-confirm-load-theme t)
-    (setq sml/theme 'respectful)
-    (setq powerline-arrow-shape 'curve)
-    (setq powerline-default-separator-dir '(right . left))
-    (rich-minority-mode 1)
-    (setf rm-blacklist "")
-    (sml/setup))
+      (setq ns-use-srgb-colorspace nil)
+  (spaceline-spacemacs-theme)
+  (spaceline-helm-mode)
+  (setq powerline-default-separator 'rounded)
+  (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state))
 
 (use-package smartparens
   :ensure t
