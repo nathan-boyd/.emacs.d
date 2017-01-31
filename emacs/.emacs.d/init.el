@@ -121,7 +121,7 @@
 
 ;;setup packages
 (load-library "~/.emacs.d/setup/setup-packages.el")
-(load-library "~/.emacs.d/setup/my-modes.el")
+;; (load-library "~/.emacs.d/setup/my-modes.el")
 
 (global-set-key (kbd "RET") 'newline-and-indent)
 (global-set-key (kbd "C-;") 'comment-or-uncomment-region)
