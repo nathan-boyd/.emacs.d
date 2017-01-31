@@ -1,0 +1,31 @@
+;;; -*- coding: utf-8 -*-
+(("/Users/nboyd/git/nb-tools/emacs/.emacs.d/setup/setup-packages.el" . 14329)
+ ("/Users/nboyd/.emacs.d/recentf" . 1738)
+ ("/Users/nboyd/git/MCDE-FunctionalTests/scripts/"
+  (dired-filename . "/Users/nboyd/git/MCDE-FunctionalTests/scripts/runTests.sh"))
+ ("/Users/nboyd/git/MCIMP-FunctionalTests/test/"
+  (dired-filename . "/Users/nboyd/git/MCIMP-FunctionalTests/test/.."))
+ ("/Users/nboyd/git/MCIMP-FunctionalTests/features/"
+  (dired-filename . "/Users/nboyd/git/MCIMP-FunctionalTests/features/.."))
+ ("/Users/nboyd/git/MCIMP-FunctionalTests/"
+  (dired-filename . "/Users/nboyd/git/MCIMP-FunctionalTests/scripts"))
+ ("/Users/nboyd/git/MCIMP-FunctionalTests/scripts/"
+  (dired-filename . "/Users/nboyd/git/MCIMP-FunctionalTests/scripts/runTests.sh"))
+ ("/Users/nboyd/git/MCIMP-FunctionalTests/scripts/runTests.sh" . 1260)
+ ("/Users/nboyd/git/MCIMP-FunctionalTests/config/"
+  (dired-filename . "/Users/nboyd/git/MCIMP-FunctionalTests/config/data"))
+ ("/Users/nboyd/git/MCIMP-FunctionalTests/config/data/"
+  (dired-filename . "/Users/nboyd/git/MCIMP-FunctionalTests/config/data/TestConfiguration.yml"))
+ ("/Users/nboyd/git/nb-tools/emacs/.emacs.d/setup/my-modes.el" . 3453)
+ ("/Users/nboyd/git/nb-tools/emacs/.emacs.d/setup/"
+  (dired-filename . "/Users/nboyd/git/nb-tools/emacs/.emacs.d/setup/setup-packages.el"))
+ ("/Users/nboyd/git/nb-tools/emacs/.emacs.d/"
+  (dired-filename . "/Users/nboyd/git/nb-tools/emacs/.emacs.d/init.el"))
+ ("/Users/nboyd/git/nb-tools/emacs/.emacs.d/init.el" . 3266)
+ ("/Users/nboyd/git/LogConsumer/interfaces/dataExtension.js" . 209)
+ ("/Users/nboyd/tfs/MCET_207/Services/Auth/AuthService/Utilities/AuthServiceUtilities.cs" . 358)
+ ("/Users/nboyd/tfs/MCET_207/Services/Auth/AuthService/ServiceModule.cs" . 1359)
+ ("/Users/nboyd/temp/"
+  (dired-filename . "/Users/nboyd/temp/.."))
+ ("/Users/nboyd/"
+  (dired-filename . "/Users/nboyd/.CFUserTextEncoding")))

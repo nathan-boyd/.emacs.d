@@ -1,0 +1,227 @@
+using Newtonsoft.Json.Linq;
+using AuthService.Utilities;
+using ExactTarget.Core;
+using ExactTarget.Diagnostics;
+using ExactTarget.Exceptions.Authorization;
+using ExactTarget.Exceptions.Validation;
+using ExactTarget.Services.Auth;
+using ExactTarget.Services.Auth.RateLimiting;
+using ExactTarget.Services.Auth.Utilities;
+using Nancy;
+
+namespace AuthService
+{
+	public class ServiceModule : NancyModule
+	{
+        private static readonly LogWrapper _logWrapper = new LogWrapper("AuthService");
+
+		/// <summary>
+		/// Provides simple JSON-over-HTTP service exposing Auth implementation
+		/// This is an internal service to be consumed by public-facing REST layer
+		/// </summary>
+        public ServiceModule(IClientRateLimiter clientRateLimiter, IStatsdMetricsHelper statsDHelper)
+        {
+            // Redirect to rest (discovery) method during testing
+            Get["/"] = parameters => Response.AsRedirect(Request.Url.BasePath + "/v1/rest");
+            Get["/v1"] = parameters => Response.AsRedirect(Request.Url.BasePath + "/v1/rest");
+
+            // Implement discovery method
+            Get["/v1/rest"] = parameters => AuthServiceUtilities.JsonResponse(LoadServiceConfig());
+
+            // Implement generate token method
+            Post["/v1/requestToken"] = parameters =>
+            {
+                // Read request
+                var body = AuthServiceUtilities.ReadJsonBody(Request.Body);
+
+                if (body.Type != JTokenType.Object)
+                {
+                    throw new ValidationExceptionInvalidValue("Body must be JSON object");
+                }
+
+                var clientId = AuthServiceUtilities.ReadRequiredField(body, "clientId");
+                var clientSecret = AuthServiceUtilities.ReadRequiredField(body, "clientSecret");
+
+                // Apply rate limit
+                if (RateLimitingUtilities.ShouldRateLimit(clientId, clientRateLimiter))
+                {
+                    return RateLimitingUtilities.ApplyRateLimit(
+                        request: Request,
+                        clientId: clientId,
+                        statsDHelper: statsDHelper);
+                }
+
+                // Get the access type and refresh token
+                var accessType = AuthServiceUtilities.ReadOptionalField(body, "accessType");
+                var refreshToken = AuthServiceUtilities.ReadOptionalField(body, "refreshToken");
+              
+                var includeLegacyToken = Request.Query.legacy == "1";
+
+                var scope = AuthServiceUtilities.ReadOptionalField(body, "scope");
+
+                var reproxyContext = ReproxyUtilities.GetReproxyContext(
+                    httpRequest: Request,
+                    clientId: clientId,
+                    clientSecret: clientSecret,
+                    logWrapper: _logWrapper,
+                    refreshToken: refreshToken,
+                    statsDHelper: statsDHelper,
+                    scope: scope);
+
+                refreshToken = reproxyContext.RefreshToken;
+                scope = reproxyContext.Scope;
+
+                if (reproxyContext.ShouldReproxy)
+                {
+                    return ReproxyUtilities.ReproxyResponse(
+                        refreshToken: refreshToken,
+                        reproxyStackId: reproxyContext.StackId);
+                }
+
+                // Generate the access token
+                var token = AuthServiceUtilities.GenerateAccessToken(clientId, clientSecret, refreshToken, scope,
+                    includeLegacyToken, Request);
+
+                if (token == null)
+                {
+                    throw new AuthorizationExceptionUnauthorized("Unauthorized");
+                }
+
+                // Return token
+                Response successfulTokenResponse = TokenResponse(token, accessType);
+                RateLimitingUtilities.AddRateLimitHeadersIfNecessary(clientId, Request, successfulTokenResponse);
+                return successfulTokenResponse;
+            };
+
+            // Implement generate context method
+            Post["/v1/requestContext"] = parameters =>
+            {
+                // Read request
+                var body = AuthServiceUtilities.ReadJsonBody(Request.Body);
+
+                if (body.Type != JTokenType.Object)
+                {
+                    throw new ValidationExceptionInvalidValue("Body must be JSON object");
+                }
+
+                var clientId = AuthServiceUtilities.ReadRequiredField(body, "clientId");
+                var clientSecret = AuthServiceUtilities.ReadRequiredField(body, "clientSecret");
+
+                var scope = AuthServiceUtilities.ReadOptionalField(body, "scope");
+
+                // Get the account context
+                var accountContext = AuthServiceUtilities.RetrieveContext(clientId, clientSecret, null, scope, Request);
+
+                if (accountContext == null)
+                {
+                    throw new AuthorizationExceptionUnauthorized("Unauthorized");
+                }
+
+                // Return context
+                return ContextResponse(accountContext);
+            };
+        }
+
+		/// <summary>
+		/// Creates a proper Nancy response in
+		/// unified JSON format for tokens
+		/// </summary>
+		/// <param name="token">OAuth token returned from business logic</param>
+		/// <param name="accessType">Access Type requested by client</param>
+		/// <returns>Nancy response</returns>
+		private static Response TokenResponse(Token token, string accessType)
+		{
+			var jsonObject = new JObject
+			{
+			    {"accessToken", token.AccessToken},
+			    {"expiresIn", token.ExpiresIn}
+			};
+
+			if (token.LegacyToken != null)
+			{
+				jsonObject.Add("legacyToken", token.LegacyToken);
+			}
+
+			if (accessType == "offline")
+			{
+				jsonObject.Add("refreshToken", token.RefreshToken);
+			}
+
+			return AuthServiceUtilities.JsonResponse(jsonObject);
+		}
+
+        /// <summary>
+        /// Creates a proper Nancy response in
+        /// unified JSON format for tokens
+        /// </summary>
+        private static Response ContextResponse(IAccountContext accountContext)
+        {
+            return AuthServiceUtilities.JsonResponse(new JObject
+				{
+					{ "enterprise", new JObject
+						{
+							{ "id", accountContext.EnterpriseID }
+						}
+					},
+					{ "organization", new JObject
+						{
+							{ "id", accountContext.Id }
+						}
+					},
+					{ "user", new JObject
+						{
+							{ "id", accountContext.EmployeeID }
+						}
+					},
+				});
+        }
+
+
+		// BEGIN SHARED LOGIC - Below this line is logic that should be extracted into
+ 		// our framework and would not need to be implemented by individual developers
+
+		/// <summary>
+		/// Returns service configuration
+		/// </summary>
+		/// <returns>Newtonsoft.Json object</returns>
+		private static JToken LoadServiceConfig()
+		{
+			//using (var sr = new StreamReader(HostingEnvironment.MapPath("~/service.json")))
+			//{
+			//	return JObject.Parse(sr.ReadToEnd());
+			//}
+
+			return new JObject {
+				{ "kind", "discovery#restDescription" },
+				{ "id", "auth:v1" },
+				{ "name", "auth" },
+				{ "version", "v1" },
+				{ "title", "Authentication Service" },
+				{ "description", "Interfaces with core systems to provide authentication functionality" },
+				{ "protocol", "rest" },
+				{ "basePath", "authservice" },
+
+				{ "methods", new JObject {
+					{ "requestToken", new JObject {
+						{ "path", "requestToken" },
+						{ "httpMethod", "post" },
+						{ "description", "Generates a new token" },
+						{ "parameters", new JObject() }
+					}},
+                    { "requestContext", new JObject {
+						{ "path", "requestContext" },
+						{ "httpMethod", "post" },
+						{ "description", "Returns account context" },
+						{ "parameters", new JObject() }
+					}},
+					{ "discovery", new JObject {
+						{ "path", "rest" },
+						{ "httpMethod", "get" },
+						{ "description", "Returns discovery document" },
+						{ "parameters", new JObject() }
+					}}
+				}}
+			};
+	    }
+	}
+}

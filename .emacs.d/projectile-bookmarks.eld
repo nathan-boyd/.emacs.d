@@ -1,0 +1,1 @@
+("~/git/nb-tools/" "~/git/RequestProfiler/")

@@ -1,0 +1,225 @@
+(use-package helm
+  :ensure t
+  :demand t
+  :diminish helm-mode
+  :bind (("M-x"     . helm-M-x)
+         ("M-y"     . helm-show-kill-ring)
+         ("C-x C-f" . helm-find-files))
+  :bind* ()
+  :bind (:map helm-map
+              ("<return>"   . helm-maybe-exit-minibuffer)
+              ("RET"        . helm-maybe-exit-minibuffer)
+              ("<tab>"      . helm-select-action)
+              ("C-i"        . helm-select-action)
+              ("S-<return>" . helm-maybe-exit-minibuffer)
+              ("S-RET"      . helm-maybe-exit-minibuffer)
+              ("C-S-m"      . helm-maybe-exit-minibuffer))
+  :bind (:map helm-find-files-map
+              ("<return>"    . helm-execute-persistent-action)
+              ("RET"         . helm-execute-persistent-action)
+              ("<backspace>" . dwim-helm-find-files-up-one-level-maybe)
+              ("DEL"         . dwim-helm-find-files-up-one-level-maybe)
+              ("<tab>"       . helm-select-action)
+              ("C-i"         . helm-select-action)
+              ("S-<return>"  . helm-maybe-exit-minibuffer)
+              ("S-RET"       . helm-maybe-exit-minibuffer)
+              ("C-S-m"       . helm-maybe-exit-minibuffer))
+  :bind (:map helm-read-file-map
+              ("<return>"    . helm-execute-persistent-action)
+              ("RET"         . helm-execute-persistent-action)
+              ("<backspace>" . dwim-helm-find-files-up-one-level-maybe)
+              ("DEL"         . dwim-helm-find-files-up-one-level-maybe)
+              ("<tab>"       . helm-select-action)
+              ("C-i"         . helm-select-action)
+              ("S-<return>"  . helm-maybe-exit-minibuffer)
+              ("S-RET"       . helm-maybe-exit-minibuffer)
+              ("C-S-m"       . helm-maybe-exit-minibuffer))
+  :commands (helm-mode
+             helm-M-x
+             helm-find-files
+             helm-buffers
+             helm-recentf)
+  :config
+  (require 'helm-config)
+  (helm-mode 1)
+
+  ;; use silver searcher when available
+  (when (executable-find "ag-grep")
+    (setq helm-grep-default-command "ag-grep -Hn --no-group --no-color %e %p %f"
+          helm-grep-default-recurse-command "ag-grep -H --no-group --no-color %e %p %f"))
+
+  ;; Fuzzy matching for everything
+  (setq helm-M-x-fuzzy-match t
+        helm-recentf-fuzzy-match t
+        helm-buffers-fuzzy-matching t
+        helm-locate-fuzzy-match nil
+        helm-mode-fuzzy-match t)
+
+  ;; set height and stuff
+  (helm-autoresize-mode 1)
+  (setq helm-autoresize-max-height 20
+        helm-autoresize-min-height 20)
+
+  ;; Work with Spotlight on OS X instead of the regular locate
+  (setq helm-locate-command "mdfind -name -onlyin ~ %s %s")
+
+  ;; Make sure helm always pops up in bottom
+  (setq helm-split-window-in-side-p t)
+
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*helm.*\\*\\'"
+                 (display-buffer-in-side-window)
+                 (inhibit-same-window . t)
+                 (window-height . 0.2)))
+
+  ;; provide input in the header line and hide the mode lines above
+  (setq helm-echo-input-in-header-line t)
+
+  ;; (defvar bottom-buffers nil
+  ;;   "List of bottom buffers before helm session.
+  ;;     Its element is a pair of `buffer-name' and `mode-line-format'.")
+
+  ;; (defun bottom-buffers-init ()
+  ;;   (setq-local mode-line-format (default-value 'mode-line-format))
+  ;;   (setq bottom-buffers
+  ;;         (cl-loop for w in (window-list)
+  ;;                  when (window-at-side-p w 'bottom)
+  ;;                  collect (with-current-buffer (window-buffer w)
+  ;;                            (cons (buffer-name) mode-line-format)))))
+
+  ;; (defun bottom-buffers-hide-mode-line ()
+  ;;   (setq-default cursor-in-non-selected-windows nil)
+  ;;   (mapc (lambda (elt)
+  ;;           (with-current-buffer (car elt)
+  ;;             (setq-local mode-line-format nil)))
+  ;;         bottom-buffers))
+
+  ;; (defun bottom-buffers-show-mode-line ()
+  ;;   (setq-default cursor-in-non-selected-windows t)
+  ;;   (when bottom-buffers
+  ;;     (mapc (lambda (elt)
+  ;;             (with-current-buffer (car elt)
+  ;;               (setq-local mode-line-format (cdr elt))))
+  ;;           bottom-buffers)
+  ;;     (setq bottom-buffers nil)))
+
+  ;; (defun helm-keyboard-quit-advice (orig-func &rest args)
+  ;;   (bottom-buffers-show-mode-line)
+  ;;   (apply orig-func args))
+
+  ;; (add-hook 'helm-before-initialize-hook #'bottom-buffers-init)
+  ;; (add-hook 'helm-after-initialize-hook #'bottom-buffers-hide-mode-line)
+  ;; (add-hook 'helm-exit-minibuffer-hook #'bottom-buffers-show-mode-line)
+  ;; (add-hook 'helm-cleanup-hook #'bottom-buffers-show-mode-line)
+  ;; (advice-add 'helm-keyboard-quit :around #'helm-keyboard-quit-advice)
+
+  ;; remove header lines if only a single source
+  (setq helm-display-header-line nil)
+
+  (defvar helm-source-header-default-background (face-attribute 'helm-source-header :background))
+  (defvar helm-source-header-default-foreground (face-attribute 'helm-source-header :foreground))
+  (defvar helm-source-header-default-box (face-attribute 'helm-source-header :box))
+
+  ;; (defun helm-toggle-header-line ()
+  ;;   (if (> (length helm-sources) 1)
+  ;;       (set-face-attribute 'helm-source-header
+  ;;                           nil
+  ;;                           :foreground helm-source-header-default-foreground
+  ;;                           :background helm-source-header-default-background
+  ;;                           :box helm-source-header-default-box
+  ;;                           :height 1.0)
+  ;;     (set-face-attribute 'helm-source-header
+  ;;                         nil
+  ;;                         :foreground (face-attribute 'helm-selection :background)
+  ;;                         :background (face-attribute 'helm-selection :background)
+  ;;                         :box nil
+  ;;                         :height 0.1)))
+
+  ;; (add-hook 'helm-before-initialize-hook 'helm-toggle-header-line)
+
+  ;; ;; hide the minibuffer when helm is active
+  ;; (defun helm-hide-minibuffer-maybe ()
+  ;;   (when (with-helm-buffer helm-echo-input-in-header-line)
+  ;;     (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
+  ;;       (overlay-put ov 'window (selected-window))
+  ;;       (overlay-put ov 'face (let ((bg-color (face-background 'default nil)))
+  ;;                               `(:background ,bg-color :foreground ,bg-color)))
+  ;;       (setq-local cursor-type nil))))
+
+  ;; (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
+
+  ;; ;; Proper find file behavior
+  ;; (defun dwim-helm-find-files-up-one-level-maybe ()
+  ;;   (interactive)
+  ;;   (if (looking-back "/" 1)
+  ;;       (call-interactively 'helm-find-files-up-one-level)
+  ;;     (delete-backward-char 1)))
+
+  ;; (defun dwim-helm-find-files-navigate-forward (orig-fun &rest args)
+  ;;   "Adjust how helm-execute-persistent actions behaves, depending on context"
+  ;;   (if (file-directory-p (helm-get-selection))
+  ;;       (apply orig-fun args)
+  ;;     (helm-maybe-exit-minibuffer)))
+
+  ;; (advice-add 'helm-execute-persistent-action :around #'dwim-helm-find-files-navigate-forward)
+
+  ;; ;; better smex integration
+  ;; (use-package helm-smex
+  ;;   :ensure t
+  ;;   :bind* (("M-x" . helm-smex)
+  ;;           ("M-X" . helm-smex-major-mode-commands)))
+
+  ;; Make helm fuzzier
+  (use-package helm-fuzzier
+    :ensure t
+    :config
+    (helm-fuzzier-mode 1))
+
+  ;; to search in projects - the silver searcher
+  (use-package helm-ag
+    :ensure t
+    :bind* (("M-m g s" . helm-do-ag-project-root)
+            ("M-m g e" . helm-do-ag)))
+
+  ;; to search in files
+  (use-package helm-swoop
+    :ensure t
+    :bind (("C-s" . helm-swoop-without-pre-input))
+    :bind* (("M-m #"   . helm-swoop)
+            ("M-m g /" . helm-multi-swoop)
+            ("M-m o /" . helm-multi-swoop-org)
+            ("M-m g E" . helm-multi-swoop-all))
+    :init
+    (setq helm-swoop-split-with-multiple-windows nil
+          helm-swoop-split-direction 'split-window-vertically
+          helm-swoop-split-window-function 'helm-default-display-buffer))
+
+  ;; to help with projectile
+  (use-package helm-projectile
+    :ensure t
+    :bind* (("M-m SPC d" . helm-projectile))
+    :init
+    (setq projectile-completion-system 'helm))
+
+  ;; to describe bindings
+  (use-package helm-descbinds
+    :ensure t
+    :bind* (("M-m SPC ?" . helm-descbinds)))
+
+  ;; List errors with helm
+  (use-package helm-flycheck
+    :ensure t
+    :bind* (("M-m SPC l" . helm-flycheck)))
+
+  ;; Flyspell errors with helm
+  (use-package helm-flyspell
+    :ensure t
+    :bind* (("M-m SPC h s" . sk/helm-correct-word))
+    :config
+    (defun sk/helm-correct-word ()
+      (interactive)
+      (save-excursion
+        (sk/flyspell-goto-previous-error 1)
+        (helm-flyspell-correct)))))
+
+(provide 'helm-setup)

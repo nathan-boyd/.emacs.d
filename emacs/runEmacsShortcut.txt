@@ -1,1 +1,0 @@
-emacsclientw.exe -na runemacs.exe -c ""

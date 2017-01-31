@@ -1,0 +1,137 @@
+#!/bin/bash
+
+# prod run: un=username pw=password env=prod ./runTests.sh
+# qa   run: un=username pw=password env=qa1 ./runTests.sh
+
+tags="@smoke OR @data OR @model"
+ex=""
+debug=""
+tacos_url="https://tacos.qa.exacttarget.com"
+
+usage ()
+{
+    echo "Usage: $0 [-un USERNAME] [-pw PASSWORD] [-env ENVIRONMENT] [-tacos_url http://localhost] [-tags tag1[,tagN]][/?] [-ex tag1[,tagN]] [-debug] [/?]"
+    echo "Reccomended, set username/pw vi shell environment variables of the same name"
+    echo "  /?              print usage information"
+    echo "  -debug          debug command instead of submitting via curl"
+    echo "  -ex             comma seperated list of test tags for exclusion (no spaces), no default"
+    echo "  -env            testing env code (prod, qa1, qa2, qa3)"
+    echo "  -pw             tacos password"
+    echo "  -tacos_url      optional url for the tacos host"
+    echo "  -tags           comma seperated list of test tags for inclusion (no spaces), default @smoke,@data,@model"
+    echo "  -un             tacos username"
+}
+
+run_test() {
+  environment=$1
+  body=$(cat <<EOF
+    {
+      "name":"Data Extensions $environment",
+      "password":"$pw",
+      "username":"$un",
+      "environment":"$environment",
+      "tests":[
+        2514
+      ],
+      "emailoptions":[
+        {
+          "name":"Notify Me"
+        },
+        {
+          "name":"Notify Project Owner"
+        }
+      ],
+      "scenario_tags":"($tags)$ex"
+    }
+EOF
+)
+  response=$($debug curl -X POST --user "$un:$pw" -H "Content-Type: application/json" -d "$body" $tacos_url/v1/execute_tests)
+  echo $response
+}
+
+if [[ $# -gt 0 ]] ; then
+    for key in "$@"
+    do
+      case ${key} in
+        # debug output instead of posting it
+        -debug)
+            debug="echo"
+            shift
+            ;;
+        # Set the run env
+        -env)
+            env="$2"
+            shift 2 #past argument
+            ;;
+        # set the exclusion tags
+        -ex)
+            ex="$2"
+            ex=${ex//,/ AND NOT }
+            ex=" AND ( NOT $ex)"
+            shift 2
+            ;;
+        # set the tacos pw
+        -pw)
+            pw="$2"
+            shift 2
+            ;;
+        # set the inclusion tags
+        -tags)
+            tags="$2"
+            tags=${tags//,/ OR }
+            shift 2
+            ;;
+        # set the tacos host url
+        -tacos_url)
+            tacos_url="$2"
+            shift 2
+            ;;
+        # Set the tacos username
+        -un)
+            un="$2"
+            shift 2
+            ;;
+        # print help
+        /?)
+            usage
+            exit 0
+            ;;
+        # invalid option
+        -*)
+            echo "ERROR: $key is not a valid option"
+            usage
+            exit 1
+            ;;
+        esac
+      done
+fi
+
+: ${env:?"ERROR: set \"env\" variable to one of the following \"prod\", \"qa1\", \"qa2\" or \"qa3\""}
+: ${un:?"ERROR: set \"un\" to your ET username"}
+: ${pw:?"ERROR: set \"pw\" to your ET password"}
+
+case "$env" in
+"prod")
+    stackList=("S1" "S4" "S6" "S7" "S8")
+    ;;
+"qa1")
+    stackList=("QA1S1" "QA1S2")
+    ;;
+"qa2")
+    stackList=("QA2S2")
+    ;;
+"qa3")
+    stackList=("QA3S1")
+    ;;
+*)
+     echo "ERROR: $env is not a valid environment"
+     usage
+     exit 1
+     ;;
+esac
+
+for i in "${stackList[@]}"
+do
+  run_test "$i"
+  sleep .5
+done
