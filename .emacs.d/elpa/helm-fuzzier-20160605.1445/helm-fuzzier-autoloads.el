@@ -3,9 +3,9 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "helm-fuzzier" "helm-fuzzier.el" (22673 3266
-;;;;;;  0 0))
-;;; Generated autoloads from helm-fuzzier.el
+;;;### (autoloads nil "helm-fuzzier" "../../../../../.emacs.d/elpa/helm-fuzzier-20160605.1445/helm-fuzzier.el"
+;;;;;;  "034c4b5a00e5b7c910647c5f0426a86b")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/helm-fuzzier-20160605.1445/helm-fuzzier.el
 
 (defvar helm-fuzzier-mode nil "\
 Non-nil if Helm-Fuzzier mode is enabled.
@@ -21,6 +21,12 @@ or call the function `helm-fuzzier-mode'.")
 helm-fuzzier minor mode
 
 \(fn &optional ARG)" t nil)
+
+;;;***
+
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/helm-fuzzier-20160605.1445/helm-fuzzier-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/helm-fuzzier-20160605.1445/helm-fuzzier.el")
+;;;;;;  (22673 16144 0 0))
 
 ;;;***
 

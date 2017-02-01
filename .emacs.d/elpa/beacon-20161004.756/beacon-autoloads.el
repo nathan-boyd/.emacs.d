@@ -3,8 +3,9 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "beacon" "beacon.el" (22673 3250 0 0))
-;;; Generated autoloads from beacon.el
+;;;### (autoloads nil "beacon" "../../../../../.emacs.d/elpa/beacon-20161004.756/beacon.el"
+;;;;;;  "a6d9e9e96205c419a499789d11c9d92b")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/beacon-20161004.756/beacon.el
 
 (autoload 'beacon-blink "beacon" "\
 Blink the beacon at the position of the cursor.
@@ -32,6 +33,12 @@ the mode if ARG is omitted or nil, and toggle it if ARG is `toggle'.
 \\{beacon-mode-map}
 
 \(fn &optional ARG)" t nil)
+
+;;;***
+
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/beacon-20161004.756/beacon-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/beacon-20161004.756/beacon.el")
+;;;;;;  (22673 16125 0 0))
 
 ;;;***
 

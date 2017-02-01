@@ -3,9 +3,9 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "csharp-mode" "csharp-mode.el" (22673 3277
-;;;;;;  0 0))
-;;; Generated autoloads from csharp-mode.el
+;;;### (autoloads nil "csharp-mode" "../../../../../.emacs.d/elpa/csharp-mode-20170127.1100/csharp-mode.el"
+;;;;;;  "968b9d14d389ba41e28c5deec02b106a")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/csharp-mode-20170127.1100/csharp-mode.el
 
 (add-to-list 'auto-mode-alist '("\\.cs$" . csharp-mode))
 
@@ -50,6 +50,12 @@ Key bindings:
 \\{csharp-mode-map}
 
 \(fn)" t nil)
+
+;;;***
+
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/csharp-mode-20170127.1100/csharp-mode-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/csharp-mode-20170127.1100/csharp-mode.el")
+;;;;;;  (22673 16159 0 0))
 
 ;;;***
 

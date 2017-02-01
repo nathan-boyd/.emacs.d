@@ -151,9 +151,8 @@
  '(whitespace-newline          ((t (:foreground "dim gray" :background "#3F3F3F"))))
  '(whitespace-space            ((t (:foreground "dim gray" :background "#3F3F3F"))))
  '(whitespace-tab              ((t (:foreground "dim gray" :background "#3F3F3F"))))
- '(helm-buffer-directory       ((t (:foreground "slate gray"))))
- '(helm-buffer-size            ((t (:foreground "slate gray"))))
- '(spaceline-highlight-face    ((t (:foreground "#94BFF3"))))
+ ;; '(helm-buffer-directory       ((t (:foreground "slate gray"))))
+ ;; '(helm-buffer-size            ((t (:foreground "slate gray"))))
 )
 
 (custom-set-variables

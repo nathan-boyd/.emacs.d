@@ -6,6 +6,7 @@
 ;; clear shell ;;
 ;;;;;;;;;;;;;;;;;
 (defun my/clear-shell ()
+  "Clear text in shell buffers."
   (interactive)
   (let ((comint-buffer-maximum-size 0))
     (comint-truncate-buffer)))
@@ -14,19 +15,17 @@
 ;; define duplicate-line function ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun my/duplicate-line()
+  "Duplicate current line."
   (interactive)
   (move-beginning-of-line 1)
   (kill-line)
   (yank)
   (open-line 1)
-  (next-line 1)
-  (yank)
-  )
+  (forward-line 1)
+  (yank))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; create shorcut for duplicate line ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(global-set-key (kbd "M-d") 'my/duplicate-line)
+(bind-keys*
+ ("M-m d" . my/duplicate-line))
 
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; compile emacs lisp setup files ;;
@@ -39,86 +38,88 @@
 (defun remove-elc-on-save ()
   "If you're saving an elisp file, likely the .elc is no longer valid."
   (add-hook 'after-save-hook
-	    (lambda ()
-	      (if (file-exists-p (concat buffer-file-name "c"))
-		  (delete-file (concat buffer-file-name "c"))))
-	    nil
-	    t))
+            (lambda ()
+              (if (file-exists-p (concat buffer-file-name "c"))
+                  (delete-file (concat buffer-file-name "c"))))
+            nil
+            t))
 
 (add-hook 'emacs-lisp-mode-hook 'remove-elc-on-save)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; comment out sql batch seperator "go" ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun comment-batch-seperators ()
-  "comment out GO, for edbi editing"
+  "Comment out GO, for edbi editing."
   (interactive)
-  (beginning-of-buffer)
+  (goto-char (point-min))
   (while (re-search-forward "\nGO" nil t)
-    (replace-match "\n-- GO"))
-  )
+    (replace-match "\n-- GO")))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; uncomment sql batch seperator "go" ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun uncomment-batch-seperators ()
-  "un-comment GO, for edbi editing"
+  "Un-comment GO, for edbi editing."
   (interactive)
-  (beginning-of-buffer)
+  (goto-char (point-min))
   (while (re-search-forward "\n-- GO" nil t)
-    (replace-match "\nGO"))
-  )
-
+    (replace-match "\nGO")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; functions to align text by character ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (defun my/align-whitespace (start end)
-  "Align columns by whitespace"
+  "Align columns by whitespace.  START END."
   (interactive "r")
   (align-regexp start end
                 "\\(\\s-*\\)\\s-" 1 0 t))
 
 (defun my/align-ampersand (start end)
-  "Align columns by ampersand"
+  "Align columns by ampersand.   START END."
   (interactive "r")
   (align-regexp start end
                 "\\(\\s-*\\)&" 1 1 t))
 
 (defun my/align-quote-space (start end)
-  "Align columns by quote and space"
+  "Align columns by quote and space.  START END."
   (interactive "r")
   (align-regexp start end
                 "\\(\\s-*\\).*\\s-\"" 1 0 t))
 
 (defun my/align-equals (start end)
-  "Align columns by equals sign"
+  "Align columns by equals sign.  START END."
   (interactive "r")
   (align-regexp start end
                 "\\(\\s-*\\)=" 1 0 t))
 
 (defun my/align-comma (start end)
-  "Align columns by comma"
+  "Align columns by comma.  START END."
   (interactive "r")
   (align-regexp start end
                 "\\(\\s-*\\)," 1 1 t))
 
 (defun my/align-dot (start end)
-  "Align columns by dot"
+  "Align columns by dot.  START END."
   (interactive "r")
   (align-regexp start end
                 "\\(\\s-*\\)\\\." 1 1 t))
 
 (defun my/align-colon (start end)
-  "Align columns by equals sign"
+  "Align columns by equals sign.  START END."
   (interactive "r")
   (align-regexp start end
                 "\\(\\s-*\\):" 1 0 t))
 
 (bind-keys*
-  ("M-m g A SPC" .    my/align-whitespace)
-  ("M-m g A &"   .    my/align-ampersand)
-  ("M-m g A ,"   .    my/align-comma)
-  ("M-m g A \""  .    my/align-quote-space)
-  ("M-m g A      ." . my/align-dot)
-  ("M-m g A ="   .    my/align-equals)
-  ("M-m g A :"   .    my/align-colon)
-  ("M-m g A A"   .    align-regexp))
+ ("M-m g A SPC" . my/align-whitespace)
+ ("M-m g A &"   . my/align-ampersand)
+ ("M-m g A ,"   . my/align-comma)
+ ("M-m g A \""  . my/align-quote-space)
+ ("M-m g A ."   . my/align-dot)
+ ("M-m g A ="   . my/align-equals)
+ ("M-m g A :"   . my/align-colon)
+ ("M-m g A A"   . align-regexp))
 
 (which-key-add-key-based-replacements
   "M-m g A" "align prefix")
@@ -134,12 +135,11 @@
   "g A :"   "align based on :"
   "g A A"   "align based on regex")
 
-;;;;;;;;;;;;;;;;;
-;; insert date ;;
-;;;;;;;;;;;;;;;;;
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; function to insert date ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun my/insert-date (prefix)
-  "Insert the current date. With prefix-argument, write out the day and month name."
+  "Insert the current date.  With prefix-argument, write out the day and month name.  PREFIX."
   (interactive "P")
   (let ((format (cond
                  ((not prefix) "%Y-%m-%d")
@@ -148,7 +148,7 @@
     (insert (format-time-string format))))
 
 (bind-keys*
-  ("M-m g D" . my/insert-date))
+ ("M-m g D" . my/insert-date))
 
 (which-key-add-key-based-replacements
   "g D"   "insert date")
@@ -175,7 +175,7 @@
                    name (file-name-nondirectory new-name)))))))
 
 (bind-keys*
-  ("M-m g R" . my/rename-current-buffer-file))
+ ("M-m g R" . my/rename-current-buffer-file))
 
 (which-key-add-key-based-replacements
   "g R" "rename buffer and file")
@@ -185,7 +185,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun my/delete-current-buffer-file ()
-  "Removes file connected to current buffer and kills buffer."
+  "Remove file connected to current buffer and kill buffer."
   (interactive)
   (let ((filename (buffer-file-name))
         (buffer (current-buffer))
@@ -198,7 +198,7 @@
         (message "File '%s' successfully removed" filename)))))
 
 (bind-keys*
-  ("M-m g K" . my/delete-current-buffer-file))
+ ("M-m g K" . my/delete-current-buffer-file))
 
 (which-key-add-key-based-replacements
   "g K" "delete buffer and file")
@@ -208,12 +208,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun my/copy-current-file-path ()
-  "Add current file path to kill ring. Limits the filename to project root if possible."
+  "Add current file path to kill ring.  Limits the filename to project root if possible."
   (interactive)
   (kill-new buffer-file-name))
 
 (bind-keys*
-  ("M-m g y" . my/copy-current-file-path))
+ ("M-m g y" . my/copy-current-file-path))
 
 (which-key-add-key-based-replacements
   "g y" "copy current file path")
@@ -222,15 +222,15 @@
 ;;;;;;;;;;;;;;;
 ;; copy line ;;
 ;;;;;;;;;;;;;;;
-
 (defun my/copy-to-end-of-line ()
+  "Copy from cursor to end of line."
   (interactive)
   (kill-ring-save (point)
                   (line-end-position))
   (message "Copied to end of line"))
 
 (bind-keys*
-  ("M-m Y" . my/copy-to-end-of-line))
+ ("M-m Y" . my/copy-to-end-of-line))
 
 (which-key-add-key-based-replacements
   "Y" "copy till end of line")

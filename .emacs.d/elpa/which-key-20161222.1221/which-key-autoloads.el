@@ -3,8 +3,9 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "which-key" "which-key.el" (22673 3285 0 0))
-;;; Generated autoloads from which-key.el
+;;;### (autoloads nil "which-key" "../../../../../.emacs.d/elpa/which-key-20161222.1221/which-key.el"
+;;;;;;  "af5a2c13e16ebb7043fdd5ae3caecd76")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/which-key-20161222.1221/which-key.el
 
 (defvar which-key-mode nil "\
 Non-nil if Which-Key mode is enabled.
@@ -128,6 +129,12 @@ Dispatch C-h commands by looking up key in
 prefix) if `which-key-use-C-h-commands' is non nil.
 
 \(fn)" t nil)
+
+;;;***
+
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/which-key-20161222.1221/which-key-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/which-key-20161222.1221/which-key.el")
+;;;;;;  (22673 16169 0 0))
 
 ;;;***
 

@@ -3,9 +3,9 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "projectile" "projectile.el" (22673 3266 0
-;;;;;;  0))
-;;; Generated autoloads from projectile.el
+;;;### (autoloads nil "projectile" "../../../../../.emacs.d/elpa/projectile-20170106.606/projectile.el"
+;;;;;;  "806e7ae5c55e81127ffd617079e5c4b2")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/projectile-20170106.606/projectile.el
 
 (autoload 'projectile-version "projectile" "\
 Get the Projectile version as string.
@@ -434,6 +434,12 @@ Otherwise behave as if called interactively.
 \(fn &optional ARG)" t nil)
 
 (define-obsolete-function-alias 'projectile-global-mode 'projectile-mode)
+
+;;;***
+
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/projectile-20170106.606/projectile-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/projectile-20170106.606/projectile.el")
+;;;;;;  (22673 16145 0 0))
 
 ;;;***
 

@@ -3,8 +3,9 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "omnisharp" "omnisharp.el" (22673 3279 0 0))
-;;; Generated autoloads from omnisharp.el
+;;;### (autoloads nil "omnisharp" "../../../../../.emacs.d/elpa/omnisharp-20160920.2343/omnisharp.el"
+;;;;;;  "878ba12e5e9d31421162a6ce19e59b75")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/omnisharp-20160920.2343/omnisharp.el
 
 (autoload 'omnisharp-mode "omnisharp" "\
 Omnicompletion (intellisense) and more for C# using an OmniSharp
@@ -19,9 +20,9 @@ server backend.
 
 ;;;***
 
-;;;### (autoloads nil "omnisharp-auto-complete-actions" "omnisharp-auto-complete-actions.el"
-;;;;;;  (22673 3279 0 0))
-;;; Generated autoloads from omnisharp-auto-complete-actions.el
+;;;### (autoloads nil "omnisharp-auto-complete-actions" "../../../../../.emacs.d/elpa/omnisharp-20160920.2343/omnisharp-auto-complete-actions.el"
+;;;;;;  "aa32399890c71c7433d152b69e9e53b3")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/omnisharp-20160920.2343/omnisharp-auto-complete-actions.el
 
 (autoload 'company-omnisharp "omnisharp-auto-complete-actions" "\
 
@@ -30,9 +31,9 @@ server backend.
 
 ;;;***
 
-;;;### (autoloads nil "omnisharp-server-actions" "omnisharp-server-actions.el"
-;;;;;;  (22673 3279 0 0))
-;;; Generated autoloads from omnisharp-server-actions.el
+;;;### (autoloads nil "omnisharp-server-actions" "../../../../../.emacs.d/elpa/omnisharp-20160920.2343/omnisharp-server-actions.el"
+;;;;;;  "9bac7802b903a81e13ad448b8fba3fdb")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/omnisharp-20160920.2343/omnisharp-server-actions.el
 
 (autoload 'omnisharp-start-omnisharp-server "omnisharp-server-actions" "\
 Starts an OmniSharpServer for a given path to a solution file or a directory
@@ -58,9 +59,15 @@ finished loading the solution.
 
 ;;;***
 
-;;;### (autoloads nil nil ("example-config-for-evil-mode.el" "omnisharp-pkg.el"
-;;;;;;  "omnisharp-settings.el" "omnisharp-utils.el") (22673 3279
-;;;;;;  0 0))
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/omnisharp-20160920.2343/example-config-for-evil-mode.el"
+;;;;;;  "../../../../../.emacs.d/elpa/omnisharp-20160920.2343/omnisharp-auto-complete-actions.el"
+;;;;;;  "../../../../../.emacs.d/elpa/omnisharp-20160920.2343/omnisharp-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/omnisharp-20160920.2343/omnisharp-pkg.el"
+;;;;;;  "../../../../../.emacs.d/elpa/omnisharp-20160920.2343/omnisharp-server-actions.el"
+;;;;;;  "../../../../../.emacs.d/elpa/omnisharp-20160920.2343/omnisharp-settings.el"
+;;;;;;  "../../../../../.emacs.d/elpa/omnisharp-20160920.2343/omnisharp-utils.el"
+;;;;;;  "../../../../../.emacs.d/elpa/omnisharp-20160920.2343/omnisharp.el")
+;;;;;;  (22673 16161 0 0))
 
 ;;;***
 

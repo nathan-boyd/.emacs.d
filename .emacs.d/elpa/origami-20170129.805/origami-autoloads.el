@@ -3,8 +3,9 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "origami" "origami.el" (22673 3277 0 0))
-;;; Generated autoloads from origami.el
+;;;### (autoloads nil "origami" "../../../../../.emacs.d/elpa/origami-20170129.805/origami.el"
+;;;;;;  "eac452a487f1e5000597bff5e048611b")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/origami-20170129.805/origami.el
 
 (autoload 'origami-mode "origami" "\
 Minor mode to selectively hide/show text in the current buffer.
@@ -44,8 +45,11 @@ See `origami-mode' for more information on Origami mode.
 
 ;;;***
 
-;;;### (autoloads nil nil ("origami-parsers.el" "origami-pkg.el")
-;;;;;;  (22673 3277 0 0))
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/origami-20170129.805/origami-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/origami-20170129.805/origami-parsers.el"
+;;;;;;  "../../../../../.emacs.d/elpa/origami-20170129.805/origami-pkg.el"
+;;;;;;  "../../../../../.emacs.d/elpa/origami-20170129.805/origami.el")
+;;;;;;  (22673 16158 0 0))
 
 ;;;***
 

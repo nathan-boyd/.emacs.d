@@ -3,9 +3,9 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "helm-descbinds" "helm-descbinds.el" (22673
-;;;;;;  3267 0 0))
-;;; Generated autoloads from helm-descbinds.el
+;;;### (autoloads nil "helm-descbinds" "../../../../../.emacs.d/elpa/helm-descbinds-20160916.713/helm-descbinds.el"
+;;;;;;  "729c580d26a8760c11f0b155c65ccae8")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/helm-descbinds-20160916.713/helm-descbinds.el
 
 (defvar helm-descbinds-mode nil "\
 Non-nil if Helm-Descbinds mode is enabled.
@@ -54,6 +54,12 @@ For key translation maps, the default actions are not very
 useful, yet they are listed for completeness.
 
 \(fn &optional PREFIX BUFFER)" t nil)
+
+;;;***
+
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/helm-descbinds-20160916.713/helm-descbinds-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/helm-descbinds-20160916.713/helm-descbinds.el")
+;;;;;;  (22673 16146 0 0))
 
 ;;;***
 

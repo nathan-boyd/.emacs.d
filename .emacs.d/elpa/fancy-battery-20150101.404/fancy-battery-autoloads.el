@@ -3,9 +3,9 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "fancy-battery" "fancy-battery.el" (22673 3257
-;;;;;;  0 0))
-;;; Generated autoloads from fancy-battery.el
+;;;### (autoloads nil "fancy-battery" "../../../../../.emacs.d/elpa/fancy-battery-20150101.404/fancy-battery.el"
+;;;;;;  "1014f78b3b645d58381ddb16841d0537")
+;;; Generated autoloads from ../../../../../.emacs.d/elpa/fancy-battery-20150101.404/fancy-battery.el
 
 (defvar fancy-battery-mode nil "\
 Non-nil if Fancy-Battery mode is enabled.
@@ -35,6 +35,12 @@ The text in the mode line is controlled by
 `battery-update-interval' seconds.
 
 \(fn &optional ARG)" t nil)
+
+;;;***
+
+;;;### (autoloads nil nil ("../../../../../.emacs.d/elpa/fancy-battery-20150101.404/fancy-battery-autoloads.el"
+;;;;;;  "../../../../../.emacs.d/elpa/fancy-battery-20150101.404/fancy-battery.el")
+;;;;;;  (22673 16133 0 0))
 
 ;;;***
 

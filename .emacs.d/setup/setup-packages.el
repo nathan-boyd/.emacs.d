@@ -19,8 +19,16 @@
 
 (eval-when-compile
 (require 'use-package))
-(require 'diminish)
-(require 'bind-key)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; pre-install package config tools ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package diminish
+  :ensure t)
+
+(use-package bind-key
+  :ensure t)
 
 ;;;;;;;;;;;;;;;;;
 ;; apply theme ;;
@@ -28,9 +36,9 @@
 (use-package zenburn-theme
   :ensure t)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; install and configure with use-package ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; install and configure package ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package auto-compile
   :ensure t
@@ -42,13 +50,12 @@
 (use-package aggressive-indent
   :ensure t
   :diminish
-    aggressive-indent
-  ;; :config
-  ;; (global-aggressive-indent-mode 1)
-  )
+    aggressive-indent)
 
 (use-package ace-window
   :ensure t
+  :init
+    (defvar shell-mode-map)
   :bind
     (("M-RET" . ace-window)
   :map shell-mode-map
@@ -67,6 +74,8 @@
 
 (use-package company
   :ensure t
+  :init
+    (defvar company-dabbrev-downcase)
   :diminish (company-mode . "ς")
   :commands (company-mode
              company-complete
@@ -176,9 +185,10 @@
 (use-package fancy-battery
   :ensure t
   :init
-  (setq fancy-battery-show-percentage t)
+    (defvar fancy-battery-show-percentage)
+    (setq fancy-battery-show-percentage t)
   :config
-  (fancy-battery-mode))
+    (fancy-battery-mode))
 
 (use-package flycheck
   :ensure t
@@ -196,30 +206,13 @@
   "[ l"   "previous error"
   "SPC l" "list errors"))
 
-;; (use-package flycheck
-;;   :ensure t
-;;   :diminish flycheck-mode
-;;   :config
-;;   (flycheck-add-mode 'javascript-standard 'js2-mode)
-;;     (flycheck-add-mode 'javascript-standard 'js-mode)
-;;     (flycheck-add-mode 'javascript-standard 'web-mode)
-;;     (setq-default flycheck-temp-prefix ".flycheck")
-;;     (global-flycheck-mode)
-;;     (setq-default flycheck-disabled-checkers
-;;       (append flycheck-disabled-checkers
-;;         '(javascript-jshint)
-;;         '(javascript-eslint)
-;;         '(javascript-gjslint)
-;;         '(javascript-jscs)))
-;;     (global-flycheck-mode))
-
 (use-package flyspell
   :ensure t
   :diminish flyspell-mode
   :config
-  (setq ispell-program-name "aspell")
-  (flyspell-mode 1)
-  (flyspell-prog-mode))
+    (setq ispell-program-name "aspell")
+    (flyspell-mode 1)
+    (flyspell-prog-mode))
 
 (use-package git-timemachine
   :ensure t
@@ -244,6 +237,7 @@
   :ensure t
   :diminish helm-mode
   :init
+    (defvar helm-buffer-max-length)
     (helm-mode 1)
   :bind
     (("M-x"     . undefined)
@@ -273,6 +267,12 @@
 
 (use-package helm-swoop
   :ensure t
+  :init
+    (defvar helm-M-x-fuzzy-match)
+    (defvar helm-recentf-fuzzy-match)
+    (defvar helm-buffers-fuzzy-matching)
+    (defvar helm-locate-fuzzy-match)
+    (defvar helm-mode-fuzzy-match)
   :bind
   (("C-s"     . helm-swoop)
    ("M-i"     . helm-swoop)
@@ -287,13 +287,12 @@
   :config
     (setq helm-swoop-split-with-multiple-windows nil)
     (setq helm-swoop-split-direction 'split-window-vertically)
-  ;; Fuzzy matching for everything
-  (setq helm-M-x-fuzzy-match t
+    ;; Fuzzy matching for everything
+    (setq helm-M-x-fuzzy-match t
         helm-recentf-fuzzy-match t
         helm-buffers-fuzzy-matching t
         helm-locate-fuzzy-match nil
         helm-mode-fuzzy-match t)
-  ;; set height and stuff
   (helm-autoresize-mode 1)
   (setq helm-autoresize-max-height 20
         helm-autoresize-min-height 20))
@@ -336,14 +335,7 @@
 
 ;; Flyspell errors with helm
 (use-package helm-flyspell
-  :ensure t
-  :bind* (("M-m SPC h s" . sk/helm-correct-word))
-  :config
-  (defun sk/helm-correct-word ()
-    (interactive)
-    (save-excursion
-      (sk/flyspell-goto-previous-error 1)
-      (helm-flyspell-correct))))
+  :ensure t)
 
 (use-package hlinum
   :ensure t
@@ -355,17 +347,17 @@
   :ensure t
   :diminish js2-mode
   :config
-  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-  (setq-default indent-tabs-mode nil)
-  (setq-default js2-idle-timer-delay 0.1)
-  (setq-default js2-indent-on-enter-key nil)
-  (setq-default js2-enter-indents-newline nil)
-  (setq-default js2-highlight-level 3)
-  (setq-default js2-basic-offset 2)
-  (setq-default js2-show-parse-errors nil)
-  (setq-default js2-strict-missing-semi-warning nil)
-  (setq-default js2-strict-trailing-comma-warning t)
-  (add-hook 'js2-mode-hook 'flycheck-mode))
+    (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+    (setq-default indent-tabs-mode nil)
+    (setq-default js2-idle-timer-delay 0.1)
+    (setq-default js2-indent-on-enter-key nil)
+    (setq-default js2-enter-indents-newline nil)
+    (setq-default js2-highlight-level 3)
+    (setq-default js2-basic-offset 2)
+    (setq-default js2-show-parse-errors nil)
+    (setq-default js2-strict-missing-semi-warning nil)
+    (setq-default js2-strict-trailing-comma-warning t)
+    (add-hook 'js2-mode-hook 'flycheck-mode))
 
 (use-package json-mode
   :ensure t
@@ -380,33 +372,36 @@
 
 (use-package multiple-cursors
   :ensure t
-  :bind* (("M-m ." . mc/edit-lines)
-          ("M-m >" . mc/mark-next-like-this)
-          ("M-m ," . mc/skip-to-next-like-this)
-          ("M-m <" . mc/mark-previous-like-this)))
+  :bind*
+    (("M-m ." . mc/edit-lines)
+     ("M-m >" . mc/mark-next-like-this)
+     ("M-m ," . mc/skip-to-next-like-this)
+     ("M-m <" . mc/mark-previous-like-this)))
 
 (use-package magit
   :ensure t
-  :bind* (("M-m SPC e" . magit-status)
-          ("M-m g b"   . magit-blame)))
+  :bind*
+    (("M-m SPC e" . magit-status)
+     ("M-m g b"   . magit-blame)))
 
 (use-package neotree
   :ensure t
   :diminish neotree
   :config
-  (setq neo-theme 'nerd))
+    (setq neo-theme 'nerd))
 
 (use-package origami
   :ensure t
   :commands (origami-toggle-node)
-  :bind* (("M-m -" . orgiami-toggle-node)))
+  :bind*
+    (("M-m -" . orgiami-toggle-node)))
 
 (use-package omnisharp
   :ensure t
   :diminish omnisharp-mode
   :config
-  (setq omnisharp-server-executable-path "/Users/nboyd/git/omnisharp-server/OmniSharp/bin/Debug/OmniSharp.exe")
-  (add-hook 'csharp-mode-hook 'omnisharp-mode))
+    (setq omnisharp-server-executable-path "/Users/nboyd/git/omnisharp-server/OmniSharp/bin/Debug/OmniSharp.exe")
+    (add-hook 'csharp-mode-hook 'omnisharp-mode))
 
 (use-package projectile
   :ensure t
@@ -414,16 +409,16 @@
           ("M-m SPC D"   . projectile-switch-project)
           ("M-m SPC TAB" . projectile-find-other-file))
   :init
-  (setq projectile-file-exists-remote-cache-expire (* 10 60))
+    (setq projectile-file-exists-remote-cache-expire (* 10 60))
   :diminish projectile-mode
   :config
-  (projectile-mode))
+    (projectile-mode))
 
 (use-package rainbow-delimiters
   :ensure t
   :diminish rainbow-delimiters
   :config
-  (add-hook 'prog-mode-hook (lambda()
+    (add-hook 'prog-mode-hook (lambda()
                               (rainbow-delimiters-mode t))))
 
 (use-package recentf
@@ -440,32 +435,29 @@
   :ensure t
   :bind* (("C-x M-c" . restart-emacs)))
 
-;; save last position in file
-(setq save-place-file "~/.emacs.d/saveplace")
-(setq-default save-place t)
-(require 'saveplace)
-(if (fboundp #'save-place-mode)
-    (save-place-mode +1)
-  (setq-default save-place t))
-
-;; (use-package powerline
-;;   :ensure t
-;;   :config
-;;     (setq ns-use-srgb-colorspace nil)
-;;     (powerline-default-theme))
-
-;; TODO add in :after identifiers where it makes sense
+(use-package saveplace
+  :init
+    (save-place-mode 1)
+  :config
+    (if (fboundp #'save-place-mode)
+      (save-place-mode +1)
+    (setq-default save-place t))
+    (setq save-place-limit nil)
+    (defvar save-place-file)
+    (setq save-place-file "~/.emacs.d/saveplace"))
 
 (use-package spaceline
   :ensure t
   :demand t
-  :init
-  (setq powerline-default-separator 'arrow-fade)
   :config
-  (setq ns-use-srgb-colorspace nil) ;; fix colors
-  (require 'spaceline-config)
-  (spaceline-spacemacs-theme)
-  (spaceline-helm-mode))
+    (set-face-attribute 'spaceline-highlight-face nil :foreground "#94BFF3")
+    (set-face-attribute 'spaceline-highlight-face nil :background "#3F3F3F")
+    (setq ns-use-srgb-colorspace nil) ;; fix colors
+    (require 'spaceline-config)
+    (defvar powerline-default-separator)
+    (setq powerline-default-separator 'wave)
+    (spaceline-spacemacs-theme)
+    (spaceline-helm-mode))
 
 (use-package smartparens
   :ensure t
@@ -508,12 +500,13 @@
   :defer t
   :diminish which-key-mode
   :init
-  (setq which-key-sort-order 'which-key-key-order-alpha)
-  :bind* (("M-m ?" . which-key-show-top-level))
+    (setq which-key-sort-order 'which-key-key-order-alpha)
+  :bind* (
+    ("M-m ?" . which-key-show-top-level))
   :config
-  (which-key-mode)
-  (which-key-add-key-based-replacements
-   "M-m ?" "top level bindings"))
+    (which-key-mode)
+    (which-key-setup-side-window-right-bottom)
+    (which-key-add-key-based-replacements "M-m ?" "top level bindings"))
 
 (use-package yagist
   :ensure t
@@ -537,8 +530,10 @@
   :ensure t
   :diminish yas-minor-mode
   :init
-  (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
-  (setq yas-indent-line (quote none))
+    (defvar yas-snippet-dirs)
+    (defvar yas-indent-line)
+    (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
+    (setq yas-indent-line (quote none))
   :config
   (yas-global-mode 1))
 
