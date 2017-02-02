@@ -27,9 +27,9 @@
 (bind-keys*
  ("M-m d" . my/duplicate-line))
 
- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; compile emacs lisp setup files ;;
- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun byte-compile-init-dir ()
   "Byte-compile all your dotfiles."
   (interactive)
@@ -122,10 +122,6 @@
  ("M-m g A A"   . align-regexp))
 
 (which-key-add-key-based-replacements
-  "M-m g A" "align prefix")
-
-(which-key-add-key-based-replacements
-  "g A"     "align prefix"
   "g A SPC" "align based on spaces"
   "g A &"   "align based on &"
   "g A ,"   "align based on ,"

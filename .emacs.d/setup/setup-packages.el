@@ -63,6 +63,22 @@
   :config
     (setq aw-scope 'frame))
 
+(use-package avy
+  :ensure t
+  :init
+  (setq avy-keys-alist
+        `((avy-goto-char-timer . (?j ?k ?l ?f ?s ?d ?e ?r ?u ?i))
+          (avy-goto-line . (?j ?k ?l ?f ?s ?d ?e ?r ?u ?i))))
+  (setq avy-style 'pre)
+  :bind* (("M-m f" . avy-goto-char-timer)
+          ("M-m F" . avy-goto-line)))
+
+;; additions to which-key for avy
+(with-eval-after-load "which-key"
+  (which-key-add-key-based-replacements
+    "f" "find on-screen"
+    "F" "find line"))
+
 (use-package beacon
   :ensure t
   :demand t
@@ -128,25 +144,6 @@
 
   )
 
-;; (use-package company
-;;   :ensure t
-;;   :diminish company-mode
-;;   :config
-;;     (setq company-tooltip-limit 15)                      ; bigger popup window
-;;     (setq company-tooltip-align-annotations 't)          ; align annotations to the right tooltip border
-;;     (setq company-idle-delay .3)                         ; decrease delay before autocompletion popup shows
-;;     (setq company-begin-commands '(self-insert-command)) ; start autocompletion only after typing
-;;     (add-to-list 'company-backends 'company-tern)
-;;     (add-to-list 'company-backends 'company-omnisharp)
-;;     (global-company-mode 1)
-;;   :bind
-;;     (("C-<return>" . company-complete)
-;;   :map company-active-map
-;;     ("C-n" . company-select-next)
-;;     ("C-p" . company-select-previous)
-;;     ("C-d" . company-show-doc-buffer)
-;;     ("M-." . company-show-location)))
-
 (use-package diff-hl
   :ensure t
   :commands (global-diff-hl-mode
@@ -179,8 +176,21 @@
 
 (use-package exec-path-from-shell
   :ensure t
+  :init
+    (defvar exec-path-from-shell-check-startup-files)
+    (setq exec-path-from-shell-check-startup-files nil)  ;; new
   :config
-  (exec-path-from-shell-initialize))
+    (exec-path-from-shell-initialize))
+
+(use-package eww
+  :bind* (("M-m g x" . eww)
+          ("M-m g :" . eww-browse-with-external-browser)
+          ("M-m g #" . eww-list-histories)
+          ("M-m g {" . eww-back-url)
+          ("M-m g }" . eww-forward-url))
+  :config
+  (progn
+    (add-hook 'eww-mode-hook 'visual-line-mode)))
 
 (use-package fancy-battery
   :ensure t
@@ -509,6 +519,7 @@
   :demand t
   :diminish volatile-highlights-mode
   :config
+  (set-face-background 'vhl/default-face "#5b605e")
   (volatile-highlights-mode t))
 
 (use-package web-mode

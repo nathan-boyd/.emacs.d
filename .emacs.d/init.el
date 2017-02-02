@@ -4,10 +4,7 @@
 
 (package-initialize)
 
-;;;;;;;;;;;;;;;;;;;;
-;; setup encoding ;;
-;;;;;;;;;;;;;;;;;;;;
-
+;; setup encoding
 (prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
@@ -19,23 +16,38 @@
   (cl-letf (((symbol-function #'process-list) (lambda ())))
     ad-do-it))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; initial look and feel ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; initial look and feel
+(menu-bar-mode -1)
+(tool-bar-mode -1)
 (mouse-wheel-mode t)
+(scroll-bar-mode -1)
 (mouse-avoidance-mode 'banish)
 (setq inhibit-splash-screen t)
 (setq inhibit-startup-message t)
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
 (set-default 'cursor-type 'bar)
-(setq column-number-mode t)
-(set-face-attribute 'default nil :family "Inconsolata" :height 140)
 (setq mac-allow-anti-aliasing t)
 (add-hook 'window-setup-hook 'toggle-frame-fullscreen t)
+
+;; dont create new workspace / desktop on app start
+;; (setq ns-use-native-fullscreen nil)
+
+;; set font
+(set-face-attribute 'default nil :family "Inconsolata" :height 140)
+
+;; turn on columns
+(setq column-number-mode t)
+
+;; turn on line numbering and format
+(defvar linum-format)
 (setq linum-format "%d")
 (global-linum-mode t)
+
+;; turn off audible bell notification
+(setq visible-bell nil)
+(setq ring-bell-function 'ignore)
+
+;; define shell type
+(setq explicit-shell-file-name "/bin/bash")
 
 ;; change the behavior of editing selected text
 (delete-selection-mode t)
@@ -81,8 +93,6 @@
 ))
 
 ;; (add-hook 'before-save-hook 'whitespace-cleanup)
-
-(setq explicit-shell-file-name "/bin/bash")
 
 ; configure backups
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
