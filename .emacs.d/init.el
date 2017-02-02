@@ -68,6 +68,9 @@
 ;; treat new buffers as text
 (setq major-mode 'text-mode)
 
+;; load prefers the newest version of a file
+(setq load-prefer-newer t)
+
 ;; setup whitespace
 (require 'whitespace)
 (global-whitespace-mode 1)
@@ -168,6 +171,7 @@
  '(comint-scroll-to-bottom-on-output t)
  '(js-indent-level 2)
  '(whitespace-line-column 500000)
+ '(markdown-command "/usr/local/bin/markdown")
  )
 
 ;; clear mini buffer

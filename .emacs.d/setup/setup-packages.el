@@ -18,7 +18,7 @@
   (package-install 'use-package))
 
 (eval-when-compile
-(require 'use-package))
+  (require 'use-package))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; pre-install package config tools ;;
@@ -190,6 +190,14 @@
   :config
     (fancy-battery-mode))
 
+(use-package feature-mode
+  :ensure t
+  :diminish feature-mode
+  :config
+    (setq feature-step-search-path "features/**/*steps.rb")
+    (setq feature-step-search-gems-path "gems/ruby/*/gems/*/**/*steps.rb")
+    (add-to-list 'auto-mode-alist '("\.feature$" . feature-mode)))
+
 (use-package flycheck
   :ensure t
   :diminish flycheck-mode
@@ -319,9 +327,10 @@
 ;; to help with projectile
 (use-package helm-projectile
   :ensure t
-  :bind* (("M-m SPC d" . helm-projectile))
+  :bind*
+    (("M-m SPC d" . helm-projectile))
   :init
-  (setq projectile-completion-system 'helm))
+    (setq projectile-completion-system 'helm))
 
 ;; to describe bindings
 (use-package helm-descbinds
@@ -369,6 +378,17 @@
 (use-package json-snatcher
   :ensure t
   :commands (jsons-print-path))
+
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode)))
+
+;; generate table of contenst in markdown file
+(use-package markdown-toc
+  :ensure t)
 
 (use-package multiple-cursors
   :ensure t
