@@ -28,7 +28,7 @@
 (setq mac-allow-anti-aliasing t)
 (add-hook 'window-setup-hook 'toggle-frame-fullscreen t)
 
-;; dont create new workspace / desktop on app start
+;; dont create new workspace on app start
 ;; (setq ns-use-native-fullscreen nil)
 
 ;; set font
@@ -63,13 +63,14 @@
 
 ;; run in server mode
 (require 'server)
-(when (and (>= emacs-major-version 23)
-           (equal window-system 'w32))
-(defun server-ensure-safe-dir (dir) "Noop" t))
-(setq delete-by-moving-to-trash nil)
+(when (and (>= emacs-major-version 23) (equal window-system 'w32))
+  (defun server-ensure-safe-dir (dir)
+    "Noop.  DIR." t))
 
 (unless (server-running-p)
   (server-start))
+
+(setq delete-by-moving-to-trash nil)
 
 ;; let other packages handle vertical alignment
 (electric-indent-mode -1)
@@ -147,26 +148,26 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(neo-banner-face             ((t :inherit shadow)))
- '(neo-button-face             ((t :inherit dired-directory)))
- '(neo-dir-link-face           ((t :inherit dired-directory)))
- '(neo-expand-btn-face         ((t nil)))
- '(neo-file-link-face          ((t :inherit default)))
- '(neo-header-face             ((t :inherit shadow)))
- '(neo-root-dir-face           ((t :inherit link-visited :underline nil)))
- '(whitespace-line             ((t nil)))
- '(trailing-whitespace         ((t (:foreground "dim gray" :background "#4F4F4F"))))
- '(whitespace-empty            ((t (:foreground "dim gray" :background "#4F4F4F"))))
- '(whitespace-space-after-tab  ((t (:background "dim gray" :foreground "#4F4F4F"))))
- '(whitespace-space-before-tab ((t (:background "dim gray" :foreground "#4F4F4F"))))
- '(whitespace-trailing         ((t (:foreground "dim gray" :background "#4F4F4F"))))
- '(whitespace-indentation      ((t (:foreground "dim gray" :Background "#3F3F3F"))))
- '(whitespace-newline          ((t (:foreground "dim gray" :background "#3F3F3F"))))
- '(whitespace-space            ((t (:foreground "dim gray" :background "#3F3F3F"))))
- '(whitespace-tab              ((t (:foreground "dim gray" :background "#3F3F3F"))))
- ;; '(helm-buffer-directory       ((t (:foreground "slate gray"))))
- ;; '(helm-buffer-size            ((t (:foreground "slate gray"))))
-)
+ '(neo-banner-face ((t :inherit shadow)))
+ '(neo-button-face ((t :inherit dired-directory)))
+ '(neo-dir-link-face ((t :inherit dired-directory)))
+ '(neo-expand-btn-face ((t nil)))
+ '(neo-file-link-face ((t :inherit default)))
+ '(neo-header-face ((t :inherit shadow)))
+ '(neo-root-dir-face ((t :inherit link-visited :underline nil))))
+
+;; start moving configs out of custom set faces and into individual configs
+(set-face-attribute 'whitespace-line nil)
+(set-face-attribute 'whitespace-tab nil         :foreground "dim gray":background "#3F3F3F")
+(set-face-attribute 'whitespace-space nil       :foreground "dim gray":background "#3F3F3F")
+(set-face-attribute 'whitespace-newline nil     :foreground "dim gray":background "#3F3F3F")
+(set-face-attribute 'whitespace-indentation nil :foreground "dim gray":background "#3F3F3F")
+
+(set-face-attribute 'trailing-whitespace nil         :foreground "dim gray":background "#4F4F4F")
+(set-face-attribute 'whitespace-empty nil            :foreground "dim gray":background "#4F4F4F")
+(set-face-attribute 'whitespace-space-after-tab nil  :foreground "dim gray":background "#4F4F4F")
+(set-face-attribute 'whitespace-space-before-tab nil :foreground "dim gray":background "#4F4F4F")
+(set-face-attribute 'whitespace-trailing nil         :foreground "dim gray":background "#4F4F4F")
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -176,13 +177,13 @@
  '(comint-completion-addsuffix t)
  '(comint-completion-autolist t)
  '(comint-input-ignoredups t)
+ '(comint-move-point-for-output t)
  '(comint-scroll-show-maximum-output t)
  '(comint-scroll-to-bottom-on-input t)
- '(comint-scroll-to-bottom-on-output t)
+ '(grep-command "grep -rin --color=auto ")
  '(js-indent-level 2)
- '(whitespace-line-column 500000)
  '(markdown-command "/usr/local/bin/markdown")
- )
+ '(whitespace-line-column 500000))
 
 ;; clear mini buffer
 (call-interactively (global-key-binding "\C-g"))

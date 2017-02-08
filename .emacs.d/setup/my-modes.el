@@ -24,6 +24,7 @@
   (forward-line 1)
   (yank))
 
+;; bind key and override all minor modes with *
 (bind-keys*
  ("M-m d" . my/duplicate-line))
 

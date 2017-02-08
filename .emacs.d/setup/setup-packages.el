@@ -70,14 +70,14 @@
         `((avy-goto-char-timer . (?j ?k ?l ?f ?s ?d ?e ?r ?u ?i))
           (avy-goto-line . (?j ?k ?l ?f ?s ?d ?e ?r ?u ?i))))
   (setq avy-style 'pre)
-  :bind* (("M-m f" . avy-goto-char-timer)
-          ("M-m F" . avy-goto-line)))
+  :bind* (("M-m F" . avy-goto-char-timer)
+          ("M-m f" . avy-goto-line)))
 
 ;; additions to which-key for avy
 (with-eval-after-load "which-key"
   (which-key-add-key-based-replacements
-    "f" "find on-screen"
-    "F" "find line"))
+    "F" "find on-screen"
+    "f" "find line"))
 
 (use-package beacon
   :ensure t
@@ -165,6 +165,7 @@
   (diff-hl-margin-mode)
   (diff-hl-dired-mode))
 
+;; setup which-key bindings for diff-hl
 (with-eval-after-load "which-key"
   (which-key-add-key-based-replacements
   "] h" "next git hunk"
@@ -426,12 +427,13 @@
   :bind*
     (("M-m -" . orgiami-toggle-node)))
 
-(use-package omnisharp
-  :ensure t
-  :diminish omnisharp-mode
-  :config
-    (setq omnisharp-server-executable-path "/Users/nboyd/git/omnisharp-server/OmniSharp/bin/Debug/OmniSharp.exe")
-    (add-hook 'csharp-mode-hook 'omnisharp-mode))
+;; disabled due to issue with dos line endings in files
+;; (use-package omnisharp
+;;   :ensure t
+;;   :diminish omnisharp-mode
+;;   :config
+;;     (setq omnisharp-server-executable-path "/Users/nboyd/git/omnisharp-server/OmniSharp/bin/Debug/OmniSharp.exe")
+;;     (add-hook 'csharp-mode-hook 'omnisharp-mode))
 
 (use-package projectile
   :ensure t
@@ -480,9 +482,9 @@
   :ensure t
   :demand t
   :config
-    (set-face-attribute 'spaceline-highlight-face nil :foreground "#94BFF3")
+    (set-face-attribute 'spaceline-highlight-face nil :foreground "#94BFF3")b
     (set-face-attribute 'spaceline-highlight-face nil :background "#3F3F3F")
-    (setq ns-use-srgb-colorspace nil) ;; fix colors
+    (setq ns-use-srgb-colorspace nil) ;; fix colors on modeline
     (require 'spaceline-config)
     (defvar powerline-default-separator)
     (setq powerline-default-separator 'wave)
