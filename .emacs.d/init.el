@@ -32,7 +32,7 @@
 ;; (setq ns-use-native-fullscreen nil)
 
 ;; set font
-(set-face-attribute 'default nil :family "Inconsolata" :height 140)
+(set-face-attribute 'default nil :family "Inconsolata" :height 160)
 
 ;; turn on columns
 (setq column-number-mode t)
@@ -180,6 +180,7 @@
  '(comint-move-point-for-output t)
  '(comint-scroll-show-maximum-output t)
  '(comint-scroll-to-bottom-on-input t)
+ '(flycheck-ruby-rubocop-executable "~/.rvm/gems/ruby-2.2.2/bin/rubocop")
  '(grep-command "grep -rin --color=auto ")
  '(js-indent-level 2)
  '(markdown-command "/usr/local/bin/markdown")
