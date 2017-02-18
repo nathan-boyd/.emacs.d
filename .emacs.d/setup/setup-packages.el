@@ -467,6 +467,44 @@
   :ensure t
   :bind* (("C-x M-c" . restart-emacs)))
 
+(use-package ruby-mode
+  :commands ruby-mode
+  :mode (("Gemfile\\'" . ruby-mode)
+         ("Kirkfile\\'" . ruby-mode)
+         ("Rakefile\\'" . ruby-mode)
+         ("Vagrantfile\\'" . ruby-mode)
+         ("\\.builder\\'" . ruby-mode)
+         ("\\.gemspec\\'" . ruby-mode)
+         ("\\.irbrc\\'" . ruby-mode)
+         ("\\.pryrc\\'" . ruby-mode)
+         ("\\.rake\\'" . ruby-mode)
+         ("\\.rjs\\'" . ruby-mode)
+         ("\\.ru\\'" . ruby-mode)
+         ("\\.rxml\\'" . ruby-mode))
+
+  :init
+  (setq ruby-use-encoding-map nil)
+
+  :config
+  (use-package inf-ruby)
+  (use-package ruby-hash-syntax)
+
+  (after-load 'ruby-mode
+    (define-key ruby-mode-map (kbd "RET") 'reindent-then-newline-and-indent)
+    (define-key ruby-mode-map (kbd "TAB") 'indent-for-tab-command))
+
+  (use-package robe
+    :config (add-hook 'ruby-mode-hook 'robe-mode))
+
+  (use-package bundler)
+
+  ;; non-bundled ruby-mode isn't a derived mode of prog-mode
+  ;; run these latter's hooks anyway in that case.
+  (add-hook 'ruby-mode-hook
+            (lambda ()
+              (unless (derived-mode-p 'prog-mode)
+                (run-hooks 'prog-mode-hook)))))
+
 (use-package saveplace
   :init
     (save-place-mode 1)
