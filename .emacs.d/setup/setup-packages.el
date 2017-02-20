@@ -247,7 +247,7 @@
 
 (use-package golden-ratio
   :ensure t
-  :diminish golden-ratio
+  :diminish golden-ratio-mode
   :config
     (golden-ratio-mode 1)
     (add-to-list 'golden-ratio-extra-commands 'ace-window))
@@ -486,17 +486,9 @@
   (setq ruby-use-encoding-map nil)
 
   :config
-  (use-package inf-ruby)
-  (use-package ruby-hash-syntax)
-
   (after-load 'ruby-mode
     (define-key ruby-mode-map (kbd "RET") 'reindent-then-newline-and-indent)
     (define-key ruby-mode-map (kbd "TAB") 'indent-for-tab-command))
-
-  (use-package robe
-    :config (add-hook 'ruby-mode-hook 'robe-mode))
-
-  (use-package bundler)
 
   ;; non-bundled ruby-mode isn't a derived mode of prog-mode
   ;; run these latter's hooks anyway in that case.
@@ -504,6 +496,11 @@
             (lambda ()
               (unless (derived-mode-p 'prog-mode)
                 (run-hooks 'prog-mode-hook)))))
+
+(use-package robe
+  :ensure t
+  :diminish robe-mode
+  :config (add-hook 'ruby-mode-hook 'robe-mode))
 
 (use-package saveplace
   :init
