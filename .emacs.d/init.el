@@ -42,6 +42,9 @@
 (setq linum-format "%d")
 (global-linum-mode t)
 
+;; highlight current line
+(global-hl-line-mode 1)
+
 ;; turn off audible bell notification
 (setq visible-bell nil)
 (setq ring-bell-function 'ignore)

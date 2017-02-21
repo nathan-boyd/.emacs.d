@@ -79,15 +79,6 @@
     "F" "find on-screen"
     "f" "find line"))
 
-(use-package beacon
-  :ensure t
-  :demand t
-  :diminish beacon-mode
-  :bind*
-    (("M-m g z" . beacon-blink))
-  :config
-    (beacon-mode 1))
-
 (use-package company
   :ensure t
   :init
@@ -140,9 +131,9 @@
     :ensure t
     :bind (("C-c w" . company-web-html))
     :config
-    (add-to-list 'company-backends 'company-web-html))
-
+    (add-to-list 'company-backends 'company-web-html)
   )
+)
 
 (use-package diff-hl
   :ensure t
@@ -500,7 +491,9 @@
 (use-package robe
   :ensure t
   :diminish robe-mode
-  :config (add-hook 'ruby-mode-hook 'robe-mode))
+  :config
+    (add-hook 'ruby-mode-hook 'robe-mode)
+    (add-to-list 'company-backends 'company-robe))
 
 (use-package saveplace
   :init
