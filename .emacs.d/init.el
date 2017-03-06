@@ -32,7 +32,7 @@
 ;; (setq ns-use-native-fullscreen nil)
 
 ;; set font
-(set-face-attribute 'default nil :family "Inconsolata" :height 160)
+(set-face-attribute 'default nil :family "Inconsolata" :height 150)
 
 ;; turn on columns
 (setq column-number-mode t)
@@ -160,7 +160,7 @@
  '(neo-root-dir-face ((t :inherit link-visited :underline nil))))
 
 ;; start moving configs out of custom set faces and into individual configs
-(set-face-attribute 'whitespace-line nil)
+(set-face-attribute 'awhitespace-line nil)
 (set-face-attribute 'whitespace-tab nil         :foreground "dim gray":background "#3F3F3F")
 (set-face-attribute 'whitespace-space nil       :foreground "dim gray":background "#3F3F3F")
 (set-face-attribute 'whitespace-newline nil     :foreground "dim gray":background "#3F3F3F")

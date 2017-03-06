@@ -83,7 +83,7 @@
   :ensure t
   :init
     (defvar company-dabbrev-downcase)
-  :diminish (company-mode . "ς")
+  :diminish company-mode
   :commands (company-mode
              company-complete
              company-complete-common
@@ -96,9 +96,9 @@
           company-require-match 0
           company-selection-wrap-around t
           company-dabbrev-downcase nil
-          company-tooltip-limit 20                      ; bigger popup window
-          company-tooltip-align-annotations 't          ; align annotations to the right tooltip border
-          company-idle-delay .4                         ; decrease delay before autocompletion popup shows
+          company-tooltip-limit 20                       ; bigger popup window
+          company-tooltip-align-annotations 't           ; align annotations to the right tooltip border
+          company-idle-delay .4                          ; decrease delay before autocompletion popup shows
           company-begin-commands '(self-insert-command)) ; start autocompletion only after typing
     (eval-after-load 'company
       '(add-to-list 'company-backends '(company-files
@@ -183,14 +183,6 @@
   :config
   (progn
     (add-hook 'eww-mode-hook 'visual-line-mode)))
-
-(use-package fancy-battery
-  :ensure t
-  :init
-    (defvar fancy-battery-show-percentage)
-    (setq fancy-battery-show-percentage t)
-  :config
-    (fancy-battery-mode))
 
 (use-package feature-mode
   :ensure t
@@ -419,12 +411,12 @@
     (("M-m -" . orgiami-toggle-node)))
 
 ;; disabled due to issue with dos line endings in files
-;; (use-package omnisharp
-;;   :ensure t
-;;   :diminish omnisharp-mode
-;;   :config
-;;     (setq omnisharp-server-executable-path "/Users/nboyd/git/omnisharp-server/OmniSharp/bin/Debug/OmniSharp.exe")
-;;     (add-hook 'csharp-mode-hook 'omnisharp-mode))
+(use-package omnisharp
+  :ensure t
+  :diminish omnisharp-mode
+  :config
+    (setq omnisharp-server-executable-path "/Users/nboyd/git/omnisharp-server/OmniSharp/bin/Debug/OmniSharp.exe")
+    (add-hook 'csharp-mode-hook 'omnisharp-mode))
 
 (use-package projectile
   :ensure t
@@ -539,8 +531,7 @@
 
 (use-package undo-tree
   :ensure t
-  :diminish
-  undo-tree-mode
+  :diminish undo-tree-mode
   :config
   (global-undo-tree-mode 1))
 
