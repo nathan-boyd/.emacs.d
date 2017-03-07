@@ -170,7 +170,7 @@
   :ensure t
   :init
     (defvar exec-path-from-shell-check-startup-files)
-    (setq exec-path-from-shell-check-startup-files nil)  ;; new
+    (setq exec-path-from-shell-check-startup-files nil)
   :config
     (exec-path-from-shell-initialize))
 
