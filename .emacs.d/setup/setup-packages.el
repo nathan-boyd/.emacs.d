@@ -262,7 +262,9 @@
     (setq helm-buffer-max-length 80)
     (helm-adaptive-mode t)
     (helm-autoresize-mode t)
-    (helm-push-mark-mode t))
+    (helm-push-mark-mode t)
+    (set-face-attribute 'helm-buffer-size nil      :foreground "knobColor" :background "#3F3F3F")
+    (set-face-attribute 'helm-buffer-directory nil :foreground "knobColor" :background "#3F3F3F" :slant 'italic))
 
 (use-package helm-flyspell
   :ensure t)
@@ -502,7 +504,7 @@
   :ensure t
   :demand t
   :config
-    (set-face-attribute 'spaceline-highlight-face nil :foreground "#94BFF3")b
+    (set-face-attribute 'spaceline-highlight-face nil :foreground "#94BFF3")
     (set-face-attribute 'spaceline-highlight-face nil :background "#3F3F3F")
     (setq ns-use-srgb-colorspace nil) ;; fix colors on modeline
     (require 'spaceline-config)
