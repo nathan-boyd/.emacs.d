@@ -26,4 +26,4 @@
                        ("?" "? ${1:true} : ${0:false}\n" "? ... : ..." nil nil nil "/Users/nboyd/.emacs.d/snippets/js-mode/?" nil nil)))
 
 
-;;; Do not edit! File generated at Thu Jan 12 12:45:13 2017
+;;; Do not edit! File generated at Wed Mar  8 16:06:44 2017

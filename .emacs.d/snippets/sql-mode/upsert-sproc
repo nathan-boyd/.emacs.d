@@ -1,5 +1,6 @@
 # -*- mode: snippet -*-
-#name : upsert-sproc
+# name: upsert-sproc
+# key: us
 # --
 SET ANSI_NULLS ON;
 SET QUOTED_IDENTIFIER ON;
@@ -10,10 +11,10 @@ IF NOT EXISTS (
     AND type='P'
 )
 BEGIN
-    EXEC (N'CREATE PROCEDURE dbo.$1 AS RETURN 0;');
+    EXEC (N'CREATE PROCEDURE [dbo].[$1] AS RETURN 0;');
 END;
 
-ALTER PROCEDURE [dbo].$1
+ALTER PROCEDURE [dbo].[$1]
     @MemberID BIGINT
     ,@EnterpriseID BIGINT
     ,@ApplicationID UNIQUEIDENTIFIER
@@ -24,7 +25,7 @@ AS
 
     IF EXISTS(
             SELECT *
-            FROM $2
+            FROM [dbo].[$2]
             WHERE [MemberID] = @MemberID)
         BEGIN
             UPDATE [dbo].[$2]
@@ -56,7 +57,7 @@ AS
         END
 
 /*####################################################################
-$$ Author:      Nathan Boyd
-$$ Purpose:     
-$$ Modified     
+$$Author:       `user-full-name`
+$$Purpose:      create $1 table
+$$Modified:     `(format-time-string "%Y-%m-%d")` `user-full-name` created
 ######################################################################*/

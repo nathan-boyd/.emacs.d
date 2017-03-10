@@ -591,6 +591,12 @@
   :config
   (yas-global-mode 1))
 
+(use-package helm-c-yasnippet
+  :ensure t
+  :after yasnippet
+  :init (bind-key "C-c y" #'helm-yas-complete)
+  :config (validate-setq helm-yas-space-match-any-greedy t))
+
 (provide 'setup-packages)
 
 ;;; setup-packages ends here

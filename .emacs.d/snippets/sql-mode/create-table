@@ -1,0 +1,25 @@
+# -*- mode: snippet -*-
+# name: create-table
+# key: ct
+# --
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE [object_id] = OBJECT_ID('dbo.$1') AND [type] = 'U')
+BEGIN
+    CREATE TABLE [dbo].[$1] (
+        ${2:Id} ${3:INT} ${4:NOT NULL}
+$0
+        CreatedDateUTC smalldatetime NOT NULL CONSTRAINT DF_$1_CreatedDateUTC DEFAULT(GETUTCDATE()),
+        ModifiedDateUTC datetime NOT NULL CONSTRAINT DF_$1_ModifiedDateUTC DEFAULT(GETUTCDATE()),
+        CONSTRAINT PK_$2 PRIMARY KEY CLUSTERED ($2)
+    ) WITH (DATA_COMPRESSION = PAGE);
+END;
+GO
+
+/*####################################################################
+$$Author:       `user-full-name`
+$$Purpose:      create $1 table
+$$Modified:     `(format-time-string "%Y-%m-%d")` `user-full-name` created
+######################################################################*/
