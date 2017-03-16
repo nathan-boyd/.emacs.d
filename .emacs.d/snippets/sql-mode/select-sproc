@@ -1,0 +1,36 @@
+# -*- mode: snippet -*-
+# name: select-sproc
+# key: ct
+# --
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.procedures WHERE object_id = OBJECT_ID(N'dbo.$1'))
+BEGIN
+    DECLARE @Sql nvarchar(4000);
+    SET @Sql = 'CREATE PROCEDURE [dbo].[$1] AS RETURN 0';
+    EXEC (@Sql);
+END
+GO
+
+ALTER PROCEDURE [dbo].[$1](
+    $0/* params */
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
+    SELECT
+        /* params */
+    FROM [dbo].[$2]
+    WHERE 
+        /* clause */
+END;
+
+/*####################################################################
+$$Author:       `user-full-name`
+$$Purpose:      create $1 sproc
+$$Modified:     `(format-time-string "%Y-%m-%d")` `user-full-name` created
+######################################################################*/
+GO

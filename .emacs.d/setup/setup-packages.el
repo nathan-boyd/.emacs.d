@@ -545,9 +545,21 @@
   (set-face-background 'vhl/default-face "#5b605e")
   (volatile-highlights-mode t))
 
+(use-package web-beautify
+  :ensure t
+  :commands (web-beautify-css
+             web-beautify-css-buffer
+             web-beautify-html
+             web-beautify-html-buffer
+             web-beautify-js
+             web-beautify-js-buffer))
+
 (use-package web-mode
   :ensure t
-  :mode ("\\.html$" . web-mode))
+  :mode
+   ("\\.html$" . web-mode)
+   ("\\.hbs$" . web-mode)
+)
 
 (use-package which-key
   :ensure t
