@@ -31,8 +31,10 @@
 ;; dont create new workspace on app start
 ;; (setq ns-use-native-fullscreen nil)
 
-;; set font
-(set-face-attribute 'default nil :family "Inconsolata" :height 150)
+;; set osx font
+(if (eq system-type 'darwin)
+(set-face-attribute 'default nil :family "Inconsolata" :height 150))
+
 
 ;; turn on columns
 (setq column-number-mode t)

@@ -215,7 +215,6 @@
 (which-key-add-key-based-replacements
   "g y" "copy current file path")
 
-
 ;;;;;;;;;;;;;;;
 ;; copy line ;;
 ;;;;;;;;;;;;;;;
@@ -231,6 +230,12 @@
 
 (which-key-add-key-based-replacements
   "Y" "copy till end of line")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; custom keybindings without functions ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(bind-keys*
+ ("C--" . pop-tag-mark))
 
 (provide 'my-modes)
 

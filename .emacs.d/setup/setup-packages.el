@@ -117,23 +117,12 @@
   :config
   (global-company-mode)
 
-  (use-package company-tern
-    :ensure t
-    :bind (("C-c t" . company-tern))
-    :init
-    (setq company-tern-property-marker "")
-    (setq company-tern-meta-as-single-line t)
-    :config
-    (add-to-list 'company-backends 'company-tern)
-    (add-to-list 'company-backends 'company-omnisharp)) ;; this is weird
+  (add-to-list 'company-backends 'company-omnisharp)
+  (add-to-list 'company-backends 'company-tern)
+  (add-to-list 'company-backends 'company-web-html))
 
-  (use-package company-web
-    :ensure t
-    :bind (("C-c w" . company-web-html))
-    :config
-    (add-to-list 'company-backends 'company-web-html)
-  )
-)
+(use-package helm-dash
+  :ensure t)
 
 (use-package diff-hl
   :ensure t
@@ -418,7 +407,8 @@
   :diminish omnisharp-mode
   :config
     (setq omnisharp-server-executable-path "/Users/nboyd/git/omnisharp-server/OmniSharp/bin/Debug/OmniSharp.exe")
-    (add-hook 'csharp-mode-hook 'omnisharp-mode))
+    (add-hook 'csharp-mode-hook 'omnisharp-mode)
+)
 
 (use-package projectile
   :ensure t
@@ -528,8 +518,7 @@
   :diminish tern-mode
   :defer 2
   :config
-  (progn
-    (add-hook 'js-mode-hook '(lambda () (tern-mode t)))))
+    (add-hook 'js2-mode-hook 'tern-mode))
 
 (use-package undo-tree
   :ensure t
