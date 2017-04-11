@@ -1,7 +1,7 @@
-;;; Compiled snippets and support files for `js-mode'
+;;; Compiled snippets and support files for `snippets'
 ;;; Snippet definitions:
 ;;;
-(yas-define-snippets 'js-mode
+(yas-define-snippets 'snippets
                      '(("v" "var ${1:element} = ${0:value}\n" "v" nil nil nil "/Users/nboyd/.emacs.d/snippets/js-mode/v" nil nil)
                        ("try" "try {\n  $1\n} catch (e) {\n  $0\n}\n" "try" nil nil nil "/Users/nboyd/.emacs.d/snippets/js-mode/try" nil nil)
                        ("switch" "switch ($1) {\n  $0\n}\n" "switch" nil nil nil "/Users/nboyd/.emacs.d/snippets/js-mode/switch" nil nil)
@@ -26,4 +26,4 @@
                        ("?" "? ${1:true} : ${0:false}\n" "? ... : ..." nil nil nil "/Users/nboyd/.emacs.d/snippets/js-mode/?" nil nil)))
 
 
-;;; Do not edit! File generated at Mon Mar 13 14:39:10 2017
+;;; Do not edit! File generated at Fri Apr  7 19:03:04 2017
