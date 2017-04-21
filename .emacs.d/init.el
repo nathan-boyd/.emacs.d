@@ -178,7 +178,7 @@
  '(js-indent-level 2)
  '(markdown-command "/usr/local/bin/markdown")
  '(user-full-name "Nathan Boyd")
- '(whitespace-line-column 500000))
+ '(whitespace-line-column 500))
 
 ;; clear mini buffer
 (call-interactively (global-key-binding "\C-g"))

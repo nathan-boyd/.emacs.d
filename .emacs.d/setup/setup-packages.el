@@ -118,8 +118,16 @@
   (global-company-mode)
 
   (add-to-list 'company-backends 'company-omnisharp)
+  (add-to-list 'company-backends 'company-css)
   (add-to-list 'company-backends 'company-tern)
-  (add-to-list 'company-backends 'company-web-html))
+  (add-to-list 'company-backends 'company-web-html)
+  (add-to-list 'company-backends 'company-yasnippet)
+  (add-to-list 'company-backends 'company-elisp)
+  (add-to-list 'company-backends 'company-gtags)
+  (add-to-list 'company-backends 'company-keywords)
+  (add-to-list 'company-backends 'company-robe)
+  (add-to-list 'company-backends 'company-tern)
+)
 
 (use-package helm-dash
   :ensure t)
@@ -246,7 +254,7 @@
   :map helm-map
     ("<tab>"    . helm-execute-persistent-action)
     ("C-i"      . helm-execute-persistent-action)
-    ("C-z"      .  helm-select-action))
+    ("C-z"      . helm-select-action))
   :config
     (setq helm-buffer-max-length 80)
     (helm-adaptive-mode t)
@@ -286,8 +294,8 @@
         helm-buffers-fuzzy-matching t
         helm-locate-fuzzy-match nil
         helm-mode-fuzzy-match t)
-  (helm-autoresize-mode 1)
-  (setq helm-autoresize-max-height 20
+    (helm-autoresize-mode 1)
+    (setq helm-autoresize-max-height 20
         helm-autoresize-min-height 20))
 
 ;; Make helm fuzzier
@@ -313,7 +321,7 @@
 (use-package helm-projectile
   :ensure t
   :bind*
-    (("M-m SPC d" . helm-projectile))
+    (("C-x p" . helm-projectile))
   :init
     (setq projectile-completion-system 'helm))
 
@@ -352,6 +360,14 @@
     (setq-default js2-strict-missing-semi-warning nil)
     (setq-default js2-strict-trailing-comma-warning t)
     (add-hook 'js2-mode-hook 'flycheck-mode))
+
+(use-package js2-refactor
+    :ensure t
+    :diminish js2-refactor-mode
+    :init
+      (add-hook 'js2-mode-hook #'js2-refactor-mode)
+    :config
+      (js2r-add-keybindings-with-prefix "C-c r"))
 
 (use-package json-mode
   :ensure t
@@ -417,7 +433,8 @@
           ("M-m SPC TAB" . projectile-find-other-file))
   :init
     (setq projectile-file-exists-remote-cache-expire (* 10 60))
-  :diminish projectile-mode
+  :diminish
+    projectile-mode
   :config
     (projectile-mode))
 
@@ -477,7 +494,7 @@
   :diminish robe-mode
   :config
     (add-hook 'ruby-mode-hook 'robe-mode)
-    (add-to-list 'company-backends 'company-robe))
+    (add-hook 'ruby-mode-hook (lambda () (robe-start))))
 
 (use-package saveplace
   :init
@@ -513,12 +530,19 @@
   (sp-pair "<" ">" :wrap "C->")
   (smartparens-global-mode 1))
 
+(use-package rvm
+  :ensure t
+  :config
+    (rvm-use-default))
+
 (use-package tern
   :ensure t
   :diminish tern-mode
+  :bind
+    (("C-<return>" . company-tern))
   :defer 2
   :config
-    (add-hook 'js2-mode-hook 'tern-mode))
+    (add-hook 'js-mode-hook (lambda () (tern-mode t))))
 
 (use-package undo-tree
   :ensure t
@@ -585,9 +609,7 @@
   :ensure t
   :diminish yas-minor-mode
   :init
-    (defvar yas-snippet-dirs)
-    (defvar yas-indent-line)
-    (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
+    (setq yas-snippet-dirs '("~/.emacs.d/snippets"))1
     (setq yas-indent-line (quote none))
   :config
   (yas-global-mode 1))
