@@ -40,6 +40,10 @@
 ;; install and configure package ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(use-package antlr-mode
+  :commands (antlr-mode)
+  :mode (("\\.g4\\'" . antlr-mode)))
+
 (use-package auto-compile
   :ensure t
   :init
@@ -119,15 +123,12 @@
 
   (add-to-list 'company-backends 'company-omnisharp)
   (add-to-list 'company-backends 'company-css)
-  (add-to-list 'company-backends 'company-tern)
-  (add-to-list 'company-backends 'company-web-html)
-  (add-to-list 'company-backends 'company-yasnippet)
-  (add-to-list 'company-backends 'company-elisp)
-  (add-to-list 'company-backends 'company-gtags)
-  (add-to-list 'company-backends 'company-keywords)
-  (add-to-list 'company-backends 'company-robe)
-  (add-to-list 'company-backends 'company-tern)
-)
+  (add-to-list 'company-backends 'company-keywords))
+
+(use-package company-tern
+  :ensure t
+  :init 
+    (add-to-list 'company-backends 'company-tern))
 
 (use-package helm-dash
   :ensure t)
@@ -330,7 +331,7 @@
   :ensure t
   :bind* (("M-m SPC ?" . helm-descbinds)))
 
-;; List errors with helm
+
 (use-package helm-flycheck
   :ensure t
   :bind* (("M-m SPC l" . helm-flycheck)))
@@ -417,14 +418,18 @@
   :bind*
     (("M-m -" . orgiami-toggle-node)))
 
-;; disabled due to issue with dos line endings in files
+(use-package csharp-mode
+  :ensure t
+  :init (add-hook 'csharp-mode-hook 'omnisharp-mode)
+  :bind
+  (:map csharp-mode-map
+        ("C-<return>". company-omnisharp)))
+
 (use-package omnisharp
   :ensure t
   :diminish omnisharp-mode
   :config
-    (setq omnisharp-server-executable-path "/Users/nboyd/git/omnisharp-server/OmniSharp/bin/Debug/OmniSharp.exe")
-    (add-hook 'csharp-mode-hook 'omnisharp-mode)
-)
+    (setq omnisharp-server-executable-path "/usr/local/bin/omnisharp"))
 
 (use-package projectile
   :ensure t
@@ -493,6 +498,7 @@
   :ensure t
   :diminish robe-mode
   :config
+    (add-to-list 'company-backends 'company-robe)
     (add-hook 'ruby-mode-hook 'robe-mode)
     (add-hook 'ruby-mode-hook (lambda () (robe-start))))
 
@@ -529,6 +535,13 @@
   :config
   (sp-pair "<" ">" :wrap "C->")
   (smartparens-global-mode 1))
+
+(use-package sql-indent
+  :ensure t
+  :pin melpa
+  :config
+  (eval-after-load "sql"
+    '(load-library "sql-indent")))
 
 (use-package rvm
   :ensure t
@@ -571,8 +584,7 @@
   :ensure t
   :mode
    ("\\.html$" . web-mode)
-   ("\\.hbs$" . web-mode)
-)
+   ("\\.hbs$" . web-mode))
 
 (use-package which-key
   :ensure t
@@ -609,9 +621,10 @@
   :ensure t
   :diminish yas-minor-mode
   :init
-    (setq yas-snippet-dirs '("~/.emacs.d/snippets"))1
+    (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
     (setq yas-indent-line (quote none))
   :config
+  (yas-reload-all)
   (yas-global-mode 1))
 
 (use-package helm-c-yasnippet
