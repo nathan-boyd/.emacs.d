@@ -33,8 +33,7 @@
 
 ;; set osx font
 (if (eq system-type 'darwin)
-(set-face-attribute 'default nil :family "Inconsolata" :height 150))
-
+(set-face-attribute 'default nil :family "Inconsolata" :height 140))
 
 ;; turn on columns
 (setq column-number-mode t)

@@ -88,13 +88,6 @@
   :init
     (defvar company-dabbrev-downcase)
   :diminish company-mode
-  :commands (company-mode
-             company-complete
-             company-complete-common
-             company-complete-common-or-cycle
-             company-files
-             company-tern
-             company-web-html)
   :init
     (setq company-minimum-prefix-length 2
           company-require-match 0
@@ -104,13 +97,7 @@
           company-tooltip-align-annotations 't           ; align annotations to the right tooltip border
           company-idle-delay .4                          ; decrease delay before autocompletion popup shows
           company-begin-commands '(self-insert-command)) ; start autocompletion only after typing
-    (eval-after-load 'company
-      '(add-to-list 'company-backends '(company-files
-                                        company-capf)))
   :bind (("C-<return>" . company-complete)
-         ("C-c f"      . company-files)
-         ("C-c a"      . company-dabbrev)
-         ("C-c d"      . company-ispell)
          :map company-active-map
          ("C-n"        . company-select-next)
          ("C-p"        . company-select-previous)
@@ -120,7 +107,6 @@
          ("C-c"        . company-search-abort))
   :config
   (global-company-mode)
-
   (add-to-list 'company-backends 'company-omnisharp)
   (add-to-list 'company-backends 'company-css)
   (add-to-list 'company-backends 'company-keywords))
@@ -211,8 +197,8 @@
   :diminish flyspell-mode
   :config
     (setq ispell-program-name "aspell")
-    (flyspell-mode 1)
-    (flyspell-prog-mode))
+    (add-hook 'text-mode-hook 'flyspell-mode)
+    (add-hook 'prog-mode-hook 'flyspell-prog-mode))
 
 (use-package git-timemachine
   :ensure t
