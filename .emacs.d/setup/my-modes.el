@@ -57,6 +57,17 @@
   (while (re-search-forward "\nGO" nil t)
     (replace-match "\n-- GO")))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; insert whitespsce between every character ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun my/insert-whitespace (start end)
+  "Add whitespace between every character in string.  START END."
+  (interactive "r")
+  (defvar my-string)
+  (setq my-string (buffer-substring start end))
+  (delete-region start end)
+  (insert (mapconcat 'string my-string " ")))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; uncomment sql batch seperator "go" ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
