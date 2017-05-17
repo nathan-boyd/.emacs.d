@@ -140,6 +140,10 @@
   (diff-hl-margin-mode)
   (diff-hl-dired-mode))
 
+(use-package dockerfile-mode
+  :ensure t
+  :mode "Dockerfile.*\\'")
+
 ;; setup which-key bindings for diff-hl
 (with-eval-after-load "which-key"
   (which-key-add-key-based-replacements
