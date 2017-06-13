@@ -107,7 +107,6 @@
          ("C-c"        . company-search-abort))
   :config
   (global-company-mode)
-  (add-to-list 'company-backends 'company-omnisharp)
   (add-to-list 'company-backends 'company-css)
   (add-to-list 'company-backends 'company-keywords))
 
@@ -408,19 +407,6 @@
   :bind*
     (("M-m -" . orgiami-toggle-node)))
 
-(use-package csharp-mode
-  :ensure t
-  :init (add-hook 'csharp-mode-hook 'omnisharp-mode)
-  :bind
-  (:map csharp-mode-map
-        ("C-<return>". company-omnisharp)))
-
-(use-package omnisharp
-  :ensure t
-  :diminish omnisharp-mode
-  :config
-    (setq omnisharp-server-executable-path "/usr/local/bin/omnisharp"))
-
 (use-package projectile
   :ensure t
   :bind* (("M-m SPC d"   . projectile-find-file)
@@ -533,6 +519,11 @@
   (eval-after-load "sql"
     '(load-library "sql-indent")))
 
+(use-package rjsx-mode
+    :ensure t
+    :init
+    (add-to-list 'auto-mode-alist '("\\.jsx\\'" . rjsx-mode)))
+
 (use-package rvm
   :ensure t
   :config
@@ -545,7 +536,9 @@
     (("C-<return>" . company-tern))
   :defer 2
   :config
-    (add-hook 'js-mode-hook (lambda () (tern-mode t))))
+    (add-hook 'js-mode-hook (lambda () (tern-mode t)))
+    (add-hook 'js2-mode-hook (lambda () (tern-mode t)))
+    (add-hook 'rjsx-mode-hook (lambda () (tern-mode t))))
 
 (use-package undo-tree
   :ensure t

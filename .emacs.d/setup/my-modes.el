@@ -248,6 +248,16 @@
 (bind-keys*
  ("C--" . pop-tag-mark))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; turn off save file prompts when upgrading packages ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defadvice package--compile (around no-byte-recompile-saves)
+  "Inhibit `save-some-buffers' when byte-compiling packages."
+  (require 'cl-lib)
+  (cl-letf (((symbol-function 'save-some-buffers) 'ignore))
+    ad-do-it))
+(ad-activate 'package--compile)
+
 (provide 'my-modes)
 
 ;;; my-modes.el ends here
