@@ -210,6 +210,20 @@
   :bind* (("M-m g l" . git-timemachine-toggle)
           ("M-m g L" . git-timemachine-switch-branch)))
 
+(use-package git-gutter+
+  :ensure t
+  :diminish
+  :defer t
+  :config
+  (global-git-gutter+-mode))
+
+(use-package indent-guide
+  :ensure t
+  :defer t
+  :diminish
+  :config
+  (add-hook 'prog-mode-hook (lambda () (indent-guide-mode))))
+
 (with-eval-after-load "which-key"
 (which-key-add-key-based-replacements
   "g l" "git time machine"
@@ -501,6 +515,28 @@
     (setq powerline-default-separator 'wave)
     (spaceline-spacemacs-theme)
     (spaceline-helm-mode))
+
+(setq-default
+  dotspacemacs-default-font '("Essential PragmataPro"
+                              :size 10
+                              :weight normal
+                              :width normal
+                              :powerline-scale 1.1))
+
+(use-package all-the-icons
+  :ensure t
+  :after spaceline
+  :init (require 'all-the-icons))
+
+(use-package spaceline-all-the-icons
+  :ensure t
+  :after all-the-icons
+  :init (require 'spaceline-all-the-icons)
+  :config
+  (progn
+    (spaceline-all-the-icons--setup-paradox)
+    (spaceline-all-the-icons--setup-anzu)
+    (spaceline-all-the-icons-theme)))
 
 (use-package smartparens
   :ensure t
