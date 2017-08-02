@@ -421,6 +421,15 @@
   :bind*
     (("M-m -" . orgiami-toggle-node)))
 
+(use-package powerline
+  :ensure t
+  :config
+  (setq powerline-height 20)
+  (setq powerline-gui-use-vcs-glyph t)
+  (setq ns-use-srgb-colorspace nil)
+  (setq powerline-default-separator 'wave)
+  (powerline-default-theme))
+
 (use-package projectile
   :ensure t
   :bind* (("M-m SPC d"   . projectile-find-file)
@@ -502,41 +511,6 @@
     (setq save-place-limit nil)
     (defvar save-place-file)
     (setq save-place-file "~/.emacs.d/saveplace"))
-
-(use-package spaceline
-  :ensure t
-  :demand t
-  :config
-    (set-face-attribute 'spaceline-highlight-face nil :foreground "#94BFF3")
-    (set-face-attribute 'spaceline-highlight-face nil :background "#3F3F3F")
-    (setq ns-use-srgb-colorspace nil) ;; fix colors on modeline
-    (require 'spaceline-config)
-    (defvar powerline-default-separator)
-    (setq powerline-default-separator 'wave)
-    (spaceline-spacemacs-theme)
-    (spaceline-helm-mode))
-
-(setq-default
-  dotspacemacs-default-font '("Essential PragmataPro"
-                              :size 10
-                              :weight normal
-                              :width normal
-                              :powerline-scale 1.1))
-
-(use-package all-the-icons
-  :ensure t
-  :after spaceline
-  :init (require 'all-the-icons))
-
-(use-package spaceline-all-the-icons
-  :ensure t
-  :after all-the-icons
-  :init (require 'spaceline-all-the-icons)
-  :config
-  (progn
-    (spaceline-all-the-icons--setup-paradox)
-    (spaceline-all-the-icons--setup-anzu)
-    (spaceline-all-the-icons-theme)))
 
 (use-package smartparens
   :ensure t

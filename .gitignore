@@ -17,3 +17,4 @@
 .emacs.d/savehist
 .emacs.d/saveplace
 .emacs.d/server/*
+.emacs.d/network*
