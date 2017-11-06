@@ -240,8 +240,15 @@
   :ensure t
   :diminish helm-mode
   :init
-    (defvar helm-buffer-max-length)
-    (helm-mode 1)
+    (progn
+      (require 'helm-config)
+      (setq helm-candidate-number-limit 100)
+      (setq helm-idle-delay 0.0 ; update fast sources immediately (doesn't)
+            helm-input-idle-delay 0.01  ; this actually updates things reeeelatively quickly
+            helm-yas-display-key-on-candidate t
+            helm-quick-update t
+            helm-M-x-requires-pattern nil)
+    (helm-mode))
   :bind
     (("M-x"     . undefined)
      ("M-x"     . helm-M-x)
@@ -267,6 +274,11 @@
     (set-face-attribute 'helm-buffer-size nil      :foreground "knobColor" :background "#3F3F3F")
     (set-face-attribute 'helm-buffer-directory nil :foreground "knobColor" :background "#3F3F3F" :slant 'italic))
 
+(use-package helm-descbinds
+  :defer t
+  :bind (("C-h b" . helm-descbinds)
+         ("C-h w" . helm-descbinds)))
+
 (use-package helm-flyspell
   :ensure t)
 
@@ -279,17 +291,17 @@
     (defvar helm-locate-fuzzy-match)
     (defvar helm-mode-fuzzy-match)
   :bind
-  (("C-s"     . helm-swoop)
-   ("M-i"     . helm-swoop)
-   ("M-s s"   . helm-swoop)
-   ("M-s M-s" . helm-swoop)
-   ("C-c M-i" . helm-multi-swoop)
-   ("C-x M-i" . helm-multi-swoop-all)
+    (("C-s"     . helm-swoop)
+     ("M-i"     . helm-swoop)
+     ("M-s s"   . helm-swoop)
+     ("M-s M-s" . helm-swoop)
+     ("C-c M-i" . helm-multi-swoop)
+     ("C-x M-i" . helm-multi-swoop-all)
    :map isearch-mode-map
-   ("M-i"     . helm-swoop-from-isearch)
+     ("M-i"     . helm-swoop-from-isearch)
    :map helm-swoop-map
-   ("M-i"     . helm-multi-swoop-all-from-helm-swoop))
-  :config
+     ("M-i"     . helm-multi-swoop-all-from-helm-swoop))
+   :config
     (setq helm-swoop-split-with-multiple-windows nil)
     (setq helm-swoop-split-direction 'split-window-vertically)
     ;; Fuzzy matching for everything

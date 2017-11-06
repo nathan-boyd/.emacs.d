@@ -54,7 +54,7 @@
 (setq ring-bell-function 'ignore)
 
 ;; define shell type
-(setq explicit-shell-file-name "/bin/bash")
+(setq explicit-shell-file-name "/bin/sh")
 
 ;; change the behavior of editing selected text
 (delete-selection-mode t)
@@ -73,6 +73,8 @@
 (when (and (>= emacs-major-version 23) (equal window-system 'w32))
   (defun server-ensure-safe-dir (dir)
     "Noop.  DIR." t))
+
+(server-start)
 
 (unless (server-running-p)
   (server-start))
@@ -176,6 +178,7 @@
  '(grep-command "grep -rin --color=auto ")
  '(js-indent-level 2)
  '(markdown-command "/usr/local/bin/markdown")
+ '(shell-file-name "/bin/bash")
  '(user-full-name "Nathan Boyd")
  '(whitespace-line-column 500))
 
