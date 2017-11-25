@@ -258,6 +258,14 @@
     ad-do-it))
 (ad-activate 'package--compile)
 
+;;;;;;;;;;;;;;;;;;;;;;;
+;; setup auto-modes  ;;
+;;;;;;;;;;;;;;;;;;;;;;;
+(add-to-list 'auto-mode-alist '("\\.csproj\\'" . xml-mode))
+
+;;;;;;;;;;;;;;;;;;;
+;; return module ;;
+;;;;;;;;;;;;;;;;;;;
 (provide 'my-modes)
 
 ;;; my-modes.el ends here

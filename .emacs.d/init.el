@@ -79,6 +79,9 @@
 (unless (server-running-p)
   (server-start))
 
+;; open new frames in current window
+(setq ns-pop-up-frames nil)
+
 (setq delete-by-moving-to-trash nil)
 
 ;; let other packages handle vertical alignment

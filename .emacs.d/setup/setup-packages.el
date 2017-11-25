@@ -107,12 +107,13 @@
          ("C-c"        . company-search-abort))
   :config
   (global-company-mode)
+  (add-to-list 'company-backends 'company-omnisharp)
   (add-to-list 'company-backends 'company-css)
   (add-to-list 'company-backends 'company-keywords))
 
 (use-package company-tern
   :ensure t
-  :init 
+  :init
     (add-to-list 'company-backends 'company-tern))
 
 (use-package helm-dash
@@ -426,6 +427,19 @@
   :diminish neotree
   :config
     (setq neo-theme 'nerd))
+
+(use-package csharp-mode
+  :ensure t
+  :init (add-hook 'csharp-mode-hook 'omnisharp-mode)
+  :bind
+  (:map csharp-mode-map
+        ("C-<return>". company-omnisharp)))
+
+(use-package omnisharp
+  :ensure t
+  :diminish omnisharp-mode
+  :config
+    (setq-default omnisharp-debug t))
 
 (use-package origami
   :ensure t
