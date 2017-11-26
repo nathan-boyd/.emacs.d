@@ -18,3 +18,4 @@
 .emacs.d/saveplace
 .emacs.d/server/*
 .emacs.d/network*
+.emacs.d/url/*
