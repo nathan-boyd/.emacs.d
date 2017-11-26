@@ -96,17 +96,6 @@
 ;; load prefers the newest version of a file
 (setq load-prefer-newer t)
 
-;; setup whitespace
-(require 'whitespace)
-(global-whitespace-mode 1)
-(setq whitespace-display-mappings '(
-  (space-mark 32 [183] [46])   ; 32 SPACE 「 」
-  (newline-mark 10 [182 10])   ; 10 LINE FEED
-  (tab-mark 9 [187 9] [92 9])  ; 9  TAB
-))
-
-;; (add-hook 'before-save-hook 'whitespace-cleanup)
-
 ; configure backups
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 (setq delete-old-versions t
@@ -154,6 +143,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+)
 (set-face-attribute 'awhitespace-line nil)
 (set-face-attribute 'whitespace-tab nil              :foreground "dim gray":background "#3F3F3F")
 (set-face-attribute 'whitespace-space nil            :foreground "dim gray":background "#3F3F3F")

@@ -62,8 +62,8 @@
     (defvar shell-mode-map)
   :bind
     (("M-RET" . ace-window)
-  :map shell-mode-map
-    ("M-RET" . ace-window))
+      :map shell-mode-map
+        ("M-RET" . ace-window))
   :config
     (setq aw-scope 'frame))
 
@@ -617,6 +617,19 @@
     (which-key-mode)
     (which-key-setup-side-window-right-bottom)
     (which-key-add-key-based-replacements "M-m ?" "top level bindings"))
+
+(use-package whitespace
+  :ensure t
+  :diminish
+    global-whitespace-mode
+  :init
+    (setq whitespace-line-column 130)
+    (setq whitespace-display-mappings '(
+      (space-mark 32 [183] [46])   ; 32 SPACE 「 」
+      (newline-mark 10 [182 10])   ; 10 LINE FEED
+      (tab-mark 9 [187 9] [92 9])  ; 9  TAB
+    ))
+    (global-whitespace-mode t))
 
 (use-package yagist
   :ensure t
