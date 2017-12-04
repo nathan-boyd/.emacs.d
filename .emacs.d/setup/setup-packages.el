@@ -51,21 +51,16 @@
   (auto-compile-on-load-mode)
   (auto-compile-on-save-mode))
 
-(use-package aggressive-indent
-  :ensure t
-  :diminish
-    aggressive-indent)
-
 (use-package ace-window
   :ensure t
   :init
-    (defvar shell-mode-map)
+  (defvar shell-mode-map)
   :bind
-    (("M-RET" . ace-window)
-      :map shell-mode-map
-        ("M-RET" . ace-window))
+  (("M-RET" . ace-window)
+   :map shell-mode-map
+   ("M-RET" . ace-window))
   :config
-    (setq aw-scope 'frame))
+  (setq aw-scope 'frame))
 
 (use-package avy
   :ensure t
@@ -86,17 +81,16 @@
 (use-package company
   :ensure t
   :init
-    (defvar company-dabbrev-downcase)
+  (defvar company-dabbrev-downcase)
   :diminish company-mode
   :init
-    (setq company-minimum-prefix-length 2
-          company-require-match 0
-          company-selection-wrap-around t
-          company-dabbrev-downcase nil
-          company-tooltip-limit 20                       ; bigger popup window
-          company-tooltip-align-annotations 't           ; align annotations to the right tooltip border
-          company-idle-delay .4                          ; decrease delay before autocompletion popup shows
-          company-begin-commands '(self-insert-command)) ; start autocompletion only after typing
+  (setq company-minimum-prefix-length 2
+        company-require-match 0
+        company-selection-wrap-around t
+        company-tooltip-limit 20                       ; bigger popup window
+        company-tooltip-align-annotations 't           ; align annotations to the right tooltip border
+        company-idle-delay .4                          ; decrease delay before autocompletion popup shows
+        company-begin-commands '(self-insert-command)) ; start autocompletion only after typing
   :bind (("C-<return>" . company-complete)
          :map company-active-map
          ("C-n"        . company-select-next)
@@ -107,14 +101,14 @@
          ("C-c"        . company-search-abort))
   :config
   (global-company-mode)
+  (add-to-list 'company-backends 'company-tern)
   (add-to-list 'company-backends 'company-omnisharp)
   (add-to-list 'company-backends 'company-css)
-  (add-to-list 'company-backends 'company-keywords))
+  (add-to-list 'company-backends 'company-keywords)
+  (add-to-list 'company-backends 'company-robe))
 
 (use-package company-tern
-  :ensure t
-  :init
-    (add-to-list 'company-backends 'company-tern))
+  :ensure t)
 
 (use-package helm-dash
   :ensure t)
@@ -147,20 +141,20 @@
 ;; setup which-key bindings for diff-hl
 (with-eval-after-load "which-key"
   (which-key-add-key-based-replacements
-  "] h" "next git hunk"
-  "[ h" "previous git hunk"
-  "g h" "goto git hunk"
-  "g H" "revert git hunk"
-  "i h" "select git hunk"
-  "a h" "select a git hunk"))
+    "] h" "next git hunk"
+    "[ h" "previous git hunk"
+    "g h" "goto git hunk"
+    "g H" "revert git hunk"
+    "i h" "select git hunk"
+    "a h" "select a git hunk"))
 
 (use-package exec-path-from-shell
   :ensure t
   :init
-    (defvar exec-path-from-shell-check-startup-files)
-    (setq exec-path-from-shell-check-startup-files nil)
+  (defvar exec-path-from-shell-check-startup-files)
+  (setq exec-path-from-shell-check-startup-files nil)
   :config
-    (exec-path-from-shell-initialize))
+  (exec-path-from-shell-initialize))
 
 (use-package eww
   :bind* (("M-m g x" . eww)
@@ -176,9 +170,9 @@
   :ensure t
   :diminish feature-mode
   :config
-    (setq feature-step-search-path "features/**/*steps.rb")
-    (setq feature-step-search-gems-path "gems/ruby/*/gems/*/**/*steps.rb")
-    (add-to-list 'auto-mode-alist '("\.feature$" . feature-mode)))
+  (setq feature-step-search-path "features/**/*steps.rb")
+  (setq feature-step-search-gems-path "gems/ruby/*/gems/*/**/*steps.rb")
+  (add-to-list 'auto-mode-alist '("\.feature$" . feature-mode)))
 
 (use-package flycheck
   :ensure t
@@ -191,18 +185,18 @@
   (global-flycheck-mode))
 
 (with-eval-after-load "which-key"
-(which-key-add-key-based-replacements
-  "] l"   "next error"
-  "[ l"   "previous error"
-  "SPC l" "list errors"))
+  (which-key-add-key-based-replacements
+    "] l"   "next error"
+    "[ l"   "previous error"
+    "SPC l" "list errors"))
 
 (use-package flyspell
   :ensure t
   :diminish flyspell-mode
   :config
-    (setq ispell-program-name "aspell")
-    (add-hook 'text-mode-hook 'flyspell-mode)
-    (add-hook 'prog-mode-hook 'flyspell-prog-mode))
+  (setq ispell-program-name "aspell")
+  (add-hook 'text-mode-hook 'flyspell-mode)
+  (add-hook 'prog-mode-hook 'flyspell-prog-mode))
 
 (use-package git-timemachine
   :ensure t
@@ -226,54 +220,45 @@
   (add-hook 'prog-mode-hook (lambda () (indent-guide-mode))))
 
 (with-eval-after-load "which-key"
-(which-key-add-key-based-replacements
-  "g l" "git time machine"
-  "g L" "time machine switch branch"))
+  (which-key-add-key-based-replacements
+    "g l" "git time machine"
+    "g L" "time machine switch branch"))
 
 (use-package golden-ratio
   :ensure t
   :diminish golden-ratio-mode
   :config
-    (golden-ratio-mode 1)
-    (add-to-list 'golden-ratio-extra-commands 'ace-window))
+  (golden-ratio-mode 1)
+  (add-to-list 'golden-ratio-extra-commands 'ace-window))
 
 (use-package helm
   :ensure t
   :diminish helm-mode
   :init
-    (progn
-      (require 'helm-config)
-      (setq helm-candidate-number-limit 100)
-      (setq helm-idle-delay 0.0 ; update fast sources immediately (doesn't)
-            helm-input-idle-delay 0.01  ; this actually updates things reeeelatively quickly
-            helm-yas-display-key-on-candidate t
-            helm-quick-update t
-            helm-M-x-requires-pattern nil)
+  (progn
+    (require 'helm-config)
+    (setq helm-candidate-number-limit 100)
+    (setq helm-idle-delay 0.0                  ; update fast sources immediately (doesn't)
+          helm-input-idle-delay 0.01           ; this actually updates things reeeelatively quickly
+          helm-yas-display-key-on-candidate t
+          helm-quick-update t
+          helm-M-x-requires-pattern nil)
     (helm-mode))
   :bind
-    (("M-x"     . undefined)
-     ("M-x"     . helm-M-x)
-     ("M-y"     . helm-show-kill-ring)
-     ("C-x C-f" . helm-find-files)
-     ("C-h b"   . helm-descbinds)
-     ("C-x b"   . helm-mini)
-     ("C-x C-b" . helm-mini)
-     ("C-x C-d" . helm-browse-project)
-     ("C-c h"   . helm-command-prefix)
-     ("C-i"     . helm-execute-persistent-action)
-     ("C-;"     . helm-flyspell-correct)
-     ("C-z"     . helm-select-action)
-  :map helm-map
-    ("<tab>"    . helm-execute-persistent-action)
-    ("C-i"      . helm-execute-persistent-action)
-    ("C-z"      . helm-select-action))
+  (("M-x"     . undefined)
+   ("M-x"     . helm-M-x)
+   ("M-y"     . helm-show-kill-ring)
+   ("C-x C-f" . helm-find-files)
+   ("C-h b"   . helm-descbinds)
+   ("C-x C-d" . helm-browse-project)
+   ("C-c h"   . helm-command-prefix)
+   ("C-;"     . helm-flyspell-correct))
   :config
-    (setq helm-buffer-max-length 80)
-    (helm-adaptive-mode t)
-    (helm-autoresize-mode t)
-    (helm-push-mark-mode t)
-    (set-face-attribute 'helm-buffer-size nil      :foreground "knobColor" :background "#3F3F3F")
-    (set-face-attribute 'helm-buffer-directory nil :foreground "knobColor" :background "#3F3F3F" :slant 'italic))
+  (setq helm-buffer-max-length 80)
+  (helm-adaptive-mode t)
+  (helm-autoresize-mode t)
+  (set-face-attribute 'helm-buffer-size nil      :foreground "knobColor" :background "#3F3F3F")
+  (set-face-attribute 'helm-buffer-directory nil :foreground "knobColor" :background "#3F3F3F" :slant 'italic))
 
 (use-package helm-descbinds
   :defer t
@@ -286,33 +271,33 @@
 (use-package helm-swoop
   :ensure t
   :init
-    (defvar helm-M-x-fuzzy-match)
-    (defvar helm-recentf-fuzzy-match)
-    (defvar helm-buffers-fuzzy-matching)
-    (defvar helm-locate-fuzzy-match)
-    (defvar helm-mode-fuzzy-match)
+  (defvar helm-M-x-fuzzy-match)
+  (defvar helm-recentf-fuzzy-match)
+  (defvar helm-buffers-fuzzy-matching)
+  (defvar helm-locate-fuzzy-match)
+  (defvar helm-mode-fuzzy-match)
   :bind
-    (("C-s"     . helm-swoop)
-     ("M-i"     . helm-swoop)
-     ("M-s s"   . helm-swoop)
-     ("M-s M-s" . helm-swoop)
-     ("C-c M-i" . helm-multi-swoop)
-     ("C-x M-i" . helm-multi-swoop-all)
+  (("C-s"     . helm-swoop)
+   ("M-i"     . helm-swoop)
+   ("M-s s"   . helm-swoop)
+   ("M-s M-s" . helm-swoop)
+   ("C-c M-i" . helm-multi-swoop)
+   ("C-x M-i" . helm-multi-swoop-all)
    :map isearch-mode-map
-     ("M-i"     . helm-swoop-from-isearch)
+   ("M-i"     . helm-swoop-from-isearch)
    :map helm-swoop-map
-     ("M-i"     . helm-multi-swoop-all-from-helm-swoop))
-   :config
-    (setq helm-swoop-split-with-multiple-windows nil)
-    (setq helm-swoop-split-direction 'split-window-vertically)
-    ;; Fuzzy matching for everything
-    (setq helm-M-x-fuzzy-match t
+   ("M-i"     . helm-multi-swoop-all-from-helm-swoop))
+  :config
+  (setq helm-swoop-split-with-multiple-windows nil)
+  (setq helm-swoop-split-direction 'split-window-vertically)
+  ;; Fuzzy matching for everything
+  (setq helm-M-x-fuzzy-match t
         helm-recentf-fuzzy-match t
         helm-buffers-fuzzy-matching t
         helm-locate-fuzzy-match nil
         helm-mode-fuzzy-match t)
-    (helm-autoresize-mode 1)
-    (setq helm-autoresize-max-height 20
+  (helm-autoresize-mode 1)
+  (setq helm-autoresize-max-height 20
         helm-autoresize-min-height 20))
 
 ;; Make helm fuzzier
@@ -338,9 +323,9 @@
 (use-package helm-projectile
   :ensure t
   :bind*
-    (("C-x p" . helm-projectile))
+  (("C-x p" . helm-projectile))
   :init
-    (setq projectile-completion-system 'helm))
+  (setq projectile-completion-system 'helm))
 
 ;; to describe bindings
 (use-package helm-descbinds
@@ -366,25 +351,25 @@
   :ensure t
   :diminish js2-mode
   :config
-    (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-    (setq-default indent-tabs-mode nil)
-    (setq-default js2-idle-timer-delay 0.1)
-    (setq-default js2-indent-on-enter-key nil)
-    (setq-default js2-enter-indents-newline nil)
-    (setq-default js2-highlight-level 3)
-    (setq-default js2-basic-offset 2)
-    (setq-default js2-show-parse-errors nil)
-    (setq-default js2-strict-missing-semi-warning nil)
-    (setq-default js2-strict-trailing-comma-warning t)
-    (add-hook 'js2-mode-hook 'flycheck-mode))
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+  (setq-default indent-tabs-mode nil)
+  (setq-default js2-idle-timer-delay 0.1)
+  (setq-default js2-indent-on-enter-key nil)
+  (setq-default js2-enter-indents-newline nil)
+  (setq-default js2-highlight-level 3)
+  (setq-default js2-basic-offset 2)
+  (setq-default js2-show-parse-errors nil)
+  (setq-default js2-strict-missing-semi-warning nil)
+  (setq-default js2-strict-trailing-comma-warning t)
+  (add-hook 'js2-mode-hook 'flycheck-mode))
 
 (use-package js2-refactor
-    :ensure t
-    :diminish js2-refactor-mode
-    :init
-      (add-hook 'js2-mode-hook #'js2-refactor-mode)
-    :config
-      (js2r-add-keybindings-with-prefix "C-c r"))
+  :ensure t
+  :diminish js2-refactor-mode
+  :init
+  (add-hook 'js2-mode-hook #'js2-refactor-mode)
+  :config
+  (js2r-add-keybindings-with-prefix "C-c r"))
 
 (use-package json-mode
   :ensure t
@@ -411,22 +396,22 @@
 (use-package multiple-cursors
   :ensure t
   :bind*
-    (("M-m ." . mc/edit-lines)
-     ("M-m >" . mc/mark-next-like-this)
-     ("M-m ," . mc/skip-to-next-like-this)
-     ("M-m <" . mc/mark-previous-like-this)))
+  (("M-m ." . mc/edit-lines)
+   ("M-m >" . mc/mark-next-like-this)
+   ("M-m ," . mc/skip-to-next-like-this)
+   ("M-m <" . mc/mark-previous-like-this)))
 
 (use-package magit
   :ensure t
   :bind*
-    (("M-m SPC e" . magit-status)
-     ("M-m g b"   . magit-blame)))
+  (("M-m SPC e" . magit-status)
+   ("M-m g b"   . magit-blame)))
 
 (use-package neotree
   :ensure t
   :diminish neotree
   :config
-    (setq neo-theme 'nerd))
+  (setq neo-theme 'nerd))
 
 (use-package csharp-mode
   :ensure t
@@ -439,13 +424,32 @@
   :ensure t
   :diminish omnisharp-mode
   :config
-    (setq-default omnisharp-debug t))
+  (define-key omnisharp-mode-map "." 'omnisharp-add-dot-and-auto-complete)
+  ;; (define-key omnisharp-mode-map (kbd "C-r C-t") (lambda() (interactive) (omnisharp-unit-test "single")))
+  ;; (define-key omnisharp-mode-map (kbd "C-r C-a") (lambda() (interactive) (omnisharp-unit-test "all")))
+  ;; (setq-default omnisharp-debug t)
+  )
+
+(defun omnisharp-unit-test (mode)
+  "Run tests after building the solution. Mode should be one of 'single', 'fixture' or 'all'" 
+  (interactive)
+  (let ((test-response
+         (omnisharp-post-message-curl-as-json
+          (concat (omnisharp-get-host) "gettestcontext") 
+          (cons `("Type" . ,mode) (omnisharp--get-common-params)))))
+    (let ((test-command
+           (cdr (assoc 'TestCommand test-response)))
+
+          (test-directory
+           (cdr (assoc 'Directory test-response))))
+      (cd test-directory)
+      (compile test-command))))
 
 (use-package origami
   :ensure t
   :commands (origami-toggle-node)
   :bind*
-    (("M-m -" . orgiami-toggle-node)))
+  (("M-m -" . orgiami-toggle-node)))
 
 (use-package powerline
   :ensure t
@@ -462,28 +466,28 @@
           ("M-m SPC D"   . projectile-switch-project)
           ("M-m SPC TAB" . projectile-find-other-file))
   :init
-    (setq projectile-file-exists-remote-cache-expire (* 10 60))
+  (setq projectile-file-exists-remote-cache-expire (* 10 60))
   :diminish
-    projectile-mode
+  projectile-mode
   :config
-    (projectile-mode))
+  (projectile-mode))
 
 (use-package rainbow-delimiters
   :ensure t
   :diminish rainbow-delimiters
   :config
-    (add-hook 'prog-mode-hook (lambda()
+  (add-hook 'prog-mode-hook (lambda()
                               (rainbow-delimiters-mode t))))
 
 (use-package recentf
   :ensure t
   :diminish recentf-mode
   :bind
-    (("C-x \C-r" . recentf-open-files))
+  (("C-x \C-r" . recentf-open-files))
   :config
-    (setq recentf-auto-cleanup 'never)
-    (setq recentf-max-menu-items 25)
-    (recentf-mode 1))
+  (setq recentf-auto-cleanup 'never)
+  (setq recentf-max-menu-items 25)
+  (recentf-mode 1))
 
 (use-package restart-emacs
   :ensure t
@@ -508,9 +512,8 @@
   (setq ruby-use-encoding-map nil)
 
   :config
-  (after-load 'ruby-mode
-    (define-key ruby-mode-map (kbd "RET") 'reindent-then-newline-and-indent)
-    (define-key ruby-mode-map (kbd "TAB") 'indent-for-tab-command))
+  (define-key ruby-mode-map (kbd "RET") 'reindent-then-newline-and-indent)
+  (define-key ruby-mode-map (kbd "TAB") 'indent-for-tab-command)
 
   ;; non-bundled ruby-mode isn't a derived mode of prog-mode
   ;; run these latter's hooks anyway in that case.
@@ -523,20 +526,19 @@
   :ensure t
   :diminish robe-mode
   :config
-    (add-to-list 'company-backends 'company-robe)
-    (add-hook 'ruby-mode-hook 'robe-mode)
-    (add-hook 'ruby-mode-hook (lambda () (robe-start))))
+  (add-hook 'ruby-mode-hook 'robe-mode)
+  (add-hook 'ruby-mode-hook (lambda () (robe-start))))
 
 (use-package saveplace
   :init
-    (save-place-mode 1)
+  (save-place-mode 1)
   :config
-    (if (fboundp #'save-place-mode)
+  (if (fboundp #'save-place-mode)
       (save-place-mode +1)
     (setq-default save-place t))
-    (setq save-place-limit nil)
-    (defvar save-place-file)
-    (setq save-place-file "~/.emacs.d/saveplace"))
+  (setq save-place-limit nil)
+  (defvar save-place-file)
+  (setq save-place-file "~/.emacs.d/saveplace"))
 
 (use-package smartparens
   :ensure t
@@ -548,33 +550,32 @@
   (sp-pair "<" ">" :wrap "C->")
   (smartparens-global-mode 1))
 
-(use-package sql-indent
-  :ensure t
-  :pin melpa
-  :config
-  (eval-after-load "sql"
-    '(load-library "sql-indent")))
+;; (use-package sql-indent
+;;   :ensure t
+;;   :pin melpa
+;;   :config
+;;   (eval-after-load "sql"
+;;     '(load-library "sql-indent")))
 
 (use-package rjsx-mode
-    :ensure t
-    :init
-    (add-to-list 'auto-mode-alist '("\\.jsx\\'" . rjsx-mode)))
+  :ensure t
+  :init
+  (add-to-list 'auto-mode-alist '("\\.jsx\\'" . rjsx-mode)))
 
 (use-package rvm
   :ensure t
   :config
-    (rvm-use-default))
+  (rvm-use-default))
 
 (use-package tern
   :ensure t
   :diminish tern-mode
   :bind
-    (("C-<return>" . company-tern))
-  :defer 2
+  ("C-<return>" . company-tern)
   :config
-    (add-hook 'js-mode-hook (lambda () (tern-mode t)))
-    (add-hook 'js2-mode-hook (lambda () (tern-mode t)))
-    (add-hook 'rjsx-mode-hook (lambda () (tern-mode t))))
+  (add-hook 'js-mode-hook (lambda () (tern-mode t)))
+  (add-hook 'js2-mode-hook (lambda () (tern-mode t)))
+  (add-hook 'rjsx-mode-hook (lambda () (tern-mode t))))
 
 (use-package undo-tree
   :ensure t
@@ -602,34 +603,35 @@
 (use-package web-mode
   :ensure t
   :mode
-   ("\\.html$" . web-mode)
-   ("\\.hbs$" . web-mode))
+  ("\\.html$" . web-mode)
+  ("\\.hbs$" . web-mode))
 
 (use-package which-key
   :ensure t
   :defer t
   :diminish which-key-mode
   :init
-    (setq which-key-sort-order 'which-key-key-order-alpha)
+  (setq which-key-sort-order 'which-key-key-order-alpha)
   :bind* (
-    ("M-m ?" . which-key-show-top-level))
+          ("M-m ?" . which-key-show-top-level))
   :config
-    (which-key-mode)
-    (which-key-setup-side-window-right-bottom)
-    (which-key-add-key-based-replacements "M-m ?" "top level bindings"))
+  (which-key-mode)
+  (which-key-setup-side-window-right-bottom)
+  (which-key-add-key-based-replacements "M-m ?" "top level bindings"))
 
 (use-package whitespace
   :ensure t
   :diminish
-    global-whitespace-mode
+  global-whitespace-mode
   :init
-    (setq whitespace-line-column 130)
-    (setq whitespace-display-mappings '(
-      (space-mark 32 [183] [46])   ; 32 SPACE 「 」
-      (newline-mark 10 [182 10])   ; 10 LINE FEED
-      (tab-mark 9 [187 9] [92 9])  ; 9  TAB
-    ))
-    (global-whitespace-mode t))
+  (setq whitespace-style '(face tabs trailing tab-mark space-after-tab space-before-tabx))
+  (setq whitespace-line-column 130)
+  (setq whitespace-display-mappings '(
+                                      (space-mark 32 [183] [46])   ; 32 SPACE 「 」
+                                      (newline-mark 10 [182 10])   ; 10 LINE FEED
+                                      (tab-mark 9 [187 9] [92 9])  ; 9  TAB
+                                      ))
+  (global-whitespace-mode t))
 
 (use-package yagist
   :ensure t
@@ -653,8 +655,8 @@
   :ensure t
   :diminish yas-minor-mode
   :init
-    (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
-    (setq yas-indent-line (quote none))
+  (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
+  (setq yas-indent-line (quote none))
   :config
   (yas-reload-all)
   (yas-global-mode 1))

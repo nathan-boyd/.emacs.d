@@ -143,7 +143,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
-)
+ '(popup-menu-selection-face ((t (:inherit default :foreground "gold3")))))
+
 (set-face-attribute 'awhitespace-line nil)
 (set-face-attribute 'whitespace-tab nil              :foreground "dim gray":background "#3F3F3F")
 (set-face-attribute 'whitespace-space nil            :foreground "dim gray":background "#3F3F3F")
@@ -155,6 +156,8 @@
 (set-face-attribute 'whitespace-space-before-tab nil :foreground "dim gray":background "#4F4F4F")
 (set-face-attribute 'whitespace-trailing nil         :foreground "dim gray":background "#4F4F4F")
 (set-face-attribute 'mode-line-inactive nil          :foreground "#8FB28F" :background "#383838")
+(set-face-attribute 'popup-face nil                  :foreground "gray36"  :background "dark gray")
+(set-face-attribute 'popup-menu-selection-face nil   :foreground "#D0BF8F" :background "dark gray")
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
